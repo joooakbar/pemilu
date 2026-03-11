@@ -1,0 +1,1 @@
+PM: Sebagai Project Manager saya bertanggung jawab untuk membuat time line yang di kerjakan dengan target setiap minggunya harus selesai bagian apa, saya juga bertanggung jawab untuk membuat  dan mengelola collaborator repository.
