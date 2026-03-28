@@ -1,0 +1,2 @@
+# BE:
+#### Berperan sebagai anggota tim yang bertugas sebagai Backend Engineer, dengan kontribusi dalam merancang dan mengembangkan logika sistem, membangun API, mengelola database, serta memastikan integrasi data antar fitur pada aplikasi berjalan dengan baik.
