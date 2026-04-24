@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+=======
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+>>>>>>> 96054bc9326897fd107ea2423b359eb1f719a971
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+<<<<<<< HEAD
 
 export function formatDate(date: Date | string): string {
   return new Date(date).toLocaleDateString('id-ID', {
@@ -37,3 +43,5 @@ export function formatPersen(nilai: number, total: number): string {
   if (total === 0) return '0%'
   return ((nilai / total) * 100).toFixed(1) + '%'
 }
+=======
+>>>>>>> 96054bc9326897fd107ea2423b359eb1f719a971
