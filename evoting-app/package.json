@@ -40,7 +40,6 @@
     "next": "16.2.3",
     "next-sanity": "^12.3.0",
     "nodemailer": "^8.0.5",
-    "prisma": "^7.7.0",
     "radix-ui": "^1.4.3",
     "react": "19.2.4",
     "react-chartjs-2": "^5.3.1",
@@ -66,6 +65,7 @@
     "date-fns": "^4.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
+    "prisma": "^7.8.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"
