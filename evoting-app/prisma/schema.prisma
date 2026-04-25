@@ -4,10 +4,151 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  PANITIA
+  SAKSI
+}
+
+enum StatusPemilihan {
+  DRAFT
+  ACTIVE
+  SUSPENDED
+  ENDED
+}
+
+model User {
+  id String @id @default(uuid()) @db.VarChar(36)
+  nama String @db.VarChar(191)
+  username String @unique @db.VarChar(191)
+  email String @unique @db.VarChar(191)
+  passwordHash String @db.VarChar(255)
+  role Role
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  logs LogAktivitas[]
+  loginOTP LoginOTP[]
+
+  @@map("users")
+}
+
+model LoginOTP {
+  id String @id @default(uuid()) @db.VarChar(36)
+  userId String @db.VarChar(36)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  otpHash String @db.VarChar(255)
+  expiredAt DateTime
+  isUsed Boolean @default(false) 
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("otpLogin")
+}
+
+model Pemilihan {
+  id String @id @default(uuid()) @db.VarChar(36)
+  sanityId String? @unique @db.VarChar(191)
+  nama String @db.VarChar(255)
+  status StatusPemilihan @default(DRAFT)
+  starttime DateTime
+  endtime DateTime
+  tempatVoting String? @db.VarChar(255)
+  deskripsi String? @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  votes Votes[]
+  voteTokens VoteToken[]
+
+  @@map("pemilihan")
+}
+
+model Kandidat {
+  id String @id @default(uuid()) @db.VarChar(36)
+  noUrut Int @unique
+  nama1 String @db.VarChar(255)
+  nama2 String @db.VarChar(255)
+  sanityId String @unique @db.VarChar(191)
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  votes Votes[]
+
+  @@map("kandidat")
+}
+
+model DPT {
+  id String @id @default(uuid()) @db.VarChar(36)
+  nik String @unique @db.Char(16)
+  nama String @db.VarChar(255)
+  kodeWilayah String @db.Char(6)
+  noHP String? @db.VarChar(20)
+  email String? @db.VarChar(191)
+  hasVoted Boolean @default(false)
+  votedAt DateTime?
+  importedBy String? @db.VarChar(36)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  voteTokens VoteToken[]
+
+  @@index([kodeWilayah])
+  @@map("dpt")
+}
+
+model VoteToken {
+  id String @id @default(uuid()) @db.VarChar(36)
+  dptId String @db.VarChar(36)
+  dpt DPT @relation(fields: [dptId], references: [id], onDelete: Cascade)
+  idPemilihan String @db.VarChar(36)
+  pemilihan Pemilihan @relation(fields: [idPemilihan], references: [id])
+  tokenHash String @db.VarChar(255) 
+  isUsed Boolean @default(false)
+  expiredAt DateTime
+  sentViaWA Boolean @default(false)
+  sentViaEmail Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  @@unique([dptId, idPemilihan])
+  @@map("voteToken")
+}
+
+model Votes {
+  id String @id @default(uuid()) @db.VarChar(36)
+  idPemilihan String @db.VarChar(36)
+  pemilihan Pemilihan @relation(fields: [idPemilihan], references: [id])
+  idKandidat String @db.VarChar(36)
+  kandidat Kandidat @relation(fields: [idKandidat], references: [id])
+  nikHash String @db.VarChar(64)
+  kodeWilayah String @db.Char(6)
+  voteReference String @unique @default(uuid()) @db.VarChar(36)
+  createdAt DateTime @default(now())
+
+  @@unique([idPemilihan, nikHash])
+  @@index([idPemilihan])
+  @@index([kodeWilayah])
+  @@map("votes")
+}
+
+model LogAktivitas {
+  id String @id @default(uuid()) @db.VarChar(36)
+  userId String @db.VarChar(36)
+  user User? @relation(fields: [userId], references: [id])
+  role String? @db.VarChar(20)
+  action String @db.VarChar(100)
+  entity String @db.VarChar(100)
+  entityId String? @db.VarChar(36)
+  ipAddress String? @db.VarChar(45)
+  metadata Json?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([action])
+  @@map("LogAktivitas")
 }
