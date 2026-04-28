@@ -1,14 +1,19 @@
 import { client } from './client'
-import type { KandidatSanity, PengumumanSanity, TataCaraSanity, ElectionInfoSanity } from '@/types'
+import type { KandidatSanity, PengumumanSanity, TataCaraSanity, InfoPemilihanSanity } from '@/types'
 
 const OPT = { next: { revalidate: 30 } }
 
 export async function getKandidatList(): Promise<KandidatSanity[]> {
   return client.fetch(
     `*[_type == "kandidat"] | order(nomorUrut asc) {
-      _id, nomorUrut, namaPaslon,
+      _id,
+      nomorUrut,
+      namaPaslon,
       foto { asset->{ url }, alt },
-      visi, misi, programKerja, videoUrl
+      visi, 
+      misi, 
+      programKerja, 
+      videoUrl
     }`, {}, OPT
   )
 }
@@ -28,8 +33,8 @@ export async function getTataCara(): Promise<TataCaraSanity | null> {
   return result ?? null
 }
 
-export async function getElectionInfo(): Promise<ElectionInfoSanity | null> {
-  const result = await client.fetch<ElectionInfoSanity>(
+export async function getElectionInfo(): Promise<InfoPemilihanSanity | null> {
+  const result = await client.fetch<InfoPemilihanSanity>(
     `*[_type == "electionInfo"][0] {
       _id,
       namaPemilihan,
