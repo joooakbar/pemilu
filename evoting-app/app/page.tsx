@@ -1,58 +1,60 @@
-'use client'
+import { getKandidatList, getPengumumanList, getTataCara, getElectionInfo } from '@/sanity/lib/fetchers'
+import { prisma } from '@/lib/db'
+import TataCaraSection   from '@/components/voter/TataCaraSection'
+import BeritaSection     from '@/components/voter/BeritaSection'
+import Hero from '@/components/voter/Hero'
+import LiveTicker from '@/components/LiveTicker'
+import Navbar from '@/components/Navbar'
+import CandidateSection from '@/components/voter/CandidateSection'
+import StatsBar from '@/components/voter/StatsBar'
+import CekDPTSection from '@/components/voter/CekDPTSection'
+import Footer from '@/components/Footer'
 
-import { useState } from 'react'
-import LoginForm from '../components/auth/LoginForm'
-import OtpForm from '../components/auth/OtpForm'
-import { useRouter } from 'next/navigation'
+export const metadata = { title: 'Beranda Pemilihan' }
 
-export default function Page() {
-  const [step, setStep] = useState(1)
-  const [loading, setLoading] = useState(false)
-  const [userId, setUserId] = useState('')
-  const router = useRouter()
-
-  const handleLogin = async (data: any) => {
-    setLoading(true)
-
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-
-    const json = await res.json()
-
-    if (res.ok) {
-      setUserId(json.data.userId)
-      setStep(2)
-    }
-
-    setLoading(false)
-  }
-
-  const handleOtp = async (data: any) => {
-    setLoading(true)
-
-    const res = await fetch('/api/auth/verify-otp', {
-      method: 'POST',
-      body: JSON.stringify({ userId, otp: data.otp }),
-    })
-
-    if (res.ok) {
-      router.push('/admin/dashboard')
-    }
-
-    setLoading(false)
-  }
+export default async function VoterHomePage() {
+  const [kandidat, pengumuman, tataCara, infoSanity, election] = await Promise.all([
+    getKandidatList(),
+    getPengumumanList(),
+    getTataCara(),
+    getElectionInfo(),
+    prisma.pemilihan.findFirst({ orderBy: { createdAt: 'desc' } }),
+  ])
 
   return (
-    <div>
-      {step === 1 && (
-        <LoginForm onSubmit={handleLogin} loading={loading} />
-      )}
+    <div className="space-y-0">
+      {/* Hero + Countdown */}
+      <header className='site-header'> 
+        <Navbar 
+          electionStatus={election?.status ?? 'DRAFT'}        
+        />
+        <LiveTicker />
+      </header>
+      
+      <Hero 
+        namaPemilihan={infoSanity?.namaPemilihan ?? election?.nama ?? 'E-VOTIS'}
+        startTime={election?.startTime.toISOString() ?? ''}
+        endTime={election?.endTime.toISOString() ?? ''}
+        status={(election?.status as "DRAFT" | "ACTIVE" | "ENDED") ?? "DRAFT"}
+        electionId={election?.id}
+      />
 
-      {step === 2 && (
-        <OtpForm onSubmit={handleOtp} loading={loading} />
-      )}
+      <StatsBar />
+
+      {/* Kandidat */}
+      <CandidateSection kandidat={kandidat} />
+
+
+      {/* Cek DPT */}
+      <CekDPTSection electionId={election?.id ?? ''} />
+
+      {/* Tata Cara */}
+      {tataCara && ( <TataCaraSection data={tataCara} />)}
+
+      {/* Berita & Pengumuman */}
+      <BeritaSection data={pengumuman} />
+
+      <Footer />
     </div>
   )
 }

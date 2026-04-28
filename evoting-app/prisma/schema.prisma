@@ -5,7 +5,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../lib/generated/prisma"
 }
 
 datasource db {
@@ -74,8 +73,7 @@ model Pemilihan {
 model Kandidat {
   id String @id @default(uuid()) @db.VarChar(36)
   noUrut Int @unique
-  nama1 String @db.VarChar(255)
-  nama2 String @db.VarChar(255)
+  nama String @db.VarChar(255)
   sanityId String @unique @db.VarChar(191)
   isActive Boolean @default(true)
   createdAt DateTime @default(now())

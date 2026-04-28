@@ -63,7 +63,7 @@ export interface TataCaraSanity {
   videoEmbed?: string
 }
 
-export interface ElectionInfoSanity {
+export interface InfoPemilihanSanity {
   _id: string;
   namaPemilihan: string;
   logo?: {
