@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import "../public/css/countdown.css";
-import PartisipasiProgress from "./voter/LiveStats";
+import PartisipasiProgress from "./LiveStats";
 
 interface CountdownCardProps {
     startTime?: string;

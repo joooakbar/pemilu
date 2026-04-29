@@ -1,6 +1,5 @@
 'use client'
 
-import '../public/css/liveticker.css'
 
 const LiveTicker = () => {
     return (

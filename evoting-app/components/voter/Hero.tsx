@@ -1,8 +1,7 @@
 "use client";
 
-import "../../public/css/hero.css";
 import { useRouter } from "next/navigation";
-import CountdownCard from "../CountdownCard";
+import CountdownCard from "./CountdownCard";
 
 interface HeroProps {
     namaPemilihan: string;

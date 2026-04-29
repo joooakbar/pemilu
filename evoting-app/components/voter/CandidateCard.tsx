@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import type { Candidate } from "@/lib/mapKandidat";
-import "../../public/css/candidate.css"
 
 type TabKey = "visi" | "misi" | "program";
 

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import '../../public/css/cekDPT.css'
 
 type VerifyResult = {
     found: boolean;

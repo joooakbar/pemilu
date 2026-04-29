@@ -1,7 +1,6 @@
 'use client'
 
 import Link from "next/link"
-import '../public/css/navbar.css'
 import { cn } from "@/lib/utils"
 
 interface NavbarProps {
