@@ -1,6 +1,10 @@
 import CandidateCard from "./CandidateCard";
 import { mapKandidatToCandidate } from "../../lib/mapKandidat";
 import { KandidatSanity } from "../../../index";
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 type CandidateSectionProps = {
   kandidat: KandidatSanity[];
