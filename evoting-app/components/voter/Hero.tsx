@@ -11,8 +11,8 @@ interface HeroProps {
     electionId?: string;
 }
 
-const Hero = ({ 
-    namaPemilihan, 
+const Hero = ({
+    namaPemilihan,
     startTime,
     endTime,
     status,

@@ -1,6 +1,7 @@
 import { formatDate } from '@/lib/utils'
 import { PortableText } from '@portabletext/react'
 import type { PengumumanSanity } from '@/types'
+import '../../public/css/berita.css'
 
 export default function BeritaSection({ data = [] }: { data?: PengumumanSanity[] }) {
   if (data.length === 0) {
