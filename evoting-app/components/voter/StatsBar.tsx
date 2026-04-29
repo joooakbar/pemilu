@@ -1,4 +1,3 @@
-import "../../public/css/stats.css"
 
 type StatsBarProps = {
     totalDPT?: number

@@ -1,7 +1,6 @@
 import CandidateCard from "./CandidateCard";
 import { mapKandidatToCandidate } from "../../lib/mapKandidat";
 import { KandidatSanity } from "../../../index";
-import '../../public/css/candidate.css'
 
 type CandidateSectionProps = {
   kandidat: KandidatSanity[];

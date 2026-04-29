@@ -1,5 +1,4 @@
 import type { TataCaraSanity } from "@/types";
-import '../../public/css/tatacara.css'
 
 type StepIcon = "🔍" | "📲" | "🔐" | "🗳️" | "✅";
 
