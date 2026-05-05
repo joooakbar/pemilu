@@ -13,7 +13,7 @@ import Footer from '@/components/voter/Footer'
 export const metadata = { title: 'Beranda Pemilihan' }
 
 export default async function VoterHomePage() {
-  const [kandidat, pengumuman, tataCara, infoSanity, election] = await Promise.all([
+  const [kandidat, pengumuman, tataCara, infoSanity, pemilihan] = await Promise.all([
     getKandidatList(),
     getPengumumanList(),
     getTataCara(),
@@ -21,24 +21,26 @@ export default async function VoterHomePage() {
     prisma.pemilihan.findFirst({ orderBy: { createdAt: 'desc' } }),
   ])
 
+  console.log("PEMILIHAN:", pemilihan)
+
   return (
     <div className="space-y-0">
       {/* Hero + Countdown */}
       <header className='site-header'> 
         <Navbar
-          electionStatus={election?.status ?? 'DRAFT'}        
+          electionStatus={pemilihan?.status ?? 'DRAFT'}        
         />
         <LiveTicker />
       </header>
       
       <Hero
-        namaPemilihan={infoSanity?.namaPemilihan ?? election?.nama ?? 'E-VOTIS'}
-        startTime={election?.startTime.toISOString() ?? ''}
-        endTime={election?.endTime.toISOString() ?? ''}
-        status={(election?.status as "DRAFT" | "ACTIVE" | "ENDED") ?? "DRAFT"}
-        electionId={election?.id}
+        namaPemilihan={infoSanity?.namaPemilihan ?? pemilihan?.nama ?? 'E-VOTIS'}
+        startTime={pemilihan?.startTime?.toLocaleString() ?? ''}
+        endTime={pemilihan?.endTime?.toLocaleString() ?? ''}
+        status={(pemilihan?.status as "DRAFT" | "ACTIVE" | "ENDED") ?? "DRAFT"}
+        idPemilihan={pemilihan?.id}
       />
-
+      
       <StatsBar />
 
       {/* Kandidat */}
@@ -46,7 +48,7 @@ export default async function VoterHomePage() {
 
 
       {/* Cek DPT */}
-      <CekDPTSection electionId={election?.id ?? ''} />
+      <CekDPTSection idPemilihan={pemilihan?.id ?? ''} />
 
       {/* Tata Cara */}
       {tataCara && ( <TataCaraSection data={tataCara} />)}

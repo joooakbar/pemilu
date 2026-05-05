@@ -1,69 +1,27 @@
-'use client'
+"use client"
 
-import { useState } from "react"
-import type { Candidate } from "@/lib/mapKandidat";
-import "../../public/css/candidate.css"
-
-type TabKey = "visi" | "misi" | "program";
-
-type CandidateCardProps = {
-    candidate: Candidate;
-};
-
-const CandidateCard = ({ candidate }: CandidateCardProps) => {
-    const [activeTab, setActiveTab] = useState<TabKey>("visi");
-
-    const renderContent = () => {
-        switch (activeTab) {
-            case "visi":
-                return <div className="k-panel active">
-                    {candidate.vision || "Belum ada visi"}
-                </div>;
-            case "misi":
-                return (
-                    <div className="k-panel active">
-                        {candidate.mission.length > 0 ? (
-                            candidate.mission.map((item, index) => (
-                                <div key={index}>
-                                    {index + 1}. {item}
-                                </div>
-                            ))
-                        ) : (
-                            <div>Belum ada misi</div>
-                        )}
-                    </div>
-                )
-            case "program":
-                return (
-                    <div className="k-panel active">
-                        {candidate.programs.length > 0 ? (
-                            candidate.programs.map((item, index) => (
-                                <div key={index}>
-                                    {index + 1}. {item}
-                                </div>
-                            )) 
-                        ) : (
-                            <div>Belum ada program kerja</div>
-                        )}
-                    </div>
-                )
-            default:
-                return null;
-        }
-    };
+import { useCandidate } from "@/features/voter/hooks/useCandidate";
+import Image from "next/image";
+import type { CandidateCardProps } from "@/features/voter/types/candidate.types";
+const CandidateCard = ({ kandidat }: CandidateCardProps ) => {
+    const { activeTab, setActiveTab, content } = useCandidate(kandidat);
 
     return (
         <div className="k-card">
-            <div className={`k-banner ${candidate.bannerClass}`}>
+            <div className={`k-banner ${kandidat.bannerClass}`}>
                 <div className="k-num">
-                    {candidate.number}
+                    {kandidat.number}
                 </div>
+
                 <div className="k-photo">
-                    {candidate.photo ? (
-                        <img 
-                            src={candidate.photo} 
-                            alt={candidate.nama}
+                    {kandidat.photo ? (
+                        <Image 
+                            src={kandidat.photo}
+                            alt={kandidat.nama}
+                            width={180}
+                            height={180}
                             className="k-photo-img"
+                            unoptimized
                         />
                     ) : (
                         "👤"
@@ -73,7 +31,7 @@ const CandidateCard = ({ candidate }: CandidateCardProps) => {
 
             <div className="k-body">
                 <div className="k-nama">
-                    {candidate.nama}
+                    {kandidat.nama}
                 </div>
 
                 <div className="k-tabs">
@@ -92,47 +50,51 @@ const CandidateCard = ({ candidate }: CandidateCardProps) => {
                     >
                         Misi
                     </button>
+
                     <button
                         type="button"
                         className={`k-tab ${activeTab === "program" ? "active" : ""}`}
                         onClick={() => setActiveTab("program")}
                     >
-                        Program
+                        Program Kerja
                     </button>
                 </div>
 
                 <div className="k-content">
-                    {renderContent()}
+                    {Array.isArray(content) ? (
+                        content.map((item, index) => (
+                            <div key={index}>
+                                {index + 1}. {item}
+                            </div>
+                        ))
+                    ) : (
+                        <div>{content}</div>
+                    )}
                 </div>
             </div>
 
             <div className="k-footer">
                 <div className="k-votes">
-                    Perolehan Saat ini:<br />
-                    <strong>
-                        {candidate.votes} suara
-                    </strong>
+                    Perolehan saat ini:<br />
+                    <strong>{kandidat.votes}</strong>
                 </div>
-                
-                {candidate.videoUrl ? (
+
+                {kandidat.videoUrl ? (
                     <a 
-                        href={candidate.videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="k-video-btn"
+                    href={kandidat.videoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="k-video-btn"
                     >
                         ▶ Video Kampanye
                     </a>
                 ) : (
                     <button 
-                        type="button"
-                        className="k-video-btn"
-                        disabled
+                        type="button" className="k-video-btn disabled"
                     >
                         ▶ Video Kampanye
                     </button>
                 )}
-
             </div>
         </div>
     );

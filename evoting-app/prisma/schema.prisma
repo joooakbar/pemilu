@@ -58,8 +58,8 @@ model Pemilihan {
   sanityId String? @unique @db.VarChar(191)
   nama String @db.VarChar(255)
   status StatusPemilihan @default(DRAFT)
-  starttime DateTime
-  endtime DateTime
+  startTime DateTime
+  endTime DateTime
   tempatVoting String? @db.VarChar(255)
   deskripsi String? @db.Text
   createdAt DateTime @default(now())

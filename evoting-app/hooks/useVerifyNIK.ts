@@ -10,15 +10,15 @@ export function useVerifyNIK() {
     setLoading(true)
 
     try {
-      const electionId = sessionStorage.getItem('electionId') ?? ''
+      const idPemilihan = sessionStorage.getItem('idPemilihan') ?? ''
 
-      const data = await verifyNIK({ nik, electionId })
+      const data = await verifyNIK({ nik, idPemilihan })
 
       // simpan ke session
       sessionStorage.setItem('voter_nik', nik)
       sessionStorage.setItem('voter_nama', data.nama)
       sessionStorage.setItem('voter_dptId', data.dptId)
-      sessionStorage.setItem('electionId', data.electionId)
+      sessionStorage.setItem('electionId', data.idPemilihan)
 
       return data
 

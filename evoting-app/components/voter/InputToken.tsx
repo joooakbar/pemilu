@@ -43,7 +43,7 @@ export default function TokenPage() {
 
       router.push('/vote/surat-suara')
 
-    } catch (err) {
+    } catch {
       toast.error('Terjadi kesalahan server')
     } finally {
       setLoading(false)

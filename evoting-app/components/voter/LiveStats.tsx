@@ -1,37 +1,35 @@
 "use client";
-import { useElectionStats } from "@/hooks/useSSE";
 
-export default function PartisipasiProgress({ electionId }: { electionId: string }) {
-    const { stats } = useElectionStats(electionId);
+import { useParticipation } from "@/features/voter/hooks/useParticipation"
+import { formatNumber } from "@/features/voter/utils/numberFormat"
+
+export default function PartisipasiProgress({
+    idPemilihan,
+}: {
+    idPemilihan: string;
+}) {
+    const { stats, persen } = useParticipation(idPemilihan);
 
     if (!stats) return null;
 
     const { totalDPT, sudahMemilih } = stats;
 
-    const persen = totalDPT > 0 ? ((sudahMemilih / totalDPT) * 100).toFixed(1).replace(".", ",") : "0,0";
-
-    const width = totalDPT > 0 ? `${(sudahMemilih / totalDPT) * 100}%` : "0%";
-
     return (
         <div className="cd-progress">
-            <div className="cd-prog-label">
+            <div className="cd-prog-la">
                 <span>Partisipasi Pemilih</span>
-                <strong id="part-pc">{persen}%</strong>
+                <strong>{persen}%</strong>
             </div>
 
             <div className="cd-prog-bar">
-                <div
-                    className="cd-prog-fill"
-                    id="part-fill"
+                <div 
+                    className="cd-prog-fill
                     style={{ width }}
-                ></div>
+                "></div>
             </div>
 
             <div className="cd-progress-text">
-                <span id="voted-num">
-                    {sudahMemilih.toLocaleString("id-ID")}
-                </span> dari {" "}
-                {totalDPT.toLocaleString("id-ID")} pemilih telah Memilih.
+                <span>{formatNumber(sudahMemilih)}</span> dari {" "}{formatNumber(totalDPT)} pemilih telah memilih. 
             </div>
         </div>
     );

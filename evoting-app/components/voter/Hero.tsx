@@ -1,39 +1,17 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import CountdownCard from "./CountdownCard";
-
-interface HeroProps {
-    namaPemilihan: string;
-    startTime?: string;
-    endTime?: string;
-    status?: "DRAFT" | "ACTIVE" | "ENDED";
-    electionId?: string;
-}
+import CountdownCard from "@/components/voter/CountdownCard"
+import { useHero } from "@/features/voter/hooks/useHero"
+import { HeroProps } from "@/features/voter/types/pemilihan.types";
 
 const Hero = ({
     namaPemilihan,
     startTime,
     endTime,
     status,
-    electionId,
-} : HeroProps) => {
-
-    const router = useRouter();
-
-    const goToVote = () => {
-        router.push('/vote');
-    };
-
-    const scrollToSection = (selector: string) => {
-        const el = document.querySelector(selector);
-
-        if (el) {
-            el.scrollIntoView({ behavior: "smooth" });
-        }
-    };
-
-    console.log("Status CountdownCard =", status);
+    idPemilihan,
+}: HeroProps) => {
+    const { handleVote, handleScroll } = useHero(idPemilihan);
 
     return (
         <section className="hero">
@@ -57,14 +35,14 @@ const Hero = ({
                 <div className="hero-actions">
                     <button 
                         className="btn-vote-hero"
-                        onClick={goToVote}
+                        onClick={handleVote}
                     >
                         <span>🗳️</span> Gunakan Hak Pilih Sekarang
                     </button>
 
                     <button
                         className="btn-cek"
-                        onClick={() => scrollToSection("#cek-dpt")}
+                        onClick={() => handleScroll("#cek-dpt")}
                     >
                         Cek Status DPT Saya
                     </button>
@@ -76,7 +54,7 @@ const Hero = ({
             endTime={endTime}
             namaPemilihan={namaPemilihan}
             status={status}
-            electionId={electionId}
+            idPemilihan={idPemilihan}
             />
         </section>
     );

@@ -1,10 +1,6 @@
 import CandidateCard from "./CandidateCard";
-import { mapKandidatToCandidate } from "../../lib/mapKandidat";
-import { KandidatSanity } from "../../../index";
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
+import { mapKandidatToCandidate } from "../../features/voter/utils/mapKandidat";
+import { KandidatSanity } from "@/types";
 
 type CandidateSectionProps = {
   kandidat: KandidatSanity[];
@@ -25,8 +21,8 @@ const CandidateSection = ({ kandidat }: CandidateSectionProps) => {
       </div>
 
       <div className="kandidat-grid reveal">
-        {candidates.map((candidate) => (
-          <CandidateCard key={candidate.id} candidate={candidate} />
+        {candidates.map((kandidat) => (
+          <CandidateCard key={kandidat.id} kandidat={kandidat} />
         ))}
       </div>
     </section>
