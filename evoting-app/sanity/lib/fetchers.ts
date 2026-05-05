@@ -48,5 +48,11 @@ export async function getElectionInfo(): Promise<InfoPemilihanSanity | null> {
     {},
     OPT
   )
-  return result ?? null
+
+  if (!result) return null;
+  return {
+    ...result,
+    startTime: result.startTime ?? null,
+    endTime: result.endTime ?? null,
+  };
 }

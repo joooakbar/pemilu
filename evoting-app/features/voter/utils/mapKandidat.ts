@@ -1,6 +1,6 @@
 import { KandidatSanity } from "@/types"
-import { portableTextToArray } from "./portbleTextToArray"
-import { portableTextToText } from "./portableTextToText"
+import { portableTextToArray } from "@/lib/portbleTextToArray"
+import { portableTextToText } from "@/lib/portableTextToText"
 
 export type Candidate = {
   id: string

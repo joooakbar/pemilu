@@ -29,7 +29,7 @@ export default function Pagination({
           className={`px-4 py-2 rounded ${
             currentPage === page
               ? 'bg-accent text-primary-foreground'
-              : 'border-1 border-accent hover:bg-accent/80'
+              : 'border-2 border-accent hover:bg-accent/80'
           }`}
         >
           {page}
