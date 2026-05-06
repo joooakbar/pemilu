@@ -1,9 +1,12 @@
+'use client'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import * as authService from '../services/auth.service'
+import { AuthService } from '../services/auth.service'
+import type { LoginInput, OtpInput } from '../schemas/auth.schema'
 
-export const useLogin = () => {
+export function useLogin() {
   const router = useRouter()
 
   const [step, setStep] = useState<1 | 2>(1)
@@ -17,7 +20,7 @@ export const useLogin = () => {
   const startCountdown = () => {
     setCountdown(60)
     const id = setInterval(() => {
-      setCountdown(c => {
+      setCountdown((c) => {
         if (c <= 1) {
           clearInterval(id)
           return 0
@@ -27,44 +30,50 @@ export const useLogin = () => {
     }, 1000)
   }
 
-  const handleLogin = async (data: any) => {
+  const login = async (data: LoginInput) => {
     setLoading(true)
     try {
-      const res = await authService.login(data)
+      const res = await AuthService.login(data)
+
       setUserId(res.userId)
       setEmailMask(res.emailMask)
       setStep(2)
       startCountdown()
+
       toast.success('Kode dikirim')
-    } catch (err: any) {
-      toast.error(err.message)
+    } catch (e: any) {
+      toast.error(e.message)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleVerify = async (otp: string) => {
+  const verifyOtp = async (data: OtpInput) => {
     setLoading(true)
     try {
-      const res = await authService.verifyOtp({ userId, otp })
-      toast.success(`Selamat datang, ${res.name}`)
+      const res = await AuthService.verifyOtp({
+        userId,
+        otp: data.otp,
+      })
+
+      toast.success(`Selamat datang ${res.name}`)
       router.push('/admin/dashboard')
-      router.refresh()
-    } catch (err: any) {
-      toast.error(err.message)
+    } catch (e: any) {
+      toast.error(e.message)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleResend = async () => {
+  const resendOtp = async () => {
     setResendLoading(true)
     try {
-      await authService.resendOtp(userId)
-      toast.success('OTP dikirim ulang')
+      await AuthService.resendOtp({ userId })
+
+      toast.success('OTP baru dikirim')
       startCountdown()
-    } catch (err: any) {
-      toast.error(err.message)
+    } catch (e: any) {
+      toast.error(e.message)
     } finally {
       setResendLoading(false)
     }
@@ -77,8 +86,8 @@ export const useLogin = () => {
     resendLoading,
     emailMask,
     countdown,
-    handleLogin,
-    handleVerify,
-    handleResend,
+    login,
+    verifyOtp,
+    resendOtp,
   }
 }
