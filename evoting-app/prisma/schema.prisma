@@ -47,6 +47,9 @@ model LoginOTP {
   otpHash String @db.VarChar(255)
   expiredAt DateTime
   isUsed Boolean @default(false) 
+  attempts    Int      @default(0)
+  maxAttempts Int      @default(5)
+  lockedUntil DateTime?
   createdAt DateTime @default(now())
 
   @@index([userId])

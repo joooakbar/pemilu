@@ -1,6 +1,4 @@
 "use client"
-
-import React from "react"
 import { useCekDPT } from "@/features/voter/hooks/useCekDPT"
 
 export default function CekDPTSection({

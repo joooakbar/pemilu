@@ -1,58 +1,19 @@
 'use client'
 
-import { useState } from 'react'
-import LoginForm from '@/components/auth/LoginForm'
-import OtpForm from '@/components/auth/OtpForm'
-import { useRouter } from 'next/navigation'
+import { useLogin } from '@/features/auth/hooks/useLogin'
+import LoginForm from '@/features/auth/components/LoginForm'
+import OtpForm from '@/features/auth/components/OtpForm'
 
 export default function Page() {
-  const [step, setStep] = useState(1)
-  const [loading, setLoading] = useState(false)
-  const [userId, setUserId] = useState('')
-  const router = useRouter()
+  const auth = useLogin()
 
-  const handleLogin = async (data: any) => {
-    setLoading(true)
-
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-
-    const json = await res.json()
-
-    if (res.ok) {
-      setUserId(json.data.userId)
-      setStep(2)
-    }
-
-    setLoading(false)
-  }
-
-  const handleOtp = async (data: any) => {
-    setLoading(true)
-
-    const res = await fetch('/api/auth/verify-otp', {
-      method: 'POST',
-      body: JSON.stringify({ userId, otp: data.otp }),
-    })
-
-    if (res.ok) {
-      router.push('/admin/dashboard')
-    }
-
-    setLoading(false)
-  }
-
-  return (
-    <div>
-      {step === 1 && (
-        <LoginForm onSubmit={handleLogin} loading={loading} />
-      )}
-
-      {step === 2 && (
-        <OtpForm onSubmit={handleOtp} loading={loading} />
-      )}
-    </div>
-  )
+  return auth.step === 1
+    ? <LoginForm onSubmit={auth.login} loading={auth.loading} />
+    : <OtpForm
+        onSubmit={auth.verifyOtp}
+        resend={auth.resendOtp}
+        countdown={auth.countdown}
+        loading={auth.loading}
+        emailMask={auth.emailMask}
+      />
 }
