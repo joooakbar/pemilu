@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from '@prisma/client'
+import { PrismaClient, Role, StatusPemilihan } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
 import bcrypt from 'bcryptjs'
 
@@ -88,6 +88,47 @@ async function main() {
       },
     })
   }
+
+  // ── Pemilihan Sample ─────────────────────────────────────
+const pemilihanSamples = [
+  {
+    nama: 'Pemilihan Ketua BEM 2026',
+    sanityId: 'bem-2026',
+    status: StatusPemilihan.ACTIVE,
+    startTime: new Date('2026-05-20T08:00:00Z'),
+    endTime: new Date('2026-05-20T15:00:00Z'),
+    tempatVoting: 'Universitas Nusantara PGRI Kediri',
+    deskripsi: 'Pemilihan Ketua BEM periode 2026',
+  },
+  {
+    nama: 'Pemilihan Ketua HIMA TI 2026',
+    sanityId: 'hima-ti-2026',
+    status: StatusPemilihan.DRAFT,
+    startTime: new Date('2026-06-10T08:00:00Z'),
+    endTime: new Date('2026-06-10T15:00:00Z'),
+    tempatVoting: 'Gedung Fakultas Teknik',
+    deskripsi: 'Pemilihan Ketua Himpunan Mahasiswa Teknik Informatika',
+  },
+  {
+    nama: 'Pemilihan Ketua Organisasi Mahasiswa',
+    sanityId: 'ormawa-2025',
+    status: StatusPemilihan.ENDED,
+    startTime: new Date('2025-12-01T08:00:00Z'),
+    endTime: new Date('2025-12-01T15:00:00Z'),
+    tempatVoting: 'Aula Kampus',
+    deskripsi: 'Pemilihan periode sebelumnya',
+  },
+]
+
+for (const p of pemilihanSamples) {
+  await prisma.pemilihan.upsert({
+    where: {
+      sanityId: p.sanityId,
+    },
+    update: {},
+    create: p,
+  })
+}
 
   console.log('✅ Seed selesai!')
   console.log('\n🔑 Demo credentials:')
