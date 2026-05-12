@@ -1,30 +1,32 @@
-export type Candidate = {
-  id: string
+import CandidateCard from "../../CandidateCard/components/CandidateCard";
+import { mapKandidatToCandidate } from "../../utils/mapKandidat";
+import { KandidatSanity } from "@/types";
 
-  number: number
+type CandidateSectionProps = {
+  kandidat: KandidatSanity[];
+};
 
-  nama: string
+const CandidateSection = ({ kandidat }: CandidateSectionProps) => {
+  const candidates = kandidat.map((item) => mapKandidatToCandidate(item, 0));
 
-  photo?: string
+  return (
+    <section className="section kandidat-section" id="kandidat">
+      <div className="section-header reveal">
+        <div className="section-eyebrow">Pasangan Calon</div>
+        <h2>Kenali Kandidatmu</h2>
+        <p>
+          Pelajari visi, misi, dan program kerja setiap pasangan calon sebelum
+          menggunakan hak pilih Anda.
+        </p>
+      </div>
 
-  bannerClass: string
+      <div className="kandidat-grid reveal">
+        {candidates.map((kandidat) => (
+          <CandidateCard key={kandidat.id} kandidat={kandidat} />
+        ))}
+      </div>
+    </section>
+  );
+};
 
-  visi: unknown[]
-
-  misi: unknown[]
-
-  program: unknown[]
-
-  votes: number
-
-  videoUrl?: string
-}
-
-export type TabType =
-  | 'visi'
-  | 'misi'
-  | 'program'
-
-export type CandidateCardProps = {
-  kandidat: Candidate
-}
+export default CandidateSection;

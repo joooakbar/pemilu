@@ -1,103 +1,51 @@
-'use client'
-
-import {
-  useEffect,
-  useState,
-} from 'react'
-
-import type {
-  StatusPemilihan,
-  TimeLeft,
-} from '../types/countdown.types'
+import { useEffect, useState } from "react";
 
 export const useCountdown = (
-  startTime: string,
-  endTime: string,
-  status: StatusPemilihan
+    startTime?: string,
+    endTime?: string,
+    status?: "DRAFT" | "ACTIVE" | "ENDED"
 ) => {
+    const [timeLeft, setTimeLeft] = useState({
+        h: "00",
+        m: "00",
+        s: "00",
+    });
 
-  const [timeLeft, setTimeLeft] =
-    useState<TimeLeft>({
-      h: '00',
-      m: '00',
-      s: '00',
-    })
+    useEffect(() => {
+        if(!startTime || !endTime || !status) return;
 
-  useEffect(() => {
+        const target = status === "DRAFT" 
+            ? new Date(startTime).getTime()
+            : new Date(endTime).getTime();
 
-    const targetTime =
-      status === 'DRAFT'
-        ? new Date(startTime).getTime()
-        : new Date(endTime).getTime()
+        const tick = () => {
+            const now = Date.now();
+            const diff = target - now;
 
-    const interval =
-      setInterval(() => {
+            if (diff <= 0) {
+                setTimeLeft({
+                    h: "00",
+                    m: "00",
+                    s: "00",
+                })
+                return;
+            }
 
-        const now = Date.now()
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        const distance =
-          targetTime - now
+            setTimeLeft({
+                h: String(hours).padStart(2, "0"),
+                m: String(minutes).padStart(2, "0"),
+                s: String(seconds).padStart(2, "0"),
+            });
+        };
 
-        if (distance <= 0) {
+        tick();
+        const interval = setInterval(tick, 1000);
+        return () => clearInterval(interval);
+    }, [startTime, endTime, status]);
 
-          setTimeLeft({
-            h: '00',
-            m: '00',
-            s: '00',
-          })
-
-          clearInterval(interval)
-
-          return
-        }
-
-        const h = Math.floor(
-          (distance %
-            (1000 * 60 * 60 * 24)) /
-            (1000 * 60 * 60)
-        )
-
-        const m = Math.floor(
-          (distance %
-            (1000 * 60 * 60)) /
-            (1000 * 60)
-        )
-
-        const s = Math.floor(
-          (distance %
-            (1000 * 60)) /
-            1000
-        )
-
-        setTimeLeft({
-          h: String(h).padStart(
-            2,
-            '0'
-          ),
-
-          m: String(m).padStart(
-            2,
-            '0'
-          ),
-
-          s: String(s).padStart(
-            2,
-            '0'
-          ),
-        })
-
-      }, 1000)
-
-    return () =>
-      clearInterval(interval)
-
-  }, [
-    startTime,
-    endTime,
-    status,
-  ])
-
-  return {
-    timeLeft,
-  }
+    return { timeLeft }; 
 }

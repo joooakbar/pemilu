@@ -1,32 +1,34 @@
-import { KandidatSanity } from '@/types'
+import { KandidatSanity } from "@/types"
+import { portableTextToArray } from "@/lib/portbleTextToArray"
+import { portableTextToText } from "@/lib/portableTextToText"
 
-export const mapKandidatToCandidate = (
+export type Candidate = {
+  id: string
+  number: number
+  bannerClass: string
+  photo?: string
+  nama: string
+  votes: number
+  vision: string
+  mission: string[]
+  programs: string[]
+  videoUrl?: string
+}
+
+export function mapKandidatToCandidate(
   item: KandidatSanity,
-  index: number
-) => {
-
+  votes: number = 0
+): Candidate {
   return {
     id: item._id,
-
     number: item.nomorUrut,
-
-    nama: item.namaPaslon,
-
+    bannerClass: item.nomorUrut === 1 ? "k-banner-1" : item.nomorUrut === 2 ? "k-banner-2" : "k-banner-3",
     photo: item.foto?.asset?.url,
-
-    bannerClass:
-      index % 2 === 0
-        ? 'banner-blue'
-        : 'banner-red',
-
-    visi: item.visi || [],
-
-    misi: item.misi || [],
-
-    program: item.programKerja || [],
-
-    votes: 0,
-
-    videoUrl: item.videoUrl || '',
+    nama: item.namaPaslon,
+    votes,
+    vision: portableTextToText(item.visi),
+    mission: portableTextToArray(item.misi),
+    programs: portableTextToArray(item.programKerja),
+    videoUrl: item.videoUrl,
   }
 }
