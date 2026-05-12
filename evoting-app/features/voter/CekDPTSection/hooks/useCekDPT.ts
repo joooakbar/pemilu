@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { verifyNIK } from "@/lib/services/voter";
-import { CekDPTStatus, VerifyResult } from "../../types/cekDPT.types";
-import { formatNIK } from "../../utils/formatNIK";
+import { CekDPTStatus } from "../types/cekdpt.types";
+import { formatNIK } from "../../InputNIK/utils/formatNIK";
 import { isValidNIK } from "@/lib/utils";
+import { VerifyResult } from "../types/cekdpt.types";
 
 export const useCekDPT = (idPemilihan?: string) => {
     const [nik, setNIK] = useState("");

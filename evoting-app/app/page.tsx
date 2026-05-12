@@ -36,8 +36,8 @@ export default async function VoterHomePage() {
       
       <Hero
         namaPemilihan={infoSanity?.namaPemilihan ?? pemilihan?.nama ?? 'E-VOTIS'}
-        startTime={pemilihan?.startTime?.toLocaleString() ?? ''}
-        endTime={pemilihan?.endTime?.toLocaleString() ?? ''}
+        startTime={pemilihan?.startTime?.toISOString() ?? ''}
+        endTime={pemilihan?.endTime?.toISOString() ?? ''}
         status={(pemilihan?.status as "DRAFT" | "ACTIVE" | "ENDED") ?? "DRAFT"}
         idPemilihan={pemilihan?.id}
       />

@@ -1,10 +1,4 @@
-
-type StatsBarProps = {
-    totalDPT?: number
-    voted?: number
-    kandidat?: number
-    participation?: number
-}
+import { StatsBarProps } from "../types/statsbar.types";
 
 export default function StatsBar({
     totalDPT = 2847,

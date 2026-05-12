@@ -1,3 +1,4 @@
-export type NavbarProps = {
-  electionStatus: string
+export interface NavbarProps {
+    electionStatus: string
+    idPemilihan?: string
 }

@@ -2,11 +2,9 @@
 
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { NavbarProps } from "../types/navbar.types";
 
-interface NavbarProps {
-    electionStatus: string
-    idPemilihan?: string
-}
+
 
 const Navbar1 = ({  electionStatus, idPemilihan }: NavbarProps) => {
     const scrollToSection = (selector: string) => {

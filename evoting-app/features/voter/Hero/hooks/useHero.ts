@@ -1,38 +1,22 @@
-'use client'
+import { useRouter } from "next/navigation";
 
-import { useRouter } from 'next/navigation'
+export const useHero = (idPemilihan?: string) => {
+    const router = useRouter();
 
-export const useHero = (
-  idPemilihan?: string
-) => {
+    const handleVote = () => {
+        if(!idPemilihan) return;
+        router.push(`/vote/${idPemilihan}`);
+    };
 
-  const router = useRouter()
+    const handleScroll = (selector: string) => {
+        const el = document.querySelector(selector);
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
-  const handleVote = () => {
-
-    if (!idPemilihan) return
-
-    router.push(
-      `/vote/${idPemilihan}`
-    )
-  }
-
-  const handleScroll = (
-    selector: string
-  ) => {
-
-    const element =
-      document.querySelector(selector)
-
-    if (!element) return
-
-    element.scrollIntoView({
-      behavior: 'smooth',
-    })
-  }
-
-  return {
-    handleVote,
-    handleScroll,
-  }
-}
+    return {
+        handleVote,
+        handleScroll,
+    };
+};

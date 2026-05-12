@@ -1,7 +1,7 @@
 "use client";
 
-import { useParticipation } from "@/features/voter/hooks/useParticipation"
-import { formatNumber } from "@/features/voter/utils/numberFormat"
+import { useParticipation } from "@/features/voter/LiveStats/hooks/useParticipation"
+import { formatNumber } from "@/features/voter/InputNIK/utils/numberFormat"
 
 export default function PartisipasiProgress({
     idPemilihan,

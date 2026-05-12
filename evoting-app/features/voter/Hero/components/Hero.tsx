@@ -1,8 +1,8 @@
 "use client";
 
 import CountdownCard from "../../CountdownCard/components/CountdownCard";
-import { useHero } from "@/features/voter/hooks/useHero"
-import { HeroProps } from "@/features/voter/types/pemilihan.types";
+import { useHero } from "@/features/voter/Hero/hooks/useHero"
+import { HeroProps } from "@/features/voter/Hero/types/pemilihan.types";
 
 const Hero = ({
     namaPemilihan,

@@ -1,10 +1,6 @@
 import CandidateCard from "../../CandidateCard/components/CandidateCard";
-import { mapKandidatToCandidate } from "../../utils/mapKandidat";
-import { KandidatSanity } from "@/types";
-
-type CandidateSectionProps = {
-  kandidat: KandidatSanity[];
-};
+import { CandidateSectionProps } from "../types/candidate_section.types";
+import { mapKandidatToCandidate } from "../utils/mapKandidat";
 
 const CandidateSection = ({ kandidat }: CandidateSectionProps) => {
   const candidates = kandidat.map((item) => mapKandidatToCandidate(item, 0));

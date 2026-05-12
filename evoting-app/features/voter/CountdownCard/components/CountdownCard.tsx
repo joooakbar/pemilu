@@ -1,9 +1,9 @@
 "use client";
 
 import PartisipasiProgress from "@/features/voter/LiveStats/components/LiveStats";
-import { CountdownCardProps } from "@/features/voter/types/pemilihan.types";
-import { useCountdown } from "@/features/voter/hooks/useCountdown"
-import { formatDate,formatTimeRange } from "@/features/voter/BeritaSection/utils/dateFormat";
+import { CountdownCardProps } from "@/features/voter/Hero/types/pemilihan.types";
+import { useCountdown } from "@/features/voter/CountdownCard/hooks/useCountdown"
+import { formatDate,formatTimeRange } from "../../BeritaSection/utils/dateFormat";
 
 const CountdownCard = ({
     startTime,
