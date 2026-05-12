@@ -1,0 +1,1 @@
+export const INITIAL_SYNC_RESULT = null
