@@ -1,105 +1,72 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
+import { useState } from "react";
+import { verifyNIK } from "@/lib/services/voter";
+import { CekDPTStatus, VerifyResult } from "../../types/cekDPT.types";
+import { formatNIK } from "../../utils/formatNIK";
+import { isValidNIK } from "@/lib/utils";
 
-import type {
-  DPTResult,
-  StatusType,
-} from '../types/cekdpt.types'
+export const useCekDPT = (idPemilihan?: string) => {
+    const [nik, setNIK] = useState("");
+    const [loading , setLoading] = useState(false);
+    const [status, setStatus] = useState<CekDPTStatus>("idle");
+    const [result, setResult] = useState<VerifyResult | null>(null);
 
-export const useCekDPT = (
-  idPemilihan: string
-) => {
+    const handleNIKChange = (value: string) => {
+        setNIK(formatNIK(value));
 
-  const [nik, setNik] =
-    useState('')
-
-  const [loading, setLoading] =
-    useState(false)
-
-  const [status, setStatus] =
-    useState<StatusType>('idle')
-
-  const [result, setResult] =
-    useState<DPTResult | null>(null)
-
-  const handleNIKChange = (
-    value: string
-  ) => {
-
-    // hanya angka
-    const cleanValue =
-      value.replace(/\D/g, '')
-
-    setNik(cleanValue)
-  }
-
-  const handleCekDPT = async () => {
-
-    // validasi kosong
-    if (!nik) {
-      setStatus('empty')
-      return
+        if (status !== "idle") {
+            setStatus("idle");
+            setResult(null);
+        };
     }
 
-    // validasi panjang NIK
-    if (nik.length !== 16) {
-      setStatus('invalid')
-      return
-    }
+    const handleCekDPT = async () => {
 
-    try {
-
-      setLoading(true)
-
-      setStatus('idle')
-
-      const res = await fetch(
-        `/api/dpt/check`,
-        {
-          method: 'POST',
-
-          headers: {
-            'Content-Type':
-              'application/json',
-          },
-
-          body: JSON.stringify({
-            nik,
-            idPemilihan,
-          }),
+        if (!nik.trim()) {
+            setStatus("empty");
+            setResult(null);
+            return;
         }
-      )
 
-      const json = await res.json()
+        if (!isValidNIK(nik)) {
+            setStatus("not-found");
+            return;
+        }
 
-      if (!res.ok) {
-        setStatus('not-found')
-        return
-      }
+        setLoading(true);
+        setResult(null);
 
-      setResult(json.data)
+        try {
+            const data = await verifyNIK({ 
+                nik, 
+                idPemilihan: idPemilihan || ""
+            });
 
-      setStatus('found')
+            setResult({
+                found: true,
+                nama: data.nama,
+                kodeWilayah: data.kodeWilayah,
+                hasVoted: data.hasVoted,
+            });
 
-    } catch (error) {
+            setStatus("found");
+        } catch (error) {
+            console.error("Cek DPT error:", error);
 
-      console.error(error)
+            setStatus("not-found");
+            setResult({ found: false })
+        } finally {
+            setLoading(false);
+        }
+    };
 
-      setStatus('not-found')
-
-    } finally {
-
-      setLoading(false)
+    return {
+        nik,
+        loading,
+        status,
+        result,
+        handleNIKChange,
+        handleCekDPT,
     }
-  }
-
-  return {
-    nik,
-    loading,
-    status,
-    result,
-    handleNIKChange,
-    handleCekDPT,
-  }
 }

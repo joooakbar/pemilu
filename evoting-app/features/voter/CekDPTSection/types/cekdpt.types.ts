@@ -1,16 +1,21 @@
-export type StatusType =
-  | 'idle'
-  | 'found'
-  | 'not-found'
-  | 'empty'
-  | 'invalid'
-
-export type DPTResult = {
-  nama: string
-  kodeWilayah: string
-  hasVoted: boolean
+export interface VerifyResult {
+    found: boolean;
+    nama?: string;
+    kodeWilayah?: string;
+    hasVoted?: boolean;
 }
 
-export type CekDPTSectionProps = {
-  idPemilihan: string
+export type CekDPTStatus = 
+    | "idle"
+    | "empty"
+    | "invalid"
+    | "found"
+    | "not-found"
+    | "error"
+
+export interface CekDPTState {
+    nik: string;
+    loading: boolean;
+    status: CekDPTStatus;
+    result: VerifyResult | null;
 }
