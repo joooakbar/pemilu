@@ -3,9 +3,11 @@
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-import InputNIK, { FormData } from '@/components/voter/InputNIK'
+import InputNIK from '@/features/voter/InputNIK/components/InputNIK'
 import { useVerifyNIK } from '@/hooks/useVerifyNIK'
-
+import { FormData
+  
+ } from '@/features/voter/InputNIK/types/inputnik.types'
 export default function VoteNIKPage() {
   const router = useRouter()
   const { handleVerify, loading } = useVerifyNIK()
@@ -14,8 +16,12 @@ export default function VoteNIKPage() {
     try {
       await handleVerify(nik)
       router.push('/vote/token')
-    } catch (err: any) {
-      toast.error(err.message)
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+      } else {
+        toast.error('Terjadi kesalahan')
+      }
     }
   }
 

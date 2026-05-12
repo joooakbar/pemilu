@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils"
 
 interface NavbarProps {
     electionStatus: string
+    idPemilihan?: string
 }
 
-const Navbar1 = ({  electionStatus }: NavbarProps) => {
+const Navbar1 = ({  electionStatus, idPemilihan }: NavbarProps) => {
     const scrollToSection = (selector: string) => {
         const el = document.querySelector(selector);
         if (el) {
@@ -63,7 +64,7 @@ const Navbar1 = ({  electionStatus }: NavbarProps) => {
                 {electionStatus}
             </div>
 
-            <Link href="/vote" className="btn-vote-nav">
+            <Link href={`/vote/${idPemilihan}`}className="btn-vote-nav">
                 Gunakan Hak Pilih → 
             </Link>
         </div>
