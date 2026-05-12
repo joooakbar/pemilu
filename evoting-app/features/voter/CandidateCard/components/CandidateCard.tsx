@@ -1,8 +1,8 @@
 "use client"
 
-import { useCandidate } from "@/features/voter/hooks/useCandidate";
+import { useCandidate } from "../hooks/useCandidate";
 import Image from "next/image";
-import type { CandidateCardProps } from "@/features/voter/types/candidate.types";
+import type { CandidateCardProps } from "@/features/voter/CandidateCard/types/candidate.types";
 const CandidateCard = ({ kandidat }: CandidateCardProps ) => {
     const { activeTab, setActiveTab, content } = useCandidate(kandidat);
 

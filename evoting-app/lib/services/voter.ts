@@ -1,4 +1,4 @@
-import { VerifyNIKPayload, VerifyNIKResponse } from "@/features/voter/types/voter.types";
+import { VerifyNIKPayload, VerifyNIKResponse } from "@/features/voter/InputNIK/types/voter.types";
 
 type ApiResponse<T> = {
   data: T;

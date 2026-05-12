@@ -1,5 +1,5 @@
 "use client"
-import { useCekDPT } from "@/features/voter/hooks/useCekDPT"
+import { useCekDPT } from "../hooks/useCekDPT";
 
 export default function CekDPTSection({
     idPemilihan,

@@ -1,41 +1,34 @@
-'use client'
+import { useState } from "react";
+import type { Candidate } from "../../CandidateSection/utils/mapKandidat";
 
-import { useMemo, useState } from 'react'
+export type TabKey = "visi" | "misi" | "program";
 
-import {
-  Candidate,
-  TabType,
-} from '../types/candidate.types'
+export const useCandidate = (kandidat: Candidate) => {
+    const [ activeTab, setActiveTab ] = useState<TabKey>("visi");
 
-export const useCandidate = (
-  kandidat: Candidate
-) => {
+    const getContent = () => {
+        switch (activeTab) {
+            case "visi":
+                return kandidat.vision || "Belum ada visi";
 
-  const [activeTab, setActiveTab] =
-    useState<TabType>('visi')
+            case "misi":
+                return kandidat.mission.length > 0 
+                ? kandidat.mission
+                : ["Belum ada misi"];
 
-  const content = useMemo(() => {
+            case "program":
+                return kandidat.programs.length
+                ? kandidat.programs
+                : ["Belum ada program kerja"];
 
-    switch (activeTab) {
+            default:
+                return [];
+        }
+    };
 
-      case 'visi':
-        return kandidat.visi
-
-      case 'misi':
-        return kandidat.misi
-
-      case 'program':
-        return kandidat.program
-
-      default:
-        return kandidat.visi
-    }
-
-  }, [activeTab, kandidat])
-
-  return {
-    activeTab,
-    setActiveTab,
-    content,
-  }
-}
+    return {
+        activeTab,
+        setActiveTab,
+        content: getContent(),
+    };
+};

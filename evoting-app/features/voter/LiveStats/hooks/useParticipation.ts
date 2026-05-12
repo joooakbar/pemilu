@@ -1,69 +1,23 @@
-'use client'
+import { useElectionStats } from "@/hooks/useSSE";
 
-import {
-  useEffect,
-  useState,
-} from 'react'
+export const useParticipation = (idPemilihan: string) => {
+    const { stats } = useElectionStats(idPemilihan);
 
-import type {
-  ParticipationStats,
-} from '../types/participation.types'
-
-export const useParticipation = (
-  idPemilihan: string
-) => {
-
-  const [stats, setStats] =
-    useState<ParticipationStats | null>(
-      null
-    )
-
-  const [persen, setPersen] =
-    useState(0)
-
-  useEffect(() => {
-
-    const fetchStats = async () => {
-
-      try {
-
-        const res = await fetch(
-          `/api/pemilihan/${idPemilihan}/participation`
-        )
-
-        const json =
-          await res.json()
-
-        if (!res.ok) return
-
-        const data =
-          json.data
-
-        setStats(data)
-
-        const hasilPersen =
-          data.totalDPT > 0
-            ? Math.round(
-                (data.sudahMemilih /
-                  data.totalDPT) *
-                  100
-              )
-            : 0
-
-        setPersen(hasilPersen)
-
-      } catch (error) {
-
-        console.error(error)
-      }
+    if (!stats) {
+        return {
+            stats: null,
+            persen: "0,0",
+            width: "0%",
+        };
     }
 
-    fetchStats()
+    const { totalDPT, sudahMemilih } = stats;
 
-  }, [idPemilihan])
+    const percentage = totalDPT > 0 ? (sudahMemilih / totalDPT) * 100 : 0;
 
-  return {
-    stats,
-    persen,
-  }
-}
+    return {
+        stats,
+        persen: percentage.toFixed(1).replace(".",","),
+        width: `${percentage}%`,
+    };
+};
