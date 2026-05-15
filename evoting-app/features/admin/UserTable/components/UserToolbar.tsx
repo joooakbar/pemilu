@@ -1,13 +1,7 @@
 'use client'
-
 import { Button } from '@/components/ui/button'
-import {
-  UserPlus,
-  ChevronDown,
-  ChevronUp,
-} from 'lucide-react'
-
-import type { Role } from '../types/user.types'
+import {  UserPlus,  ChevronDown,  ChevronUp,} from 'lucide-react'
+import type { Role } from '../types'
 import { ROLE_LABELS } from '../constants/user.constants'
 
 interface Props {

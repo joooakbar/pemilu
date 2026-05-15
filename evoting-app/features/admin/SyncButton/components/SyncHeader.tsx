@@ -1,11 +1,6 @@
 'use client'
-
 import { Button } from '@/components/ui/button'
-
-import {
-  RefreshCw,
-  Loader2,
-} from 'lucide-react'
+import {  RefreshCw,  Loader2,} from 'lucide-react'
 
 interface Props {
   loading: boolean

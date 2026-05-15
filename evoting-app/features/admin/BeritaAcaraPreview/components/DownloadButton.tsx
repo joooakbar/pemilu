@@ -1,29 +1,19 @@
 import { Button } from '@/components/ui/button'
 import { Download } from 'lucide-react'
 
-interface Props {
-  electionId: string
-}
+interface Props { electionId: string}
 
-export default function DownloadButton({
-  electionId,
-}: Props) {
-
+export default function DownloadButton({ electionId,}: Props) {
   return (
-    <Button
-      asChild
-      className="gap-2"
-    >
-
+    <Button asChild className="gap-2">
       <a
-        href={`/api/admin/berita-acara/generate?electionId=${electionId}`}
         download
+        href={`/api/admin/berita-acara/generate?electionId=${electionId}`}
       >
-        <Download className="w-4 h-4" />
+        <Download className="h-4 w-4" />
 
         Unduh PDF Berita Acara
       </a>
-
     </Button>
   )
 }

@@ -1,35 +1,20 @@
 'use client'
+import { useState } from 'react'
+import { DPTTableProps } from '../types'
+import { useDPTData } from '../hooks/useDPTData'
+import { useFilteredDPT } from '../hooks/useFilteredDPT'
+import DPTSearch from './DPTSearch'
+import DPTTableBody from './DPTTableBody'
+import DPTLoading from './DPTLoading'
 
-import { useState }
-from 'react'
-
-import {
-  DPTTableProps,
-} from '../types'
-
-import { useDPTData }
-from '../hooks/useDPTData'
-
-import { useFilteredDPT }
-from '../hooks/useFilteredDPT'
-
-import DPTSearch
-from './DPTSearch'
-
-import DPTTableHeader
-from './DPTTableHeader'
-
-import DPTTableBody
-from './DPTTableBody'
-
-import DPTEmpty
-from './DPTEmpty'
-
-import DPTLoading
-from './DPTLoading'
-
-import DPTFooter
-from './DPTFooter'
+const headers = [
+  'NIK',
+  'Nama',
+  'Kode Wilayah',
+  'Phone',
+  'Status',
+  'Waktu Pilih',
+]
 
 export default function DPTTable({
   electionId,
@@ -38,10 +23,8 @@ export default function DPTTable({
   const [search, setSearch] =
     useState('')
 
-  const {
-    data,
-    loading,
-  } = useDPTData(search)
+  const { data, loading } =
+    useDPTData(search)
 
   const filtered =
     useFilteredDPT(
@@ -61,22 +44,27 @@ export default function DPTTable({
         setSearch={setSearch}
       />
 
-      <div
-        className="
-          rounded-lg
-          border
-          overflow-hidden
-        "
-      >
+      <div className="overflow-hidden rounded-lg border">
 
-        <table
-          className="
-            w-full
-            text-sm
-          "
-        >
+        <table className="w-full text-sm">
 
-          <DPTTableHeader />
+          <thead className="bg-secondary/50">
+            <tr>
+
+              {headers.map((header) => (
+                <th
+                  key={header}
+                  className="
+                    px-4 py-3 text-left
+                    font-medium text-muted-foreground
+                  "
+                >
+                  {header}
+                </th>
+              ))}
+
+            </tr>
+          </thead>
 
           <DPTTableBody
             data={filtered}
@@ -85,14 +73,17 @@ export default function DPTTable({
         </table>
 
         {filtered.length === 0 && (
-          <DPTEmpty />
+          <div className="py-12 text-center text-muted-foreground">
+            Tidak ada data
+          </div>
         )}
 
       </div>
 
-      <DPTFooter
-        total={filtered.length}
-      />
+      <p className="text-xs text-muted-foreground">
+        Menampilkan {Math.min(filtered.length, 100)}
+        {' '}dari {filtered.length} pemilih
+      </p>
 
     </div>
   )

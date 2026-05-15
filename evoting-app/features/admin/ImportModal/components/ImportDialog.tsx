@@ -1,15 +1,7 @@
 import React from 'react'
-
 import { Button } from '@/components/ui/button'
-
 import UploadButton from './UploadButton'
 import ImportResult from './ImportResult'
-
-import {
-  IMPORT_FORMAT,
-  ACCEPTED_FILES,
-} from '../constants/import.constants'
-
 import type { ImportResultData } from '../types'
 
 interface Props {
@@ -35,18 +27,15 @@ export default function ImportDialog({
       onClick={onClose}
     >
       <div
-        className="bg-card rounded-xl p-6 w-full max-w-md shadow-xl space-y-4"
+        className="bg-card w-full max-w-md space-y-4 rounded-xl p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="font-bold text-lg">
-          Import DPT
-        </h2>
+        <h2 className="text-lg font-bold">Import DPT</h2>
 
-        <div className="text-sm text-muted-foreground space-y-1">
+        <div className="space-y-1 text-sm text-muted-foreground">
           <p>Format kolom:</p>
-
-          <code className="block bg-secondary p-2 rounded text-xs">
-            {IMPORT_FORMAT}
+          <code className="block rounded bg-secondary p-2 text-xs">
+            nama, nik, alamat, rt, rw
           </code>
         </div>
 
@@ -54,23 +43,19 @@ export default function ImportDialog({
         <input
           id="file-upload"
           type="file"
-          accept={ACCEPTED_FILES}
+          accept=".csv,.xlsx,.xls"
           className="hidden"
           onChange={onUpload}
         />
 
-        {/* BUTTON → TRIGGER LABEL (NO REF) */}
-        <label htmlFor="file-upload" className="w-full block">
+        {/* TRIGGER BUTTON */}
+        <label htmlFor="file-upload" className="block w-full">
           <UploadButton loading={loading} onClick={() => {}} />
         </label>
 
         {result && <ImportResult result={result} />}
 
-        <Button
-          variant="outline"
-          className="w-full"
-          onClick={onClose}
-        >
+        <Button variant="outline" className="w-full" onClick={onClose}>
           Tutup
         </Button>
       </div>

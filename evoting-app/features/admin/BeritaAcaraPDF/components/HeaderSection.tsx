@@ -1,11 +1,13 @@
 import { Text } from '@react-pdf/renderer'
 import { styles } from '../styles/pdf.styles'
 
-interface Props {
+type Props = {
   nama: string
 }
 
-export default function HeaderSection({ nama }: Props) {
+export default function HeaderSection({
+  nama,
+}: Props) {
   return (
     <>
       <Text style={styles.title}>

@@ -1,11 +1,6 @@
-import {
-  Document,
-  Page,
-  Text,
-} from '@react-pdf/renderer'
+import { Document, Page, Text } from '@react-pdf/renderer'
 
 import { styles } from '../styles/pdf.styles'
-
 import { BeritaAcaraData } from '../types'
 
 import HeaderSection from './HeaderSection'
@@ -15,14 +10,13 @@ import WinnerSection from './WinnerSection'
 
 import { useFormatDate } from '../hooks/useFormatDate'
 
-interface Props {
+type Props = {
   data: BeritaAcaraData
 }
 
 export default function BeritaAcaraPDF({
   data,
 }: Props) {
-
   const {
     election,
     totalDPT,
@@ -32,22 +26,15 @@ export default function BeritaAcaraPDF({
   } = data
 
   const pemenang = rekapitulasi.reduce(
-    (a, b) =>
-      b.jumlah > a.jumlah ? b : a,
+    (a, b) => (b.jumlah > a.jumlah ? b : a),
     rekapitulasi[0]
   )
 
   return (
     <Document title="Berita Acara Pemilihan">
+      <Page size="A4" style={styles.page}>
 
-      <Page
-        size="A4"
-        style={styles.page}
-      >
-
-        <HeaderSection
-          nama={election.nama}
-        />
+        <HeaderSection nama={election.nama} />
 
         <InfoSection
           election={election}
@@ -55,14 +42,10 @@ export default function BeritaAcaraPDF({
           totalSuara={totalSuara}
         />
 
-        <RekapitulasiSection
-          data={rekapitulasi}
-        />
+        <RekapitulasiSection data={rekapitulasi} />
 
         {pemenang && (
-          <WinnerSection
-            pemenang={pemenang}
-          />
+          <WinnerSection pemenang={pemenang} />
         )}
 
         <Text
@@ -73,13 +56,11 @@ export default function BeritaAcaraPDF({
             textAlign: 'right',
           }}
         >
-          Dokumen digenerate otomatis
-          oleh E-VOTIS pada{' '}
+          Dokumen digenerate otomatis oleh E-VOTIS pada{' '}
           {useFormatDate(generatedAt)}
         </Text>
 
       </Page>
-
     </Document>
   )
 }

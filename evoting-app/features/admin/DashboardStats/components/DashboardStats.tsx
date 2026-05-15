@@ -1,52 +1,27 @@
-'use client'
-
-import { useElectionStats }
-from '@/hooks/useSSE'
-
+import { Users, CheckCircle } from 'lucide-react'
 import {
-  DashboardStatsProps,
+  DashboardStats,
+  StatsCardItem,
 } from '../types'
 
-import { useDashboardCards }
-from '../hooks/useDashboardCards'
+export function useDashboardCards(
+  stats?: DashboardStats | null
+): StatsCardItem[] {
 
-import StatsGrid
-from './StatsGrid'
-
-import StatsFooter
-from './StatsFooter'
-
-import StatsSkeleton
-from './StatsSkeleton'
-
-export default function DashboardStats({
-  electionId,
-  electionStatus,
-}: DashboardStatsProps) {
-
-  const { stats } =
-    useElectionStats(electionId)
-
-  const cards =
-    useDashboardCards(stats)
-
-  if (!cards) {
-    return <StatsSkeleton />
-  }
-
-  return (
-    <div className="space-y-4">
-
-      <StatsGrid
-        cards={cards}
-      />
-
-      <StatsFooter
-        electionStatus={
-          electionStatus
-        }
-      />
-
-    </div>
-  )
+  return [
+    {
+      label: 'Total',
+      value: stats?.total ?? 0,
+      icon: Users,
+      color: 'text-blue-600',
+      bg: 'bg-blue-100',
+    },
+    {
+      label: 'Aktif',
+      value: stats?.active ?? 0,
+      icon: CheckCircle,
+      color: 'text-green-600',
+      bg: 'bg-green-100',
+    },
+  ]
 }

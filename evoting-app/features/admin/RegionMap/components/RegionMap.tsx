@@ -1,81 +1,61 @@
 'use client'
-
-import { useElectionStats }
-from '@/hooks/useSSE'
-
-import {
-
-  Card,
-
-  CardContent,
-
-  CardHeader,
-
-  CardTitle,
-
-} from '@/components/ui/card'
-
-import EmptyState
-from './EmptyState'
-
-import RegionChart
-from './RegionChart'
-
+import { useElectionStats } from '@/hooks/useSSE'
+import {  Card,  CardContent,  CardHeader,  CardTitle,} from '@/components/ui/card'
+import { Bar } from 'react-chartjs-2'
+import { chartOptions } from '../chart/chart.options'
 import '../chart/chart.config'
 
-export default function RegionMap({
-
-  electionId,
-
-}: {
-
+interface Props {
   electionId: string
+}
 
-}) {
+export default function RegionMap({
+  electionId,
+}: Props) {
 
-  const {
+  const { stats } =
+    useElectionStats(electionId)
 
-    stats,
-
-  } = useElectionStats(
-    electionId
-  )
-
-  if (!stats)
+  if (!stats) {
     return null
+  }
 
-  const sorted =
-
-    [
-      ...stats.suaraPerWilayah
-    ]
-
+  const sorted = [
+    ...stats.suaraPerWilayah,
+  ]
     .sort(
       (a, b) =>
         b.jumlah - a.jumlah
     )
-
     .slice(0, 10)
 
-  return (
+  const chartData = {
+    labels: sorted.map(
+      region => region.kodeWilayah
+    ),
 
+    datasets: [
+      {
+        label: 'Jumlah Suara',
+
+        data: sorted.map(
+          region => region.jumlah
+        ),
+
+        backgroundColor: '#1d4ed8cc',
+
+        borderRadius: 6,
+      },
+    ],
+  }
+
+  return (
     <Card>
 
-      <CardHeader
-        className="
-          pb-2
-        "
-      >
+      <CardHeader className="pb-2">
 
-        <CardTitle
-          className="
-            text-base
-          "
-        >
-
-          Sebaran Suara
-          per Wilayah
-
+        <CardTitle className="text-base">
+          Sebaran Suara per Wilayah
         </CardTitle>
 
         <p
@@ -84,37 +64,37 @@ export default function RegionMap({
             text-muted-foreground
           "
         >
-
-          Berdasarkan
-          6 digit pertama
-          NIK
-          (
-            kode wilayah
-          )
-
+          Berdasarkan 6 digit pertama
+          NIK (kode wilayah)
         </p>
 
       </CardHeader>
 
-      <CardContent
-        className="
-          h-64
-        "
-      >
+      <CardContent className="h-64">
 
-        {sorted.length === 0
+        {sorted.length === 0 ? (
 
-          ? (
+          <div
+            className="
+              flex
+              h-full
+              items-center
+              justify-center
+              text-sm
+              text-muted-foreground
+            "
+          >
+            Belum ada data wilayah
+          </div>
 
-            <EmptyState />
+        ) : (
 
-          ) : (
+          <Bar
+            data={chartData}
+            options={chartOptions}
+          />
 
-            <RegionChart
-              data={sorted}
-            />
-
-          )}
+        )}
 
       </CardContent>
 

@@ -7,6 +7,9 @@ interface Props {
 }
 
 export default function UploadButton({ loading, onClick }: Props) {
+  const Icon = loading ? Loader2 : Upload
+  const label = loading ? 'Mengupload...' : 'Pilih File'
+
   return (
     <Button
       type="button"
@@ -14,17 +17,8 @@ export default function UploadButton({ loading, onClick }: Props) {
       disabled={loading}
       onClick={onClick}
     >
-      {loading ? (
-        <>
-          <Loader2 className="w-4 h-4 animate-spin" />
-          Mengupload...
-        </>
-      ) : (
-        <>
-          <Upload className="w-4 h-4" />
-          Pilih File
-        </>
-      )}
+      <Icon className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+      {label}
     </Button>
   )
 }

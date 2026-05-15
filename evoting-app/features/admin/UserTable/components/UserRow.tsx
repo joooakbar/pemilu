@@ -1,18 +1,8 @@
 'use client'
-
-import {
-  Power,
-  Trash2,
-} from 'lucide-react'
-
+import {  Power,  Trash2,} from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-
-import {
-  ROLE_COLOR,
-  ROLE_LABELS,
-} from '../constants/user.constants'
-
-import type { UserRow as UserRowType } from '../types/user.types'
+import {  ROLE_COLOR,  ROLE_LABELS} from '../constants/user.constants'
+import type { UserRow as UserRowType } from '../types'
 
 interface Props {
   user: UserRowType

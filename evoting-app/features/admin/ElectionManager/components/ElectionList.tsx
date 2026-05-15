@@ -1,35 +1,24 @@
-import {
-  ElectionDB,
-} from '../types'
-
-import ElectionCard
-from './ElectionCard'
+import { ElectionDB } from '../types'
+import ElectionCard from './ElectionCard'
 
 interface Props {
   elections: ElectionDB[]
-  onEdit: (
-    election: ElectionDB
-  ) => void
+  onEdit: (election: ElectionDB) => void
 }
 
 export default function ElectionList({
   elections,
   onEdit,
 }: Props) {
-
   return (
     <div className="space-y-3">
 
-      {elections.map((el) => (
-
+      {elections.map((election) => (
         <ElectionCard
-          key={el.id}
-          election={el}
-          onEdit={() =>
-            onEdit(el)
-          }
+          key={election.id}
+          election={election}
+          onEdit={() => onEdit(election)}
         />
-
       ))}
 
     </div>

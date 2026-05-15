@@ -1,104 +1,72 @@
 'use client'
 
-import { useState }
-from 'react'
-
-import { toast }
-from 'sonner'
-
-import {
-  syncKandidat,
-  fetchKandidatDB,
-}
-from '../services/kandidat.service'
-
-import type {
-
-  KandidatRefDB,
-
-  SyncResult,
-
-} from '../types/kandidat.types'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import {  fetchKandidatDB,  syncKandidat,} from '../services/kandidat.service'
+import type {  KandidatDB,  SyncResult,} from '../types'
 
 export function useKandidatSync(
-
-  initialDB:
-    KandidatRefDB[]
-
+  initialDB: KandidatDB[]
 ) {
+  const [dbList, setDbList] =
+    useState(initialDB)
 
-  const [
-    dbList,
+  const [syncing, setSyncing] =
+    useState(false)
 
-    setDbList,
-
-  ] = useState(initialDB)
-
-  const [
-    syncing,
-
-    setSyncing,
-
-  ] = useState(false)
-
-  const [
-    result,
-
-    setResult,
-
-  ] = useState<
-    SyncResult | null
-  >(null)
+  const [result, setResult] =
+    useState<SyncResult | null>(null)
 
   const sync = async () => {
+    try {
+      setSyncing(true)
+      setResult(null)
 
-    setSyncing(true)
+      const response =
+        await syncKandidat()
 
-    setResult(null)
+      const json =
+        await response.json()
 
-    const res =
-      await syncKandidat()
+      if (!response.ok) {
+        toast.error(json.error)
+        return
+      }
 
-    const json =
-      await res.json()
+      setResult(json.data)
 
-    setSyncing(false)
-
-    if (!res.ok) {
-
-      toast.error(
-        json.error
+      toast.success(
+        json.data.message
       )
 
-      return
-    }
+      const dbResponse =
+        await fetchKandidatDB()
 
-    setResult(json.data)
+      const dbJson =
+        await dbResponse.json()
 
-    toast.success(
-      json.data.message
-    )
+      if (dbJson.success) {
+        setDbList(dbJson.data)
+      }
 
-    const r2 =
-      await fetchKandidatDB()
+    } catch (error) {
 
-    const j2 =
-      await r2.json()
+      toast.error(
+        'Gagal sinkronisasi kandidat'
+      )
 
-    if (j2.success) {
+      console.error(error)
 
-      setDbList(j2.data)
+    } finally {
+
+      setSyncing(false)
     }
   }
 
   return {
-
     dbList,
-
     syncing,
-
     result,
-
     sync,
   }
 }

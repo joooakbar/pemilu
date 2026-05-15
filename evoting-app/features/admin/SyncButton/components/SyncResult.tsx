@@ -1,16 +1,6 @@
 'use client'
-
-import {
-  CheckCircle2,
-  AlertCircle,
-  ChevronDown,
-  ChevronUp,
-  Vote,
-  Calendar,
-} from 'lucide-react'
-
+import {  CheckCircle2,  AlertCircle,  ChevronDown,  ChevronUp,  Vote,  Calendar,} from 'lucide-react'
 import SyncSection from './SyncSection'
-
 import type { SyncResult as SyncResultType } from '../types/sync.types'
 
 interface Props {

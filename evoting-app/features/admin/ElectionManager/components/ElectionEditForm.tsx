@@ -1,20 +1,12 @@
-import { Button }
-from '@/components/ui/button'
-
-import { Input }
-from '@/components/ui/input'
-
-import { Label }
-from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 interface Props {
   editForm: any
   setEditForm: any
-
   saving: boolean
-
   onSave: () => void
-
   onCancel: () => void
 }
 
@@ -25,30 +17,12 @@ export default function ElectionEditForm({
   onSave,
   onCancel,
 }: Props) {
-
   return (
-    <div
-      className="
-        p-5
-        space-y-4
-      "
-    >
+    <div className="space-y-4 p-5">
 
-      <div
-        className="
-          grid
-          grid-cols-1
-          sm:grid-cols-2
-          gap-3
-        "
-      >
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
 
-        <div
-          className="
-            sm:col-span-2
-            space-y-1
-          "
-        >
+        <div className="space-y-1 sm:col-span-2">
 
           <Label className="text-xs">
             Nama
@@ -57,13 +31,10 @@ export default function ElectionEditForm({
           <Input
             value={editForm.nama}
             onChange={(e) =>
-              setEditForm(
-                (f: any) => ({
-                  ...f,
-                  nama:
-                    e.target.value,
-                })
-              )
+              setEditForm((form: any) => ({
+                ...form,
+                nama: e.target.value,
+              }))
             }
           />
 

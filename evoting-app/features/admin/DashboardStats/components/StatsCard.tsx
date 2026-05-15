@@ -1,70 +1,38 @@
-import { Card, CardContent }
-from '@/components/ui/card'
-
-import { StatsCardItem }
-from '../types'
+import { Card, CardContent } from '@/components/ui/card'
+import { StatsCardItem } from '../types'
 
 interface Props {
   item: StatsCardItem
 }
 
-export default function StatsCard({
-  item,
-}: Props) {
+export default function StatsCard({  item,}: Props) {
 
-  const {
-    label,
-    value,
-    icon: Icon,
-    color,
-    bg,
-  } = item
+  const { label, value, icon: Icon,color, bg,} = item
 
   return (
     <Card className="overflow-hidden">
 
-      <CardContent
-        className="
-          p-5
-          flex items-center
-          gap-4
-        "
-      >
+      <CardContent className="flex items-center gap-4 p-5">
 
         <div
           className={`
-            w-12 h-12
-            rounded-xl
-            ${bg}
-            flex-center
-            shrink-0
+            flex-center h-12 w-12 shrink-0
+            rounded-xl ${bg}
           `}
         >
-
           <Icon
-            className={`
-              w-6 h-6
-              ${color}
-            `}
+            className={`h-6 w-6 ${color}`}
           />
-
         </div>
 
         <div>
-
           <p className="text-2xl font-bold">
             {value}
           </p>
 
-          <p
-            className="
-              text-xs
-              text-muted-foreground
-            "
-          >
+          <p className="text-xs text-muted-foreground">
             {label}
           </p>
-
         </div>
 
       </CardContent>

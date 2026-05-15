@@ -2,9 +2,7 @@
 
 import UserInfo from './UserInfo'
 import LogoutButton from './LogoutButton'
-
-import type { TopBarProps } from '../types/topbar.types'
-
+import type { TopBarProps } from '../types'
 export default function TopBar({
   name,
   role,

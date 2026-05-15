@@ -1,55 +1,38 @@
-import { Bar }
-from 'react-chartjs-2'
-
-import {
-  chartOptions,
-} from '../chart/chart.options'
-
-import type {
-  RegionData,
-} from '../types/region.types'
+import { Bar } from 'react-chartjs-2'
+import { chartOptions } from '../chart/chart.options'
+import type { RegionData } from '../types'
 
 interface Props {
-
   data: RegionData[]
 }
 
 export default function RegionChart({
-
   data,
-
 }: Props) {
 
+  const chartData = {
+    labels: data.map(
+      region => region.kodeWilayah
+    ),
+
+    datasets: [
+      {
+        label: 'Jumlah Suara',
+
+        data: data.map(
+          region => region.jumlah
+        ),
+
+        backgroundColor: '#1d4ed8cc',
+
+        borderRadius: 6,
+      },
+    ],
+  }
+
   return (
-
     <Bar
-      data={{
-
-        labels:
-          data.map(s =>
-            s.kodeWilayah
-          ),
-
-        datasets: [
-
-          {
-
-            label:
-              'Jumlah Suara',
-
-            data:
-              data.map(s =>
-                s.jumlah
-              ),
-
-            backgroundColor:
-              '#1d4ed8cc',
-
-            borderRadius: 6,
-          },
-        ],
-      }}
-
+      data={chartData}
       options={chartOptions}
     />
   )

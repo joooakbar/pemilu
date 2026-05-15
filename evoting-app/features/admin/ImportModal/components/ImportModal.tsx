@@ -1,19 +1,12 @@
 'use client'
-
 import type { ImportModalProps } from '../types'
-
 import ImportButton from './ImportButton'
 import ImportDialog from './ImportDialog'
 import { useImportDPT } from '../hooks/useImportDPT'
 
 export default function ImportModal({ electionId }: ImportModalProps) {
-  const {
-    open,
-    loading,
-    result,
-    setOpen,
-    handleUpload,
-  } = useImportDPT(electionId)
+  const { open, loading, result, setOpen, handleUpload } =
+    useImportDPT(electionId)
 
   return (
     <>

@@ -10,28 +10,21 @@ interface Props {
 export default function WinnerSection({
   pemenang,
 }: Props) {
-
   return (
     <View style={styles.winner}>
-
-      <Text
-        style={{
-          color: '#166534',
-          fontWeight: 'bold',
-        }}
-      >
+      <Text style={{
+        color: '#166534',
+        fontWeight: 'bold',
+      }}>
         Pemenang: {pemenang.nama}
       </Text>
 
-      <Text
-        style={{
-          color: '#15803d',
-          fontSize: 10,
-        }}
-      >
+      <Text style={{
+        color: '#15803d',
+        fontSize: 10,
+      }}>
         {pemenang.jumlah} suara
       </Text>
-
     </View>
   )
 }

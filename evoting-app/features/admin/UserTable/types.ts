@@ -1,4 +1,7 @@
-export type Role = 'ADMIN' | 'PANITIA' | 'SAKSI'
+export type Role =
+  | 'ADMIN'
+  | 'PANITIA'
+  | 'SAKSI'
 
 export interface UserRow {
   id: string

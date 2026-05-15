@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { LogOut } from 'lucide-react'
-
 import { Button } from '@/components/ui/button'
 
 export default function LogoutButton() {
