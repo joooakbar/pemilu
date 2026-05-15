@@ -1,28 +1,16 @@
 import {
-
-  Chart,
-
-  CategoryScale,
-
-  LinearScale,
-
   BarElement,
-
-  Tooltip,
-
+  CategoryScale,
+  Chart,
   Legend,
-
+  LinearScale,
+  Tooltip,
 } from 'chart.js'
 
 Chart.register(
-
   CategoryScale,
-
   LinearScale,
-
   BarElement,
-
   Tooltip,
-
   Legend
 )

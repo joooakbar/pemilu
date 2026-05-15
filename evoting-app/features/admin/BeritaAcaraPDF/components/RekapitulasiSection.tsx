@@ -10,29 +10,27 @@ interface Props {
 export default function RekapitulasiSection({
   data,
 }: Props) {
-
   return (
     <>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          marginBottom: 8,
-        }}
-      >
+      <Text style={{
+        fontWeight: 'bold',
+        marginBottom: 8,
+      }}>
         Rekapitulasi Perolehan Suara
       </Text>
 
-      {data.map((r) => (
-        <View key={r.nomor} style={styles.row}>
-
+      {data.map((item) => (
+        <View
+          key={item.nomor}
+          style={styles.row}
+        >
           <Text style={styles.label}>
-            No. {r.nomor} — {r.nama}
+            No. {item.nomor} — {item.nama}
           </Text>
 
           <Text style={styles.value}>
-            {r.jumlah} suara
+            {item.jumlah} suara
           </Text>
-
         </View>
       ))}
     </>

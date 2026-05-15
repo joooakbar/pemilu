@@ -1,5 +1,4 @@
-import StatusBadge
-from './StatusBadge'
+import StatusBadge from './StatusBadge'
 
 interface Props {
   election: {
@@ -8,46 +7,16 @@ interface Props {
   }
 }
 
-export default function EmergencyStatusCard({
-  election,
-}: Props) {
-
+export default function EmergencyStatusCard({ election }: Props) {
   return (
-    <div
-      className="
-        rounded-lg
-        border
-        p-4
-        space-y-2
-      "
-    >
-
-      <p
-        className="
-          text-sm
-          font-medium
-        "
-      >
-
-        Pemilihan:
-
-        <strong>
-          {' '}
-          {election.nama}
-        </strong>
-
+    <div className="rounded-lg border p-4 space-y-2">
+      <p className="text-sm font-medium">
+        Pemilihan: <strong>{election.nama}</strong>
       </p>
 
       <p className="text-sm">
-
-        Status saat ini:
-
-        <StatusBadge
-          status={election.status}
-        />
-
+        Status saat ini: <StatusBadge status={election.status} />
       </p>
-
     </div>
   )
 }

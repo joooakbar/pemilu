@@ -1,106 +1,64 @@
-import { Badge }
-from '@/components/ui/badge'
-
-import { DPTRow }
-from '../types'
+import { Badge } from '@/components/ui/badge'
+import { DPTRow } from '../types'
 
 interface Props {
   data: DPTRow[]
 }
 
-export default function DPTTableBody({
-  data,
-}: Props) {
-
+export default function DPTTableBody({ data }: Props) {
   return (
     <tbody className="divide-y">
 
-      {data.slice(0, 100).map((d) => (
-
+      {data.slice(0, 100).map((item) => (
         <tr
-          key={d.id}
-          className="
-            hover:bg-secondary/20
-          "
+          key={item.id}
+          className="hover:bg-secondary/20"
         >
 
-          <td
-            className="
-              px-4 py-2
-              font-mono
-              text-xs
-            "
-          >
-            {d.nik}
+          {/* NIK */}
+          <td className="px-4 py-2 font-mono text-xs">
+            {item.nik}
           </td>
 
-          <td
-            className="
-              px-4 py-2
-              font-medium
-            "
-          >
-            {d.nama}
+          {/* NAMA */}
+          <td className="px-4 py-2 font-medium">
+            {item.nama}
           </td>
 
-          <td
-            className="
-              px-4 py-2
-              font-mono
-              text-xs
-            "
-          >
-            {d.kodeWilayah}
+          {/* KODE WILAYAH */}
+          <td className="px-4 py-2 font-mono text-xs">
+            {item.kodeWilayah}
           </td>
 
-          <td
-            className="
-              px-4 py-2
-              text-xs
-              text-muted-foreground
-            "
-          >
-            {d.phone ?? '—'}
+          {/* PHONE */}
+          <td className="px-4 py-2 text-xs text-muted-foreground">
+            {item.phone ?? '—'}
           </td>
 
+          {/* STATUS */}
           <td className="px-4 py-2">
-
             <Badge
               variant={
-                d.hasVoted
+                item.hasVoted
                   ? 'default'
                   : 'secondary'
               }
             >
-
-              {d.hasVoted
+              {item.hasVoted
                 ? '✓ Sudah'
                 : 'Belum'}
-
             </Badge>
-
           </td>
 
-          <td
-            className="
-              px-4 py-2
-              text-xs
-              text-muted-foreground
-            "
-          >
-
-            {d.votedAt
-              ? new Date(
-                  d.votedAt
-                ).toLocaleString(
-                  'id-ID'
-                )
+          {/* WAKTU PILIH */}
+          <td className="px-4 py-2 text-xs text-muted-foreground">
+            {item.votedAt
+              ? new Date(item.votedAt)
+                  .toLocaleString('id-ID')
               : '—'}
-
           </td>
 
         </tr>
-
       ))}
 
     </tbody>

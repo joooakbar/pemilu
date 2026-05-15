@@ -1,11 +1,8 @@
 'use client'
-
 import UserRow from './UserRow'
 import UserLoading from './UserLoading'
 import EmptyState from './EmptyState'
-
-import type { UserRow as UserRowType } from '../types/user.types'
-
+import type { UserRow as UserRowType } from '../types'
 interface Props {
   users: UserRowType[]
   loading: boolean

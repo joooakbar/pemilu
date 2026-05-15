@@ -1,5 +1,0 @@
-export { default as SyncButton } from './SyncButton'
-export { default as SyncHeader } from './SyncHeader'
-export { default as SyncResult } from './SyncResult'
-export { default as SyncSection } from './SyncSection'
-export { default as SyncGuide } from './SyncGuide'

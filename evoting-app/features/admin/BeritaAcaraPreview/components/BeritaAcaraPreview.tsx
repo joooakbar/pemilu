@@ -1,26 +1,61 @@
 'use client'
+import { BeritaAcaraPreviewProps } from '../types'
+import { usePartisipasi } from '../hooks/usePartisipasi'
+import DownloadButton from './DownloadButton'
 
-import {
-  BeritaAcaraPreviewProps,
-} from '../types'
+function PreviewHeader({ nama,
+}: {
+  nama: string
+}) {
+  return (
+    <div className="text-center space-y-1 border-b pb-4">
+      <h2 className="text-xl font-bold">
+        BERITA ACARA PEMILIHAN
+      </h2>
 
-import { usePartisipasi }
-from '../hooks/usePartisipasi'
+      <p className="text-muted-foreground">
+        {nama}
+      </p>
+    </div>
+  )
+}
 
-import PreviewHeader
-from './PreviewHeader'
+function PreviewInfo({
+  startTime,
+  endTime,
+  totalDPT,
+  totalSuara,
+  partisipasi,
+}: {
+  startTime: string
+  endTime: string
+  totalDPT: number
+  totalSuara: number
+  partisipasi: string
+}) {
+  return (
+    <div>
+      {/* isi info */}
+    </div>
+  )
+}
 
-import PreviewInfo
-from './PreviewInfo'
+function PreviewRekapitulasi({  data,
+}: {  data: BeritaAcaraPreviewProps['rekapitulasi']}) {
+  return (
+    <div>
+      {/* isi rekap */}
+    </div>
+  )
+}
 
-import PreviewRekapitulasi
-from './PreviewRekapitulasi'
-
-import PreviewWinner
-from './PreviewWinner'
-
-import DownloadButton
-from './DownloadButton'
+function PreviewWinner({  pemenang,}: {  pemenang: BeritaAcaraPreviewProps['rekapitulasi'][0]}) {
+  return (
+    <div>
+      {/* isi winner */}
+    </div>
+  )
+}
 
 export default function BeritaAcaraPreview({
   election,
@@ -43,16 +78,10 @@ export default function BeritaAcaraPreview({
   return (
     <div className="space-y-6">
 
-      <div
-        className="
-          rounded-xl
-          border
-          bg-card
-          p-8
-          max-w-2xl
-          space-y-6
-        "
-      >
+      <div className="
+        rounded-xl border bg-card
+        p-8 max-w-2xl space-y-6
+      ">
 
         <PreviewHeader
           nama={election.nama}

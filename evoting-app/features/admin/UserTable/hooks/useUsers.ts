@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import type {
   UserRow,
   UserFormData,
-} from '../types/user.types'
+} from '../types'
 
 export function useUsers() {
   const [users, setUsers] = useState<UserRow[]>([])

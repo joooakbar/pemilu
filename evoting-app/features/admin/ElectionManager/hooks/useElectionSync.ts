@@ -1,12 +1,6 @@
-import { useState }
-from 'react'
-
-import { toast }
-from 'sonner'
-
-import {
-  syncElection,
-} from '../services/election.service'
+import { useState } from 'react'
+import { toast } from 'sonner'
+import {  syncElection,} from '../services/election.service'
 
 export function useElectionSync(
   setElections: any,

@@ -2,11 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-
 import { toast } from 'sonner'
-
 import { Button } from '@/components/ui/button'
-
 import {
   RefreshCw,
   Loader2,
@@ -17,7 +14,6 @@ import {
   Vote,
   Calendar,
 } from 'lucide-react'
-
 import type { SyncResult } from '../types/sync.types.ts'
 
 export default function SyncButton() {

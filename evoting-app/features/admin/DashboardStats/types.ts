@@ -5,6 +5,14 @@ export interface DashboardStatsProps {
   electionStatus: string
 }
 
+/**
+ * Data statistik dashboard
+ */
+export interface DashboardStats {
+  total: number
+  active: number
+}
+
 export interface StatsCardItem {
   label: string
   value: string | number

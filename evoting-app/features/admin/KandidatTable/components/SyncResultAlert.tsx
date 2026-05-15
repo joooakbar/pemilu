@@ -1,43 +1,29 @@
-import {
+import {  AlertCircle,  CheckCircle2,} from 'lucide-react'
+import type { SyncResult } from '../types'
 
-  CheckCircle2,
-
-  AlertCircle,
-
-} from 'lucide-react'
-
-import type {
-
-  SyncResult,
-
-} from '../types/kandidat.types'
+interface Props {
+  result: SyncResult
+}
 
 export default function SyncResultAlert({
-
   result,
-
-}: {
-
-  result: SyncResult
-
-}) {
+}: Props) {
 
   const hasError =
     result.errors.length > 0
 
   return (
-
     <div
       className={`
+        space-y-2
         rounded-lg
         border
         p-4
-        space-y-2
 
         ${
           hasError
-          ? 'bg-amber-50 border-amber-200'
-          : 'bg-green-50 border-green-200'
+            ? 'border-amber-200 bg-amber-50'
+            : 'border-green-200 bg-green-50'
         }
       `}
     >
@@ -52,28 +38,17 @@ export default function SyncResultAlert({
 
           ${
             hasError
-            ? 'text-amber-700'
-            : 'text-green-700'
+              ? 'text-amber-700'
+              : 'text-green-700'
           }
         `}
       >
 
-        {hasError
-          ? (
-            <AlertCircle
-              className="
-                w-4 h-4
-              "
-            />
-          )
-          : (
-            <CheckCircle2
-              className="
-                w-4 h-4
-              "
-            />
-          )
-        }
+        {hasError ? (
+          <AlertCircle className="h-4 w-4" />
+        ) : (
+          <CheckCircle2 className="h-4 w-4" />
+        )}
 
         {result.message}
 

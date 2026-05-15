@@ -1,20 +1,16 @@
-import { DPTRow }
-from '../types'
+import { DPTRow } from '../types'
 
 export function useFilteredDPT(
   data: DPTRow[],
   search: string
 ) {
-
-  return data.filter((d) =>
-
-    d.nama
+  return data.filter((item) =>
+    item.nama
       .toLowerCase()
       .includes(search.toLowerCase())
 
     ||
 
-    d.nik.includes(search)
-
+    item.nik.includes(search)
   )
 }

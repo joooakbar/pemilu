@@ -1,8 +1,5 @@
-import { useEffect, useState }
-from 'react'
-
-import { DPTRow }
-from '../types'
+import { useEffect, useState } from 'react'
+import { DPTRow } from '../types'
 
 export function useDPTData(
   search: string

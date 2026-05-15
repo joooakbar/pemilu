@@ -1,5 +1,0 @@
-export { default as SendTokenButton } from './SendTokenButton'
-export { default as SendTokenHeader } from './SendTokenHeader'
-export { default as SendTokenOptions } from './SendTokenOptions'
-export { default as SendTokenResult } from './SendTokenResult'
-export { default as SendTokenWarning } from './SendTokenWarning'

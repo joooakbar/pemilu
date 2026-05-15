@@ -1,20 +1,11 @@
 'use client'
-
 import { useState } from 'react'
 import { toast } from 'sonner'
-
 import UserToolbar from './UserToolbar'
 import UserForm from './UserForm'
 import UserTableContent from './UserTableContent'
-
 import { useUsers } from '../hooks/useUsers'
-
-import type {
-  Role,
-  UserTableProps,
-  UserFormData,
-  UserRow,
-} from '../types/user.types'
+import type {  Role,  UserTableProps,  UserFormData,  UserRow,} from '../types'
 
 export default function UserTable({
   currentUserId,

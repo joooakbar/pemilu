@@ -1,15 +1,7 @@
 'use client'
-
 import { Doughnut } from 'react-chartjs-2'
-import {
-  Chart,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from 'chart.js'
-
+import {  Chart,  ArcElement,  Tooltip,  Legend,} from 'chart.js'
 import { CHART_COLORS } from '../constants/voteChart.constants'
-
 Chart.register(
   ArcElement,
   Tooltip,

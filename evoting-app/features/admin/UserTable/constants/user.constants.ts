@@ -1,4 +1,4 @@
-import type { Role } from '../types/user.types'
+import type { Role } from '../types'
 
 export const ROLE_COLOR: Record<Role, string> = {
   ADMIN: 'bg-red-100 text-red-700 border-red-200',
