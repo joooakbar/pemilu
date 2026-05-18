@@ -1,3 +1,3 @@
 export type LiveTickerProps = {
-  text?: string
-}
+  idPemilihan?: string;
+};

@@ -26,6 +26,9 @@ CREATE TABLE "otpLogin" (
     "otpHash" VARCHAR(255) NOT NULL,
     "expiredAt" TIMESTAMP(3) NOT NULL,
     "isUsed" BOOLEAN NOT NULL DEFAULT false,
+    "attempts" INTEGER NOT NULL DEFAULT 0,
+    "maxAttempts" INTEGER NOT NULL DEFAULT 5,
+    "lockedUntil" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "otpLogin_pkey" PRIMARY KEY ("id")
@@ -50,6 +53,7 @@ CREATE TABLE "pemilihan" (
 -- CreateTable
 CREATE TABLE "kandidat" (
     "id" VARCHAR(36) NOT NULL,
+    "idPemilihan" VARCHAR(36) NOT NULL,
     "noUrut" INTEGER NOT NULL,
     "nama" VARCHAR(255) NOT NULL,
     "sanityId" VARCHAR(191) NOT NULL,
@@ -138,6 +142,9 @@ CREATE UNIQUE INDEX "kandidat_noUrut_key" ON "kandidat"("noUrut");
 CREATE UNIQUE INDEX "kandidat_sanityId_key" ON "kandidat"("sanityId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "kandidat_idPemilihan_key" ON "kandidat"("idPemilihan");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "dpt_nik_key" ON "dpt"("nik");
 
 -- CreateIndex
@@ -166,6 +173,9 @@ CREATE INDEX "LogAktivitas_action_idx" ON "LogAktivitas"("action");
 
 -- AddForeignKey
 ALTER TABLE "otpLogin" ADD CONSTRAINT "otpLogin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "kandidat" ADD CONSTRAINT "kandidat_idPemilihan_fkey" FOREIGN KEY ("idPemilihan") REFERENCES "pemilihan"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "voteToken" ADD CONSTRAINT "voteToken_dptId_fkey" FOREIGN KEY ("dptId") REFERENCES "dpt"("id") ON DELETE CASCADE ON UPDATE CASCADE;

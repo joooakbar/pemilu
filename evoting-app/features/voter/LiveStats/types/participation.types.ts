@@ -1,8 +1,8 @@
 export type ParticipationStats = {
-  totalDPT: number
-  sudahMemilih: number
-}
+  totalDPT: number;
+  sudahMemilih: number;
+};
 
 export type PartisipasiProgressProps = {
-  idPemilihan: string
-}
+  idPemilihan?: string;
+};
