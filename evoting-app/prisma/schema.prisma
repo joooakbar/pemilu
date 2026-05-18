@@ -67,6 +67,7 @@ model Pemilihan {
   deskripsi String? @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  kandidat Kandidat[]
   votes Votes[]
   voteTokens VoteToken[]
 
@@ -75,6 +76,8 @@ model Pemilihan {
 
 model Kandidat {
   id String @id @default(uuid()) @db.VarChar(36)
+  idPemilihan String @db.VarChar(36)
+  pemilihan Pemilihan @relation(fields: [idPemilihan], references: [id])
   noUrut Int @unique
   nama String @db.VarChar(255)
   sanityId String @unique @db.VarChar(191)
@@ -82,6 +85,7 @@ model Kandidat {
   createdAt DateTime @default(now())
   votes Votes[]
 
+  @@unique([ idPemilihan ])
   @@map("kandidat")
 }
 

@@ -1,40 +1,67 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/db'
+import { NextRequest } from "next/server";
+import { prisma } from "@/lib/db";
+import { getKandidatList } from "@/sanity/lib/fetchers";
 
 export async function GET(req: NextRequest) {
-  const idPemilihan =
-    req.nextUrl.searchParams.get('idPemilihan')
+  const idPemilihan = req.nextUrl.searchParams.get("idPemilihan");
 
   if (!idPemilihan) {
-    return NextResponse.json(
-      { error: 'idPemilihan required' },
-      { status: 400 }
-    )
+    return new Response("idPemilihan required", { status: 400 });
   }
 
-  const totalDPT =
-    await prisma.dPT.count()
+  const stream = new ReadableStream({
+    async start(controller) {
+      let interval: NodeJS.Timeout;
 
-  const sudahMemilih =
-    await prisma.votes.count({
-      where: {
-        idPemilihan: idPemilihan,
-      },
-    })
+      const send = async () => {
+        const kandidat = await getKandidatList();
 
-  const persen =
-    totalDPT > 0
-      ? Number(
-          (
-            (sudahMemilih / totalDPT) *
-            100
-          ).toFixed(1)
-        )
-      : 0
+        const totalDPT = await prisma.dPT.count();
 
-  return NextResponse.json({
-    totalDPT,
-    sudahMemilih,
-    persen,
-  })
+        const sudahMemilih = await prisma.votes.count({
+          where: { idPemilihan },
+        });
+
+        const belumMemilih = totalDPT - sudahMemilih;
+
+        const partisipasi =
+          totalDPT > 0
+            ? Number(((sudahMemilih / totalDPT) * 100).toFixed(1))
+            : 0;
+
+        const kandidatCount = kandidat?.length ?? 0;
+
+        const data = {
+          totalDPT,
+          sudahMemilih,
+          belumMemilih,
+          partisipasi,
+          kandidat: kandidatCount,
+        };
+
+        controller.enqueue(`data: ${JSON.stringify(data)}\n\n`);
+      };
+
+      // initial send
+      await send();
+
+      // realtime interval
+      interval = setInterval(send, 3000);
+
+      // cleanup
+      req.signal.addEventListener("abort", () => {
+        clearInterval(interval);
+        controller.close();
+      });
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache, no-transform",
+      Connection: "keep-alive",
+      "X-Accel-Buffering": "no",
+    },
+  });
 }
