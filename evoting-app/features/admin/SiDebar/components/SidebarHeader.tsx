@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 export default function SidebarHeader() {
   return (
@@ -7,9 +7,7 @@ export default function SidebarHeader() {
         🗳
       </div>
 
-      <span className="font-bold text-lg">
-        E-VOTIS
-      </span>
+      <span className="font-bold text-lg">E-VOTIS</span>
     </div>
-  )
+  );
 }

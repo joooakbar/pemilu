@@ -5,12 +5,6 @@ import {
   Legend,
   LinearScale,
   Tooltip,
-} from 'chart.js'
+} from "chart.js";
 
-Chart.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend
-)
+Chart.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);

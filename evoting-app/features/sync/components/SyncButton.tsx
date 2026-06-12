@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { useSync } from '../hooks/useSync'
+import { Button } from "@/components/ui/button";
+import { useSync } from "../hooks/useSync";
 
 export function SyncButton() {
-  const { sync, loading, result, error } = useSync()
+  const { sync, loading, result, error } = useSync();
 
   return (
     <div className="space-y-2">
       <Button onClick={sync} disabled={loading}>
-        {loading ? 'Syncing...' : 'Sync Data'}
+        {loading ? "Syncing..." : "Sync Data"}
       </Button>
 
       {result && (
@@ -22,5 +22,5 @@ export function SyncButton() {
 
       {error && <p className="text-red-500">{error}</p>}
     </div>
-  )
+  );
 }

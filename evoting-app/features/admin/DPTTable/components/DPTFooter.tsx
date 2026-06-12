@@ -1,11 +1,8 @@
 interface Props {
-  total: number
+  total: number;
 }
 
-export default function DPTFooter({
-  total,
-}: Props) {
-
+export default function DPTFooter({ total }: Props) {
   return (
     <p
       className="
@@ -13,13 +10,7 @@ export default function DPTFooter({
         text-muted-foreground
       "
     >
-
-      Menampilkan{' '}
-
-      {Math.min(total, 100)}
-
-      {' '}dari {total} pemilih
-
+      Menampilkan {Math.min(total, 100)} dari {total} pemilih
     </p>
-  )
+  );
 }

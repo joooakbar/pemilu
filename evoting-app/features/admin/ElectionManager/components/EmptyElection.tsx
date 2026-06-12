@@ -7,9 +7,7 @@ export default function EmptyElection() {
         text-muted-foreground
       "
     >
-      Belum ada election.
-      Sync dari Sanity
-      atau buat manual.
+      Belum ada election. Sync dari Sanity atau buat manual.
     </div>
-  )
+  );
 }

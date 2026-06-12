@@ -1,4 +1,4 @@
 export interface RegionData {
-  kodeWilayah: string
-  jumlah: number
+  kodeWilayah: string;
+  jumlah: number;
 }

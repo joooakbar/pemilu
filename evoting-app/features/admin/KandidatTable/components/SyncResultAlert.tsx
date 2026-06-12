@@ -1,16 +1,12 @@
-import {  AlertCircle,  CheckCircle2,} from 'lucide-react'
-import type { SyncResult } from '../types'
+import { AlertCircle, CheckCircle2 } from "lucide-react";
+import type { SyncResult } from "../types";
 
 interface Props {
-  result: SyncResult
+  result: SyncResult;
 }
 
-export default function SyncResultAlert({
-  result,
-}: Props) {
-
-  const hasError =
-    result.errors.length > 0
+export default function SyncResultAlert({ result }: Props) {
+  const hasError = result.errors.length > 0;
 
   return (
     <div
@@ -22,12 +18,11 @@ export default function SyncResultAlert({
 
         ${
           hasError
-            ? 'border-amber-200 bg-amber-50'
-            : 'border-green-200 bg-green-50'
+            ? "border-amber-200 bg-amber-50"
+            : "border-green-200 bg-green-50"
         }
       `}
     >
-
       <div
         className={`
           flex
@@ -36,14 +31,9 @@ export default function SyncResultAlert({
           text-sm
           font-semibold
 
-          ${
-            hasError
-              ? 'text-amber-700'
-              : 'text-green-700'
-          }
+          ${hasError ? "text-amber-700" : "text-green-700"}
         `}
       >
-
         {hasError ? (
           <AlertCircle className="h-4 w-4" />
         ) : (
@@ -51,9 +41,7 @@ export default function SyncResultAlert({
         )}
 
         {result.message}
-
       </div>
-
     </div>
-  )
+  );
 }

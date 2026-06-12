@@ -13,13 +13,9 @@ export default function InfoSection() {
         ② Klik <strong>Sinkronisasi</strong>
       </p>
 
-      <p>
-        ③ Status election hanya diubah via Emergency Stop
-      </p>
+      <p>③ Status election hanya diubah via Emergency Stop</p>
 
-      <p>
-        ④ Setelah sync, election otomatis dipakai dashboard
-      </p>
+      <p>④ Setelah sync, election otomatis dipakai dashboard</p>
     </div>
-  )
+  );
 }

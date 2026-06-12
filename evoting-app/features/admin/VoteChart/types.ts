@@ -1,12 +1,12 @@
 export interface KandidatVote {
-  nama: string
-  jumlah: number
+  nama: string;
+  jumlah: number;
 }
 
 export interface ElectionStats {
-  suaraPerKandidat: KandidatVote[]
+  suaraPerKandidat: KandidatVote[];
 }
 
 export interface VoteChartProps {
-  electionId: string
+  electionId: string;
 }

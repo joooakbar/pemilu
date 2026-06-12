@@ -1,5 +1,4 @@
 export default function DPTEmpty() {
-
   return (
     <div
       className="
@@ -10,5 +9,5 @@ export default function DPTEmpty() {
     >
       Tidak ada data
     </div>
-  )
+  );
 }

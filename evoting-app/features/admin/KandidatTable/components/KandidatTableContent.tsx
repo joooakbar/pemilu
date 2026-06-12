@@ -1,20 +1,16 @@
-import KandidatRow from './KandidatRow'
-import EmptyState from './EmptyState'
-import type { KandidatSanity } from '@/types'
-import type { KandidatDB } from '../types'
+import KandidatRow from "./KandidatRow";
+import EmptyState from "./EmptyState";
+import type { KandidatSanity } from "@/types";
+import type { KandidatDB } from "../types";
 
 interface Props {
-  sanityData: KandidatSanity[]
-  dbList: KandidatDB[]
+  sanityData: KandidatSanity[];
+  dbList: KandidatDB[];
 }
 
-export default function KandidatTableContent({
-  sanityData,
-  dbList,
-}: Props) {
-
+export default function KandidatTableContent({ sanityData, dbList }: Props) {
   if (sanityData.length === 0) {
-    return <EmptyState />
+    return <EmptyState />;
   }
 
   return (
@@ -25,22 +21,18 @@ export default function KandidatTableContent({
         border
       "
     >
-
       <table
         className="
           w-full
           text-sm
         "
       >
-
         <thead
           className="
             bg-secondary/60
           "
         >
-
           <tr>
-
             <th
               className="
                 px-4
@@ -130,27 +122,19 @@ export default function KandidatTableContent({
             >
               Aksi
             </th>
-
           </tr>
-
         </thead>
 
         <tbody className="divide-y">
-
-          {sanityData.map(kandidat => (
-
+          {sanityData.map((kandidat) => (
             <KandidatRow
               key={kandidat._id}
               kandidat={kandidat}
               dbList={dbList}
             />
-
           ))}
-
         </tbody>
-
       </table>
-
     </div>
-  )
+  );
 }

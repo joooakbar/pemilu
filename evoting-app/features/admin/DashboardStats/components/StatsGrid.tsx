@@ -1,16 +1,12 @@
-import StatsCard from './StatsCard'
+import StatsCard from "./StatsCard";
 
-import { StatsCardItem }
-from '../types'
+import { StatsCardItem } from "../types";
 
 interface Props {
-  cards: StatsCardItem[]
+  cards: StatsCardItem[];
 }
 
-export default function StatsGrid({
-  cards,
-}: Props) {
-
+export default function StatsGrid({ cards }: Props) {
   return (
     <div
       className="
@@ -20,14 +16,9 @@ export default function StatsGrid({
         gap-4
       "
     >
-
       {cards.map((card) => (
-        <StatsCard
-          key={card.label}
-          item={card}
-        />
+        <StatsCard key={card.label} item={card} />
       ))}
-
     </div>
-  )
+  );
 }

@@ -1,1 +1,1 @@
-export const INITIAL_SYNC_RESULT = null
+export const INITIAL_SYNC_RESULT = null;

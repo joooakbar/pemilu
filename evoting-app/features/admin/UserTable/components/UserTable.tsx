@@ -1,91 +1,78 @@
-'use client'
-import { useState } from 'react'
-import { toast } from 'sonner'
-import UserToolbar from './UserToolbar'
-import UserForm from './UserForm'
-import UserTableContent from './UserTableContent'
-import { useUsers } from '../hooks/useUsers'
-import type {  Role,  UserTableProps,  UserFormData,  UserRow,} from '../types'
+"use client";
+import { useState } from "react";
+import { toast } from "sonner";
+import UserToolbar from "./UserToolbar";
+import UserForm from "./UserForm";
+import UserTableContent from "./UserTableContent";
+import { useUsers } from "../hooks/useUsers";
+import type { Role, UserTableProps, UserFormData, UserRow } from "../types";
 
-export default function UserTable({
-  currentUserId,
-}: UserTableProps) {
-  const {
-    users,
-    setUsers,
-    loading,
-    createUser,
-  } = useUsers()
+export default function UserTable({ currentUserId }: UserTableProps) {
+  const { users, setUsers, loading, createUser } = useUsers();
 
-  const [showForm, setShowForm] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const [filterRole, setFilterRole] =
-    useState<Role | 'ALL'>('ALL')
+  const [showForm, setShowForm] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [filterRole, setFilterRole] = useState<Role | "ALL">("ALL");
 
-  const [form, setForm] =
-    useState<UserFormData>({
-      username: '',
-      email: '',
-      password: '',
-      role: 'PANITIA',
-    })
+  const [form, setForm] = useState<UserFormData>({
+    username: "",
+    email: "",
+    password: "",
+    role: "PANITIA",
+  });
 
   const filtered =
-    filterRole === 'ALL'
-      ? users
-      : users.filter(u => u.role === filterRole)
+    filterRole === "ALL" ? users : users.filter((u) => u.role === filterRole);
 
   const create = async () => {
-    setSaving(true)
+    setSaving(true);
 
-    const json = await createUser(form)
+    const json = await createUser(form);
 
     if (!json.success) {
-      toast.error(json.error)
-      setSaving(false)
-      return
+      toast.error(json.error);
+      setSaving(false);
+      return;
     }
 
-    setUsers(prev => [...prev, json.data])
+    setUsers((prev) => [...prev, json.data]);
 
-    toast.success('Akun berhasil dibuat')
+    toast.success("Akun berhasil dibuat");
 
-    setSaving(false)
-    setShowForm(false)
-  }
+    setSaving(false);
+    setShowForm(false);
+  };
 
   const toggleActive = async (user: UserRow) => {
     await fetch(`/api/admin/users/${user.id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         isActive: !user.isActive,
       }),
-    })
+    });
 
-    setUsers(prev =>
-      prev.map(u =>
+    setUsers((prev) =>
+      prev.map((u) =>
         u.id === user.id
           ? {
               ...u,
               isActive: !u.isActive,
             }
-          : u
-      )
-    )
-  }
+          : u,
+      ),
+    );
+  };
 
   const deleteUser = async (user: UserRow) => {
     await fetch(`/api/admin/users/${user.id}`, {
-      method: 'DELETE',
-    })
+      method: "DELETE",
+    });
 
-    setUsers(prev =>
-      prev.filter(u => u.id !== user.id)
-    )
-  }
+    setUsers((prev) => prev.filter((u) => u.id !== user.id));
+  };
 
   return (
     <div className="space-y-4">
@@ -119,5 +106,5 @@ export default function UserTable({
         {filtered.length} pengguna ditampilkan
       </p>
     </div>
-  )
+  );
 }

@@ -1,56 +1,40 @@
-'use client'
-import { useState } from 'react'
-import { DPTTableProps } from '../types'
-import { useDPTData } from '../hooks/useDPTData'
-import { useFilteredDPT } from '../hooks/useFilteredDPT'
-import DPTSearch from './DPTSearch'
-import DPTTableBody from './DPTTableBody'
-import DPTLoading from './DPTLoading'
+"use client";
+import { useState } from "react";
+import { DPTTableProps } from "../types";
+import { useDPTData } from "../hooks/useDPTData";
+import { useFilteredDPT } from "../hooks/useFilteredDPT";
+import DPTSearch from "./DPTSearch";
+import DPTTableBody from "./DPTTableBody";
+import DPTLoading from "./DPTLoading";
 
 const headers = [
-  'NIK',
-  'Nama',
-  'Kode Wilayah',
-  'Phone',
-  'Status',
-  'Waktu Pilih',
-]
+  "NIK",
+  "Nama",
+  "Kode Wilayah",
+  "Phone",
+  "Status",
+  "Waktu Pilih",
+];
 
-export default function DPTTable({
-  electionId,
-}: DPTTableProps) {
+export default function DPTTable({ electionId }: DPTTableProps) {
+  const [search, setSearch] = useState("");
 
-  const [search, setSearch] =
-    useState('')
+  const { data, loading } = useDPTData(search);
 
-  const { data, loading } =
-    useDPTData(search)
-
-  const filtered =
-    useFilteredDPT(
-      data,
-      search
-    )
+  const filtered = useFilteredDPT(data, search);
 
   if (loading) {
-    return <DPTLoading />
+    return <DPTLoading />;
   }
 
   return (
     <div className="space-y-3">
-
-      <DPTSearch
-        search={search}
-        setSearch={setSearch}
-      />
+      <DPTSearch search={search} setSearch={setSearch} />
 
       <div className="overflow-hidden rounded-lg border">
-
         <table className="w-full text-sm">
-
           <thead className="bg-secondary/50">
             <tr>
-
               {headers.map((header) => (
                 <th
                   key={header}
@@ -62,14 +46,10 @@ export default function DPTTable({
                   {header}
                 </th>
               ))}
-
             </tr>
           </thead>
 
-          <DPTTableBody
-            data={filtered}
-          />
-
+          <DPTTableBody data={filtered} />
         </table>
 
         {filtered.length === 0 && (
@@ -77,14 +57,12 @@ export default function DPTTable({
             Tidak ada data
           </div>
         )}
-
       </div>
 
       <p className="text-xs text-muted-foreground">
-        Menampilkan {Math.min(filtered.length, 100)}
-        {' '}dari {filtered.length} pemilih
+        Menampilkan {Math.min(filtered.length, 100)} dari {filtered.length}{" "}
+        pemilih
       </p>
-
     </div>
-  )
+  );
 }

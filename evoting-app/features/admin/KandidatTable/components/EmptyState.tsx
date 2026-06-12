@@ -10,14 +10,9 @@ export default function EmptyState() {
         text-center
       "
     >
+      <p className="text-3xl">📝</p>
 
-      <p className="text-3xl">
-        📝
-      </p>
-
-      <p className="font-semibold">
-        Belum ada kandidat di Sanity
-      </p>
+      <p className="font-semibold">Belum ada kandidat di Sanity</p>
 
       <p
         className="
@@ -25,8 +20,8 @@ export default function EmptyState() {
           text-muted-foreground
         "
       >
-        Tambahkan kandidat di Sanity Studio,
-        klik Publish, lalu klik Sinkronisasi.
+        Tambahkan kandidat di Sanity Studio, klik Publish, lalu klik
+        Sinkronisasi.
       </p>
 
       <a
@@ -46,7 +41,6 @@ export default function EmptyState() {
       >
         Buka Sanity Studio ↗
       </a>
-
     </div>
-  )
+  );
 }

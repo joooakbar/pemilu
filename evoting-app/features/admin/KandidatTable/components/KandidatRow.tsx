@@ -1,27 +1,17 @@
-import Image from 'next/image'
-import { Badge } from '@/components/ui/badge'
-import {  AlertCircle,  CheckCircle2,} from 'lucide-react'
-import type { KandidatSanity } from '@/types'
-import type { KandidatDB } from '../types'
-import { getKandidatSyncStatus } from '../utils'
+import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
+import type { KandidatSanity } from "@/types";
+import type { KandidatDB } from "../types";
+import { getKandidatSyncStatus } from "../utils";
 
 interface Props {
-  kandidat: KandidatSanity
-  dbList: KandidatDB[]
+  kandidat: KandidatSanity;
+  dbList: KandidatDB[];
 }
 
-export default function KandidatRow({
-  kandidat,
-  dbList,
-}: Props) {
-
-  const {
-    synced,
-    hasChanges,
-  } = getKandidatSyncStatus(
-    kandidat,
-    dbList
-  )
+export default function KandidatRow({ kandidat, dbList }: Props) {
+  const { synced, hasChanges } = getKandidatSyncStatus(kandidat, dbList);
 
   return (
     <tr
@@ -30,7 +20,6 @@ export default function KandidatRow({
         hover:bg-secondary/20
       "
     >
-
       <td
         className="
           px-4
@@ -44,9 +33,7 @@ export default function KandidatRow({
       </td>
 
       <td className="px-4 py-3">
-
         {kandidat.foto?.asset?.url ? (
-
           <Image
             src={kandidat.foto.asset.url}
             alt={kandidat.namaPaslon}
@@ -59,9 +46,7 @@ export default function KandidatRow({
               object-cover
             "
           />
-
         ) : (
-
           <div
             className="
               flex
@@ -76,9 +61,7 @@ export default function KandidatRow({
           >
             👤
           </div>
-
         )}
-
       </td>
 
       <td
@@ -104,12 +87,8 @@ export default function KandidatRow({
       </td>
 
       <td className="px-4 py-3">
-
         {!synced && (
-          <Badge
-            variant="destructive"
-            className="gap-1 text-xs"
-          >
+          <Badge variant="destructive" className="gap-1 text-xs">
             <AlertCircle className="h-3 w-3" />
             Belum sync
           </Badge>
@@ -140,11 +119,9 @@ export default function KandidatRow({
             Tersinkronisasi
           </Badge>
         )}
-
       </td>
 
       <td className="px-4 py-3">
-
         <a
           href="/studio"
           target="_blank"
@@ -157,9 +134,7 @@ export default function KandidatRow({
         >
           Edit ↗
         </a>
-
       </td>
-
     </tr>
-  )
+  );
 }

@@ -11,7 +11,6 @@ export default function GuideInfo() {
         text-muted-foreground
       "
     >
-
       <p
         className="
           text-sm
@@ -39,7 +38,6 @@ export default function GuideInfo() {
 
       <p>
         ④ Data masuk ke tabel
-
         <code
           className="
             ml-1
@@ -51,7 +49,6 @@ export default function GuideInfo() {
           kandidat_ref
         </code>
       </p>
-
     </div>
-  )
+  );
 }

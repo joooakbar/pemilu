@@ -6,52 +6,67 @@ export async function GET(req: NextRequest) {
   const idPemilihan = req.nextUrl.searchParams.get("idPemilihan");
 
   if (!idPemilihan) {
-    return new Response("idPemilihan required", { status: 400 });
+    return new Response("idPemilihan required", {
+      status: 400,
+    });
   }
+
+  const encoder = new TextEncoder();
+
+  const totalDPT = await prisma.dPT.count();
+
+  const kandidat = await getKandidatList();
+
+  const kandidatCount = kandidat?.length ?? 0;
 
   const stream = new ReadableStream({
     async start(controller) {
       let interval: NodeJS.Timeout;
+      let closed = false;
 
       const send = async () => {
-        const kandidat = await getKandidatList();
+        try {
+          if (closed) return;
 
-        const totalDPT = await prisma.dPT.count();
+          const sudahMemilih = await prisma.votes.count({
+            where: { idPemilihan },
+          });
 
-        const sudahMemilih = await prisma.votes.count({
-          where: { idPemilihan },
-        });
+          const belumMemilih = totalDPT - sudahMemilih;
 
-        const belumMemilih = totalDPT - sudahMemilih;
+          const partisipasi =
+            totalDPT > 0
+              ? Number(((sudahMemilih / totalDPT) * 100).toFixed(1))
+              : 0;
 
-        const partisipasi =
-          totalDPT > 0
-            ? Number(((sudahMemilih / totalDPT) * 100).toFixed(1))
-            : 0;
+          const data = {
+            totalDPT,
+            sudahMemilih,
+            belumMemilih,
+            partisipasi,
+            kandidat: kandidatCount,
+          };
 
-        const kandidatCount = kandidat?.length ?? 0;
-
-        const data = {
-          totalDPT,
-          sudahMemilih,
-          belumMemilih,
-          partisipasi,
-          kandidat: kandidatCount,
-        };
-
-        controller.enqueue(`data: ${JSON.stringify(data)}\n\n`);
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify(data)}\n\n`),
+          );
+        } catch (error) {
+          console.error("SSE Error:", error);
+        }
       };
 
-      // initial send
       await send();
 
-      // realtime interval
-      interval = setInterval(send, 3000);
+      interval = setInterval(send, 10000);
 
-      // cleanup
       req.signal.addEventListener("abort", () => {
+        closed = true;
+
         clearInterval(interval);
-        controller.close();
+
+        try {
+          controller.close();
+        } catch {}
       });
     },
   });

@@ -1,10 +1,10 @@
-import StatusBadge from './StatusBadge'
+import StatusBadge from "./StatusBadge";
 
 interface Props {
   election: {
-    nama: string
-    status: string
-  }
+    nama: string;
+    status: string;
+  };
 }
 
 export default function EmergencyStatusCard({ election }: Props) {
@@ -18,5 +18,5 @@ export default function EmergencyStatusCard({ election }: Props) {
         Status saat ini: <StatusBadge status={election.status} />
       </p>
     </div>
-  )
+  );
 }

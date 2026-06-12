@@ -1,24 +1,21 @@
-export type Role =
-  | 'ADMIN'
-  | 'PANITIA'
-  | 'SAKSI'
+export type Role = "ADMIN" | "PANITIA" | "SAKSI";
 
 export interface UserRow {
-  id: string
-  username: string
-  email: string
-  role: Role
-  isActive: boolean
-  createdAt: string
+  id: string;
+  username: string;
+  email: string;
+  role: Role;
+  isActive: boolean;
+  createdAt: string;
 }
 
 export interface UserTableProps {
-  currentUserId: string
+  currentUserId: string;
 }
 
 export interface UserFormData {
-  username: string
-  email: string
-  password: string
-  role: Role
+  username: string;
+  email: string;
+  password: string;
+  role: Role;
 }

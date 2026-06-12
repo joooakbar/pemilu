@@ -1,35 +1,30 @@
-'use client'
-import SidebarHeader from './SidebarHeader'
-import SidebarRole from './SidebarRole'
-import SidebarNav from './SidebarNav'
-import SidebarFooter from './SidebarFooter'
-import type { Role } from '../types'
+"use client";
+import SidebarHeader from "./SidebarHeader";
+import SidebarRole from "./SidebarRole";
+import SidebarNav from "./SidebarNav";
+import SidebarFooter from "./SidebarFooter";
+import type { Role } from "../types";
 
 interface Props {
-  role: Role
+  role: Role;
 }
 
-export default function AdminSidebar({
-  role,
-}: Props) {
-
+export default function AdminSidebar({ role }: Props) {
   const roleConfig = (() => {
-
     switch (role) {
-
-      case 'ADMIN':
+      case "ADMIN":
         return {
-          label: 'Admin',
-          color: 'bg-blue-500',
-        }
+          label: "Admin",
+          color: "bg-blue-500",
+        };
 
       default:
         return {
-          label: 'Petugas',
-          color: 'bg-green-500',
-        }
+          label: "Petugas",
+          color: "bg-green-500",
+        };
     }
-  })()
+  })();
 
   return (
     <aside
@@ -43,18 +38,13 @@ export default function AdminSidebar({
         md:flex
       "
     >
-
       <SidebarHeader />
 
-      <SidebarRole
-        label={roleConfig.label}
-        color={roleConfig.color}
-      />
+      <SidebarRole label={roleConfig.label} color={roleConfig.color} />
 
       <SidebarNav role={role} />
 
       <SidebarFooter />
-
     </aside>
-  )
+  );
 }

@@ -1,62 +1,50 @@
-'use client'
-import { useElectionStats } from '@/hooks/useSSE'
-import {  Card,  CardContent,  CardHeader,  CardTitle,} from '@/components/ui/card'
-import { Bar } from 'react-chartjs-2'
-import { chartOptions } from '../chart/chart.options'
-import '../chart/chart.config'
+"use client";
+import { useElectionStats } from "@/hooks/useSSE";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Bar } from "react-chartjs-2";
+import { chartOptions } from "../chart/chart.options";
+import "../chart/chart.config";
+import { ElectionStats, RegionStats } from "@/types";
 
 interface Props {
-  electionId: string
+  electionId: string;
 }
+type RegionMapStats = ElectionStats & {
+  suaraPerWilayah?: RegionStats[];
+};
 
-export default function RegionMap({
-  electionId,
-}: Props) {
-
-  const { stats } =
-    useElectionStats(electionId)
+export default function RegionMap({ electionId }: Props) {
+  const { stats } = useElectionStats(electionId) as {
+    stats: RegionMapStats | null;
+  };
 
   if (!stats) {
-    return null
+    return null;
   }
 
-  const sorted = [
-    ...stats.suaraPerWilayah,
-  ]
-    .sort(
-      (a, b) =>
-        b.jumlah - a.jumlah
-    )
-    .slice(0, 10)
-
+  const sorted = [...(stats?.suaraPerWilayah ?? [])]
+    .sort((a, b) => b.jumlah - a.jumlah)
+    .slice(0, 10);
   const chartData = {
-    labels: sorted.map(
-      region => region.kodeWilayah
-    ),
+    labels: sorted.map((region) => region.kodeWilayah),
 
     datasets: [
       {
-        label: 'Jumlah Suara',
+        label: "Jumlah Suara",
 
-        data: sorted.map(
-          region => region.jumlah
-        ),
+        data: sorted.map((region) => region.jumlah),
 
-        backgroundColor: '#1d4ed8cc',
+        backgroundColor: "#1d4ed8cc",
 
         borderRadius: 6,
       },
     ],
-  }
+  };
 
   return (
     <Card>
-
       <CardHeader className="pb-2">
-
-        <CardTitle className="text-base">
-          Sebaran Suara per Wilayah
-        </CardTitle>
+        <CardTitle className="text-base">Sebaran Suara per Wilayah</CardTitle>
 
         <p
           className="
@@ -64,16 +52,12 @@ export default function RegionMap({
             text-muted-foreground
           "
         >
-          Berdasarkan 6 digit pertama
-          NIK (kode wilayah)
+          Berdasarkan 6 digit pertama NIK (kode wilayah)
         </p>
-
       </CardHeader>
 
       <CardContent className="h-64">
-
         {sorted.length === 0 ? (
-
           <div
             className="
               flex
@@ -86,18 +70,10 @@ export default function RegionMap({
           >
             Belum ada data wilayah
           </div>
-
         ) : (
-
-          <Bar
-            data={chartData}
-            options={chartOptions}
-          />
-
+          <Bar data={chartData} options={chartOptions} />
         )}
-
       </CardContent>
-
     </Card>
-  )
+  );
 }

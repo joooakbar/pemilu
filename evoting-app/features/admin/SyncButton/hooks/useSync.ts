@@ -1,64 +1,55 @@
-'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import type { SyncResult } from '../types/sync.types'
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import type { SyncResult } from "../types/sync.types";
 
 export function useSync() {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const [result, setResult] =
-    useState<SyncResult | null>(null)
+  const [result, setResult] = useState<SyncResult | null>(null);
 
   const sync = async () => {
-    setLoading(true)
-    setResult(null)
+    setLoading(true);
+    setResult(null);
 
     try {
-      const res = await fetch('/api/admin/sync', {
-        method: 'POST',
-      })
+      const res = await fetch("/api/admin/sync", {
+        method: "POST",
+      });
 
-      const json = await res.json()
+      const json = await res.json();
 
       if (!res.ok) {
-        toast.error(
-          json.error ?? 'Sinkronisasi gagal'
-        )
-        return
+        toast.error(json.error ?? "Sinkronisasi gagal");
+        return;
       }
 
-      setResult(json.data)
+      setResult(json.data);
 
-      const { election, kandidat } = json.data
+      const { election, kandidat } = json.data;
 
-      const totalErrors =
-        election.errors.length +
-        kandidat.errors.length
+      const totalErrors = election.errors.length + kandidat.errors.length;
 
       if (totalErrors === 0) {
-        toast.success(
-          'Sinkronisasi berhasil'
-        )
+        toast.success("Sinkronisasi berhasil");
 
-        router.refresh()
+        router.refresh();
       } else {
-        toast.warning(
-          `Sinkronisasi selesai dengan ${totalErrors} peringatan`
-        )
+        toast.warning(`Sinkronisasi selesai dengan ${totalErrors} peringatan`);
       }
     } catch {
-      toast.error('Gagal terhubung ke server')
+      toast.error("Gagal terhubung ke server");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return {
     loading,
     result,
     sync,
-  }
+  };
 }

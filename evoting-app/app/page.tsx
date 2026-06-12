@@ -34,7 +34,8 @@ export default async function VoterHomePage() {
       {/* Hero + Countdown */}
       <header className="site-header">
         <Navbar
-          electionStatus={pemilihan?.status ?? "DRAFT"}
+          startTime={pemilihan?.startTime?.toISOString() ?? ""}
+          endTime={pemilihan?.endTime?.toISOString() ?? ""}
           idPemilihan={pemilihan?.id}
         />
         <LiveTicker idPemilihan={pemilihan?.id} />

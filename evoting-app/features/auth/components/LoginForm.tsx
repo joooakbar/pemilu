@@ -1,30 +1,33 @@
-'use client'
+"use client";
 
-import { useForm } from 'react-hook-form'
-import { Button } from '@/components/ui/button'
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import {
-  Card, CardContent, CardHeader, CardTitle, CardDescription
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Mail, Lock } from 'lucide-react'
-import { LoginInput } from '@/features/auth/types'
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Mail, Lock } from "lucide-react";
+import { LoginInput } from "@/features/auth/types";
 type LoginForm = {
-  email: string
-  password: string
-}
+  email: string;
+  password: string;
+};
 type Props = {
-  onSubmit: (data: LoginInput) => Promise<void>
-  loading: boolean
-}
+  onSubmit: (data: LoginInput) => Promise<void>;
+  loading: boolean;
+};
 
 export default function LoginForm({ onSubmit, loading }: Props) {
-  const form = useForm<LoginInput>()
+  const form = useForm<LoginInput>();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10 px-4">
       <Card className="w-full max-w-md shadow-xl">
-
         <CardHeader className="text-center space-y-2 pb-6">
           <div className="mx-auto w-16 h-16 bg-primary rounded-2xl flex items-center justify-center text-white text-2xl font-black">
             🗳️
@@ -37,7 +40,6 @@ export default function LoginForm({ onSubmit, loading }: Props) {
 
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-
             {/* EMAIL */}
             <div className="space-y-1">
               <Label htmlFor="email">Email</Label>
@@ -48,8 +50,8 @@ export default function LoginForm({ onSubmit, loading }: Props) {
                   type="email"
                   placeholder="admin@evotis.id"
                   className="pl-9"
-                  {...form.register('email', {
-                    required: 'Email wajib diisi'
+                  {...form.register("email", {
+                    required: "Email wajib diisi",
                   })}
                 />
               </div>
@@ -70,8 +72,8 @@ export default function LoginForm({ onSubmit, loading }: Props) {
                   type="password"
                   placeholder="••••••••"
                   className="pl-9"
-                  {...form.register('password', {
-                    required: 'Password wajib diisi'
+                  {...form.register("password", {
+                    required: "Password wajib diisi",
                   })}
                 />
               </div>
@@ -86,11 +88,9 @@ export default function LoginForm({ onSubmit, loading }: Props) {
             <Button type="submit" className="w-full">
               Login
             </Button>
-
           </form>
         </CardContent>
-
       </Card>
     </div>
-  )
+  );
 }

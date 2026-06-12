@@ -1,35 +1,30 @@
-import { Badge } from '@/components/ui/badge'
-import { formatDateTime } from '@/lib/utils'
-import type { LogRow as LogType } from '../types'
+import { Badge } from "@/components/ui/badge";
+import { formatDateTime } from "@/lib/utils";
+import type { LogRow as LogType } from "../types";
 
 interface Props {
-  log: LogType
+  log: LogType;
 }
 
-export default function LogRow({
-  log,
-}: Props) {
-
+export default function LogRow({ log }: Props) {
   const actionStyle = (() => {
-
     switch (log.action) {
+      case "CREATE":
+        return "bg-green-100 text-green-700";
 
-      case 'CREATE':
-        return 'bg-green-100 text-green-700'
+      case "UPDATE":
+        return "bg-amber-100 text-amber-700";
 
-      case 'UPDATE':
-        return 'bg-amber-100 text-amber-700'
+      case "DELETE":
+        return "bg-red-100 text-red-700";
 
-      case 'DELETE':
-        return 'bg-red-100 text-red-700'
-
-      case 'LOGIN':
-        return 'bg-blue-100 text-blue-700'
+      case "LOGIN":
+        return "bg-blue-100 text-blue-700";
 
       default:
-        return 'bg-secondary text-foreground'
+        return "bg-secondary text-foreground";
     }
-  })()
+  })();
 
   return (
     <tr
@@ -37,7 +32,6 @@ export default function LogRow({
         hover:bg-secondary/20
       "
     >
-
       <td
         className="
           whitespace-nowrap
@@ -51,7 +45,6 @@ export default function LogRow({
       </td>
 
       <td className="px-4 py-2">
-
         <span
           className={`
             rounded
@@ -66,7 +59,6 @@ export default function LogRow({
         >
           {log.action}
         </span>
-
       </td>
 
       <td
@@ -80,14 +72,9 @@ export default function LogRow({
       </td>
 
       <td className="px-4 py-2">
-
-        <Badge
-          variant="outline"
-          className="text-xs"
-        >
+        <Badge variant="outline" className="text-xs">
           {log.role}
         </Badge>
-
       </td>
 
       <td
@@ -112,7 +99,6 @@ export default function LogRow({
       >
         {log.ipAddress}
       </td>
-
     </tr>
-  )
+  );
 }

@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 🔥 FIX: fallback system (ACTIVE → latest)
     const now = new Date();
 
     let pemilihan = await prisma.pemilihan.findFirst({
@@ -34,7 +33,6 @@ export async function POST(req: NextRequest) {
       orderBy: { startTime: "desc" },
     });
 
-    // fallback kalau tidak ada active election
     if (!pemilihan) {
       pemilihan = await prisma.pemilihan.findFirst({
         orderBy: { createdAt: "desc" },
@@ -71,6 +69,7 @@ export async function POST(req: NextRequest) {
       data: {
         nama: dpt.nama,
         dptId: dpt.id,
+        nik: dpt.nik,
         kodeWilayah: dpt.kodeWilayah,
         idPemilihan: pemilihan.id,
         hasVoted: !!vote,

@@ -1,14 +1,14 @@
-import { Button } from '@/components/ui/button'
-import {  Loader2,  RefreshCw,  CheckCircle2,} from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { Loader2, RefreshCw, CheckCircle2 } from "lucide-react";
 
 interface Props {
-  syncing: boolean
-  disabled: boolean
+  syncing: boolean;
+  disabled: boolean;
   syncResult: {
-    action: string
-    message: string
-  } | null
-  onSync: () => void
+    action: string;
+    message: string;
+  } | null;
+  onSync: () => void;
 }
 
 export default function SyncSection({
@@ -17,24 +17,18 @@ export default function SyncSection({
   syncResult,
   onSync,
 }: Props) {
-  const isLoading = syncing || disabled
+  const isLoading = syncing || disabled;
 
   const actionLabel =
-    syncResult?.action === 'created'
-      ? 'Election Dibuat'
-      : 'Election Diperbarui'
+    syncResult?.action === "created"
+      ? "Election Dibuat"
+      : "Election Diperbarui";
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-lg bg-secondary/40 border border-dashed">
-      <p className="text-sm font-medium text-center">
-        Sync ke Database
-      </p>
+      <p className="text-sm font-medium text-center">Sync ke Database</p>
 
-      <Button
-        onClick={onSync}
-        disabled={isLoading}
-        className="w-full gap-2"
-      >
+      <Button onClick={onSync} disabled={isLoading} className="w-full gap-2">
         {syncing ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -59,5 +53,5 @@ export default function SyncSection({
         </div>
       )}
     </div>
-  )
+  );
 }
