@@ -2,6 +2,7 @@
 import OTPCard from "@/features/voter/OTP/components/OTPCard";
 import OTPHeader from "@/features/voter/OTP/components/OTPHeader";
 import OTPVerification from "@/features/voter/OTP/components/OTPVerification";
+import "@/app/globals.css";
 // import { useState } from "react";
 // import { useRouter } from "next/navigation";
 // import { useForm } from "react-hook-form";
