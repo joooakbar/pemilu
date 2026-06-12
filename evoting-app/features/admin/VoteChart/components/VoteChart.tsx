@@ -1,29 +1,17 @@
-'use client'
-import {  ArcElement,  Chart,  Legend,  Tooltip,} from 'chart.js'
-import { Doughnut } from 'react-chartjs-2'
-import {  Card,  CardContent,  CardHeader,  CardTitle,} from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
-import { useVoteChart } from '../hooks/useVoteChart'
-import type { VoteChartProps } from '../types'
+"use client";
+import { ArcElement, Chart, Legend, Tooltip } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useVoteChart } from "../hooks/useVoteChart";
+import type { VoteChartProps } from "../types";
 
-Chart.register(
-  ArcElement,
-  Tooltip,
-  Legend
-)
+Chart.register(ArcElement, Tooltip, Legend);
 
-export default function VoteChart({
-  electionId,
-}: VoteChartProps) {
-
-  const {
-    stats,
-    labels,
-    data,
-  } = useVoteChart(electionId)
+export default function VoteChart({ electionId }: VoteChartProps) {
+  const { stats, labels, data } = useVoteChart(electionId);
 
   if (!stats) {
-
     return (
       <Skeleton
         className="
@@ -31,18 +19,13 @@ export default function VoteChart({
           rounded-xl
         "
       />
-    )
+    );
   }
 
   return (
     <Card>
-
       <CardHeader className="pb-2">
-
-        <CardTitle className="text-base">
-          Perolehan Suara
-        </CardTitle>
-
+        <CardTitle className="text-base">Perolehan Suara</CardTitle>
       </CardHeader>
 
       <CardContent
@@ -53,9 +36,7 @@ export default function VoteChart({
           justify-center
         "
       >
-
         {data.length === 0 ? (
-
           <div
             className="
               text-sm
@@ -64,9 +45,7 @@ export default function VoteChart({
           >
             Belum ada suara masuk
           </div>
-
         ) : (
-
           <Doughnut
             data={{
               labels,
@@ -76,39 +55,33 @@ export default function VoteChart({
                   data,
 
                   backgroundColor: [
-                    '#2563eb',
-                    '#16a34a',
-                    '#dc2626',
-                    '#ca8a04',
-                    '#9333ea',
-                    '#0891b2',
+                    "#2563eb",
+                    "#16a34a",
+                    "#dc2626",
+                    "#ca8a04",
+                    "#9333ea",
+                    "#0891b2",
                   ],
 
                   borderWidth: 2,
                 },
               ],
             }}
-
             options={{
               maintainAspectRatio: false,
 
               plugins: {
                 legend: {
-                  position:
-                    'bottom' as const,
+                  position: "bottom" as const,
                 },
               },
             }}
-
             style={{
-              maxHeight: '220px',
+              maxHeight: "220px",
             }}
           />
-
         )}
-
       </CardContent>
-
     </Card>
-  )
+  );
 }

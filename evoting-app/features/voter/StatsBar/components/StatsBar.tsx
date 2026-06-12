@@ -8,7 +8,13 @@ export default function StatsBar({ idPemilihan }: StatsBarProps) {
 
   const { stats, persen } = useParticipation(idPemilihan);
   if (!stats) {
-    return <div>Loading...</div>;
+    return (
+      <section className="stats-bar">
+        <div className="stats-empty">
+          Tidak ada pemilihan berlangsung / Pemilihan berakhir
+        </div>
+      </section>
+    );
   }
   return (
     <section className="stats-bar">

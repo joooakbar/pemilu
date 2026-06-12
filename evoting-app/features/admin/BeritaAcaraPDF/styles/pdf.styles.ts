@@ -1,23 +1,23 @@
-import { StyleSheet } from '@react-pdf/renderer'
+import { StyleSheet } from "@react-pdf/renderer";
 
 export const styles = StyleSheet.create({
   page: {
     padding: 48,
-    fontFamily: 'Helvetica',
+    fontFamily: "Helvetica",
     fontSize: 11,
   },
 
   title: {
     fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: 4,
   },
 
   subtitle: {
     fontSize: 12,
-    textAlign: 'center',
-    color: '#555',
+    textAlign: "center",
+    color: "#555",
     marginBottom: 24,
   },
 
@@ -26,28 +26,28 @@ export const styles = StyleSheet.create({
   },
 
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: '6 0',
-    borderBottom: '1 solid #eee',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: "6 0",
+    borderBottom: "1 solid #eee",
   },
 
   label: {
-    color: '#666',
+    color: "#666",
     flex: 1,
   },
 
   value: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     flex: 1,
-    textAlign: 'right',
+    textAlign: "right",
   },
 
   winner: {
     marginTop: 16,
     padding: 12,
-    backgroundColor: '#f0fdf4',
+    backgroundColor: "#f0fdf4",
     borderRadius: 6,
-    textAlign: 'center',
+    textAlign: "center",
   },
-})
+});

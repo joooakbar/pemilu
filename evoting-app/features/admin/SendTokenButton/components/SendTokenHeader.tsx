@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
-import { ChevronDown, ChevronUp, Send } from 'lucide-react'
+import { ChevronDown, ChevronUp, Send } from "lucide-react";
 
 interface Props {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function SendTokenHeader({ open, setOpen }: Props) {
   return (
     <button
-      onClick={() => setOpen(v => !v)}
+      onClick={() => setOpen((v) => !v)}
       className="w-full flex items-center justify-between px-5 py-4 hover:bg-secondary/30 transition-colors"
     >
       <div className="flex items-center gap-3">
@@ -19,9 +19,7 @@ export default function SendTokenHeader({ open, setOpen }: Props) {
         </div>
 
         <div className="text-left">
-          <p className="font-semibold text-sm">
-            Kirim Token ke Pemilih
-          </p>
+          <p className="font-semibold text-sm">Kirim Token ke Pemilih</p>
 
           <p className="text-xs text-muted-foreground">
             Generate & broadcast token OTP
@@ -29,10 +27,11 @@ export default function SendTokenHeader({ open, setOpen }: Props) {
         </div>
       </div>
 
-      {open
-        ? <ChevronUp className="w-4 h-4 text-muted-foreground" />
-        : <ChevronDown className="w-4 h-4 text-muted-foreground" />
-      }
+      {open ? (
+        <ChevronUp className="w-4 h-4 text-muted-foreground" />
+      ) : (
+        <ChevronDown className="w-4 h-4 text-muted-foreground" />
+      )}
     </button>
-  )
+  );
 }

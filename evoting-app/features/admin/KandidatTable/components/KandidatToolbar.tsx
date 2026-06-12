@@ -1,11 +1,11 @@
-import {  Loader2,  RefreshCw,} from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Loader2, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Props {
-  syncing: boolean
-  totalSanity: number
-  totalDB: number
-  onSync: () => void
+  syncing: boolean;
+  totalSanity: number;
+  totalDB: number;
+  onSync: () => void;
 }
 
 export default function KandidatToolbar({
@@ -14,7 +14,6 @@ export default function KandidatToolbar({
   totalDB,
   onSync,
 }: Props) {
-
   return (
     <div
       className="
@@ -25,34 +24,17 @@ export default function KandidatToolbar({
         gap-3
       "
     >
-
       <p
         className="
           text-sm
           text-muted-foreground
         "
       >
-
-        <span className="font-medium">
-          {totalSanity}
-        </span>
-
-        {' '}kandidat di Sanity ·{' '}
-
-        <span className="font-medium">
-          {totalDB}
-        </span>
-
-        {' '}terdaftar di database
-
+        <span className="font-medium">{totalSanity}</span> kandidat di Sanity ·{" "}
+        <span className="font-medium">{totalDB}</span> terdaftar di database
       </p>
 
-      <Button
-        onClick={onSync}
-        disabled={syncing}
-        className="gap-2"
-      >
-
+      <Button onClick={onSync} disabled={syncing} className="gap-2">
         {syncing ? (
           <>
             <Loader2
@@ -70,9 +52,7 @@ export default function KandidatToolbar({
             Sinkronisasi ke Database
           </>
         )}
-
       </Button>
-
     </div>
-  )
+  );
 }

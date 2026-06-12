@@ -1,11 +1,8 @@
 interface Props {
-  electionStatus: string
+  electionStatus: string;
 }
 
-export default function StatsFooter({
-  electionStatus,
-}: Props) {
-
+export default function StatsFooter({ electionStatus }: Props) {
   return (
     <div
       className="
@@ -16,16 +13,9 @@ export default function StatsFooter({
         text-right
       "
     >
-
       Status election:
-
-      <strong className="uppercase">
-        {' '}
-        {electionStatus}
-      </strong>
-
-      {' '}· Update otomatis tiap 3 detik
-
+      <strong className="uppercase"> {electionStatus}</strong> · Update otomatis
+      tiap 3 detik
     </div>
-  )
+  );
 }

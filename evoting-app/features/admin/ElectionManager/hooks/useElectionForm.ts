@@ -1,22 +1,17 @@
-import { useState }
-from 'react'
+import { useState } from "react";
 
 export function useElectionForm() {
+  const [showForm, setShowForm] = useState(false);
 
-  const [showForm, setShowForm] =
-    useState(false)
+  const [saving, setSaving] = useState(false);
 
-  const [saving, setSaving] =
-    useState(false)
-
-  const [form, setForm] =
-    useState({
-      nama: '',
-      startTime: '',
-      endTime: '',
-      tempatVoting: '',
-      deskripsi: '',
-    })
+  const [form, setForm] = useState({
+    nama: "",
+    startTime: "",
+    endTime: "",
+    tempatVoting: "",
+    deskripsi: "",
+  });
 
   return {
     showForm,
@@ -25,5 +20,5 @@ export function useElectionForm() {
     setSaving,
     form,
     setForm,
-  }
+  };
 }

@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button'
-import { Upload } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { Upload } from "lucide-react";
 
 interface Props {
-  onClick: () => void
+  onClick: () => void;
 }
 
 export default function ImportButton({ onClick }: Props) {
@@ -11,5 +11,5 @@ export default function ImportButton({ onClick }: Props) {
       <Upload className="w-4 h-4" />
       Import Excel/CSV
     </Button>
-  )
+  );
 }

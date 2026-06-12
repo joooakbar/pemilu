@@ -1,13 +1,13 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface Props {
-  form: any
-  setForm: any
-  saving: boolean
-  onSubmit: () => void
-  onCancel: () => void
+  form: any;
+  setForm: any;
+  saving: boolean;
+  onSubmit: () => void;
+  onCancel: () => void;
 }
 
 export default function ManualElectionForm({
@@ -21,8 +21,8 @@ export default function ManualElectionForm({
     setForm((prev: any) => ({
       ...prev,
       nama: e.target.value,
-    }))
-  }
+    }));
+  };
 
   return (
     <div className="rounded-xl border bg-card p-5 space-y-4">
@@ -44,5 +44,5 @@ export default function ManualElectionForm({
         </Button>
       </div>
     </div>
-  )
+  );
 }

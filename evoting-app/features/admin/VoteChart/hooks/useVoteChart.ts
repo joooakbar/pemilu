@@ -1,15 +1,17 @@
-import { useElectionStats } from '@/hooks/useSSE'
+import { useElectionStats } from "@/hooks/useSSE";
+import { StatsLocal } from "@/types";
 
 export const useVoteChart = (electionId: string) => {
-  const { stats } = useElectionStats(electionId)
+  const { stats } = useElectionStats(electionId);
+  const kandidat = (stats as unknown as StatsLocal).suaraPerKandidat ?? [];
 
-  const labels = stats?.suaraPerKandidat.map(s => s.nama) ?? []
+  const labels = kandidat.map((s) => s.nama) ?? [];
 
-  const data = stats?.suaraPerKandidat.map(s => s.jumlah) ?? []
+  const data = kandidat.map((s) => s.jumlah) ?? [];
 
   return {
     stats,
     labels,
     data,
-  }
-}
+  };
+};

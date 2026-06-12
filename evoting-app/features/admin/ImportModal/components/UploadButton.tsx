@@ -1,14 +1,14 @@
-import { Button } from '@/components/ui/button'
-import { Loader2, Upload } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { Loader2, Upload } from "lucide-react";
 
 interface Props {
-  loading: boolean
-  onClick: () => void
+  loading: boolean;
+  onClick: () => void;
 }
 
 export default function UploadButton({ loading, onClick }: Props) {
-  const Icon = loading ? Loader2 : Upload
-  const label = loading ? 'Mengupload...' : 'Pilih File'
+  const Icon = loading ? Loader2 : Upload;
+  const label = loading ? "Mengupload..." : "Pilih File";
 
   return (
     <Button
@@ -17,8 +17,8 @@ export default function UploadButton({ loading, onClick }: Props) {
       disabled={loading}
       onClick={onClick}
     >
-      <Icon className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+      <Icon className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
       {label}
     </Button>
-  )
+  );
 }

@@ -1,13 +1,13 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface Props {
-  editForm: any
-  setEditForm: any
-  saving: boolean
-  onSave: () => void
-  onCancel: () => void
+  editForm: any;
+  setEditForm: any;
+  saving: boolean;
+  onSave: () => void;
+  onCancel: () => void;
 }
 
 export default function ElectionEditForm({
@@ -19,14 +19,9 @@ export default function ElectionEditForm({
 }: Props) {
   return (
     <div className="space-y-4 p-5">
-
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-
         <div className="space-y-1 sm:col-span-2">
-
-          <Label className="text-xs">
-            Nama
-          </Label>
+          <Label className="text-xs">Nama</Label>
 
           <Input
             value={editForm.nama}
@@ -37,29 +32,18 @@ export default function ElectionEditForm({
               }))
             }
           />
-
         </div>
-
       </div>
 
       <div className="flex gap-2">
-
-        <Button
-          onClick={onSave}
-          disabled={saving}
-        >
+        <Button onClick={onSave} disabled={saving}>
           Simpan
         </Button>
 
-        <Button
-          variant="outline"
-          onClick={onCancel}
-        >
+        <Button variant="outline" onClick={onCancel}>
           Batal
         </Button>
-
       </div>
-
     </div>
-  )
+  );
 }

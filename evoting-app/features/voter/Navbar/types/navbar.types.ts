@@ -1,4 +1,5 @@
 export interface NavbarProps {
-    electionStatus: string
-    idPemilihan?: string
+  startTime: string;
+  endTime: string;
+  idPemilihan?: string;
 }

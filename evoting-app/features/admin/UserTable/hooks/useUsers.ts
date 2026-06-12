@@ -1,52 +1,49 @@
-'use client'
+"use client";
 
-import { useEffect, useState, useCallback } from 'react'
-import { toast } from 'sonner'
+import { useEffect, useState, useCallback } from "react";
+import { toast } from "sonner";
 
-import type {
-  UserRow,
-  UserFormData,
-} from '../types'
+import type { UserRow, UserFormData } from "../types";
 
 export function useUsers() {
-  const [users, setUsers] = useState<UserRow[]>([])
-  const [loading, setLoading] = useState(true)
+  const [users, setUsers] = useState<UserRow[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const loadUsers = useCallback(async () => {
     try {
-      const res = await fetch('/api/admin/users')
-      const json = await res.json()
+      const res = await fetch("/api/admin/users");
+      const json = await res.json();
 
       if (json.success) {
-        setUsers(json.data)
+        setUsers(json.data);
       }
     } catch {
-      toast.error('Gagal memuat pengguna')
+      toast.error("Gagal memuat pengguna");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    loadUsers()
-  }, [loadUsers])
+    loadUsers();
+  }, [loadUsers]);
 
   const createUser = async (form: UserFormData) => {
-    const res = await fetch('/api/admin/users', {
-      method: 'POST',
+    const res = await fetch("/api/admin/users", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(form),
-    })
+    });
 
-    return await res.json()
-  }
+    return await res.json();
+  };
 
   return {
     users,
     setUsers,
     loading,
     createUser,
-  }
+  };
 }

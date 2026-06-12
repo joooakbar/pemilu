@@ -1,14 +1,14 @@
-'use client'
-import {  Power,  Trash2,} from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import {  ROLE_COLOR,  ROLE_LABELS} from '../constants/user.constants'
-import type { UserRow as UserRowType } from '../types'
+"use client";
+import { Power, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ROLE_COLOR, ROLE_LABELS } from "../constants/user.constants";
+import type { UserRow as UserRowType } from "../types";
 
 interface Props {
-  user: UserRowType
-  currentUserId: string
-  toggleActive: (user: UserRowType) => void
-  deleteUser: (user: UserRowType) => void
+  user: UserRowType;
+  currentUserId: string;
+  toggleActive: (user: UserRowType) => void;
+  deleteUser: (user: UserRowType) => void;
 }
 
 export default function UserRow({
@@ -20,16 +20,12 @@ export default function UserRow({
   return (
     <tr
       className={`hover:bg-secondary/20 transition-colors ${
-        !user.isActive ? 'opacity-50' : ''
+        !user.isActive ? "opacity-50" : ""
       }`}
     >
-      <td className="px-4 py-3 font-medium">
-        {user.username}
-      </td>
+      <td className="px-4 py-3 font-medium">{user.username}</td>
 
-      <td className="px-4 py-3 text-muted-foreground text-xs">
-        {user.email}
-      </td>
+      <td className="px-4 py-3 text-muted-foreground text-xs">{user.email}</td>
 
       <td className="px-4 py-3">
         <span
@@ -41,17 +37,15 @@ export default function UserRow({
 
       <td className="px-4 py-3">
         <Badge
-          variant={user.isActive ? 'default' : 'secondary'}
+          variant={user.isActive ? "default" : "secondary"}
           className="text-xs"
         >
-          {user.isActive
-            ? '● Aktif'
-            : '○ Nonaktif'}
+          {user.isActive ? "● Aktif" : "○ Nonaktif"}
         </Badge>
       </td>
 
       <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
-        {new Date(user.createdAt).toLocaleDateString('id-ID')}
+        {new Date(user.createdAt).toLocaleDateString("id-ID")}
       </td>
 
       <td className="px-4 py-3">
@@ -74,5 +68,5 @@ export default function UserRow({
         </div>
       </td>
     </tr>
-  )
+  );
 }

@@ -1,26 +1,23 @@
-'use client'
+"use client";
 
-import { TOKEN_EXPIRED_OPTIONS, TOKEN_METHODS } from '../constants/send-token.constants'
-import type { SendTokenOptionsData } from '../types/send-token.types'
+import {
+  TOKEN_EXPIRED_OPTIONS,
+  TOKEN_METHODS,
+} from "../constants/send-token.constants";
+import type { SendTokenOptionsData } from "../types/send-token.types";
 
 interface Props {
-  opts: SendTokenOptionsData
-  setOpts: React.Dispatch<React.SetStateAction<SendTokenOptionsData>>
+  opts: SendTokenOptionsData;
+  setOpts: React.Dispatch<React.SetStateAction<SendTokenOptionsData>>;
 }
 
-export default function SendTokenOptions({
-  opts,
-  setOpts,
-}: Props) {
-
+export default function SendTokenOptions({ opts, setOpts }: Props) {
   const toggleVia = (v: string) => {
-    setOpts(o => ({
+    setOpts((o) => ({
       ...o,
-      via: o.via.includes(v)
-        ? o.via.filter(x => x !== v)
-        : [...o.via, v],
-    }))
-  }
+      via: o.via.includes(v) ? o.via.filter((x) => x !== v) : [...o.via, v],
+    }));
+  };
 
   return (
     <>
@@ -28,8 +25,8 @@ export default function SendTokenOptions({
         <input
           type="checkbox"
           checked={opts.generate}
-          onChange={e =>
-            setOpts(o => ({
+          onChange={(e) =>
+            setOpts((o) => ({
               ...o,
               generate: e.target.checked,
             }))
@@ -38,9 +35,7 @@ export default function SendTokenOptions({
         />
 
         <div>
-          <p className="text-sm font-medium">
-            Generate token baru
-          </p>
+          <p className="text-sm font-medium">Generate token baru</p>
 
           <p className="text-xs text-muted-foreground">
             Buat token baru untuk pemilih
@@ -49,9 +44,7 @@ export default function SendTokenOptions({
       </label>
 
       <div className="space-y-2">
-        <p className="text-sm font-medium">
-          Kirim melalui:
-        </p>
+        <p className="text-sm font-medium">Kirim melalui:</p>
 
         <div className="flex gap-3">
           {TOKEN_METHODS.map(({ val, label, desc }) => (
@@ -59,8 +52,8 @@ export default function SendTokenOptions({
               key={val}
               className={`flex-1 cursor-pointer rounded-lg border p-3 ${
                 opts.via.includes(val)
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border'
+                  ? "border-primary bg-primary/5"
+                  : "border-border"
               }`}
             >
               <input
@@ -70,34 +63,28 @@ export default function SendTokenOptions({
                 onChange={() => toggleVia(val)}
               />
 
-              <p className="text-sm font-medium">
-                {label}
-              </p>
+              <p className="text-sm font-medium">{label}</p>
 
-              <p className="text-xs text-muted-foreground">
-                {desc}
-              </p>
+              <p className="text-xs text-muted-foreground">{desc}</p>
             </label>
           ))}
         </div>
       </div>
 
       <div className="flex items-center gap-3">
-        <p className="text-sm font-medium">
-          Token berlaku:
-        </p>
+        <p className="text-sm font-medium">Token berlaku:</p>
 
         <select
           value={opts.expiredJam}
-          onChange={e =>
-            setOpts(o => ({
+          onChange={(e) =>
+            setOpts((o) => ({
               ...o,
               expiredJam: +e.target.value,
             }))
           }
           className="h-9 rounded-md border border-input bg-background px-3 text-sm"
         >
-          {TOKEN_EXPIRED_OPTIONS.map(h => (
+          {TOKEN_EXPIRED_OPTIONS.map((h) => (
             <option key={h} value={h}>
               {h} jam
             </option>
@@ -105,5 +92,5 @@ export default function SendTokenOptions({
         </select>
       </div>
     </>
-  )
+  );
 }

@@ -1,16 +1,16 @@
 export interface SyncSectionData {
-  created: number
-  updated: number
-  skipped: number
-  errors: string[]
+  created: number;
+  updated: number;
+  skipped: number;
+  errors: string[];
 }
 
 export interface SyncResult {
-  timestamp: string
+  timestamp: string;
 
   election: SyncSectionData & {
-    electionId?: string
-  }
+    electionId?: string;
+  };
 
-  kandidat: SyncSectionData
+  kandidat: SyncSectionData;
 }

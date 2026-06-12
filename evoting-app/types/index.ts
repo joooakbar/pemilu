@@ -94,3 +94,36 @@ export interface SyncResult {
   kandidat: SyncSectionResult;
   timestamp: string;
 }
+
+export type ElectionDB = {
+  id: string;
+  sanityId: string | null;
+  nama: string;
+  status: ElectionStatus;
+  startTime: string;
+  endTime: string;
+  tempatVoting: string | null;
+  deskripsi: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type RegionStats = {
+  kodeWilayah: string;
+  jumlah: number;
+};
+
+export type RegionStatsProps = {
+  stats?: {
+    suaraPerWilayah?: RegionStats[];
+  };
+};
+
+export type KandidatStats = {
+  nama: string;
+  jumlah: number;
+};
+
+export type StatsLocal = {
+  suaraPerKandidat?: KandidatStats[];
+};

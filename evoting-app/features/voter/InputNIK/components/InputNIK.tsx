@@ -1,126 +1,50 @@
-'use client'
+"use client";
 
-import {
-  Loader2,
-  IdCard,
-} from 'lucide-react'
+import { useVerifyNIKVote } from "../hooks/useVerifyNIKVote";
+import AuthError from "../../Auth/components/AuthError";
+import "@/app/globals.css";
 
-import { Button } from '@/components/ui/button'
-
-import { Input } from '@/components/ui/input'
-
-import { Label } from '@/components/ui/label'
-
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card'
-
-import { useInputNIK } from '../hooks/useInputNIK'
-
-import type {
-  InputNIKProps,
-} from '../types/inputnik.types'
-
-export default function InputNIK({
-  onSubmit,
-  loading,
-}: InputNIKProps) {
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useInputNIK()
-
+const InputNIK = () => {
+  const { nik, error, loading, handleChange, verifyNIKVote } =
+    useVerifyNIKVote();
   return (
-    <Card className="shadow-xl">
+    <div className="auth-body">
+      {error && <AuthError message={error} />}
 
-      <CardHeader className="text-center pb-4">
+      <div className="aform-group">
+        <label>Nomor Induk Kependudukan (NIK)</label>
 
-        <div className="mx-auto w-14 h-14 bg-primary rounded-2xl flex-center text-white text-2xl mb-2">
-          🗳️
-        </div>
+        <input
+          className="nik-input"
+          type="text"
+          value={nik}
+          placeholder="3518 XXXX XXXX XXXX"
+          maxLength={16}
+          onChange={(e) => handleChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              verifyNIKVote();
+            }
+          }}
+        />
+      </div>
 
-        <CardTitle>
-          Verifikasi Identitas
-        </CardTitle>
+      <div className="auth-demo">
+        NIK terdiri dari 16 digit. Temukan di KTP elektronik Anda.
+        <br />
+        <strong>DEMO NIK:</strong> 3506051011030002
+      </div>
 
-        <CardDescription>
-          Masukkan Nomor Induk
-          Kependudukan (NIK)
-          Anda
-        </CardDescription>
+      <button className="btn-auth" disabled={loading} onClick={verifyNIKVote}>
+        {loading ? "Memverifikasi..." : "Verifikasi NIK →"}
+      </button>
 
-      </CardHeader>
+      <div className="auth-hint">
+        Pilihan Anda bersifat rahasia dan tidak dapat diketahui siapapun,
+        termasuk admin sistem.
+      </div>
+    </div>
+  );
+};
 
-      <CardContent>
-
-        <form
-          onSubmit={handleSubmit(
-            onSubmit
-          )}
-          className="space-y-4"
-        >
-
-          <div className="space-y-1">
-
-            <Label htmlFor="nik">
-              Nomor NIK
-              (16 digit)
-            </Label>
-
-            <div className="relative">
-
-              <IdCard
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
-              />
-
-              <Input
-                id="nik"
-                placeholder="3518xxxxxxxxxxxx"
-                className="pl-9 tracking-widest"
-                maxLength={16}
-                {...register('nik')}
-              />
-
-            </div>
-
-            {errors.nik && (
-              <p className="text-destructive text-sm">
-                {errors.nik.message}
-              </p>
-            )}
-
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-          >
-
-            {loading ? (
-              <>
-                <Loader2
-                  className="w-4 h-4 animate-spin mr-2"
-                />
-
-                Memeriksa...
-              </>
-            ) : (
-              'Lanjutkan →'
-            )}
-
-          </Button>
-
-        </form>
-
-      </CardContent>
-
-    </Card>
-  )
-}
+export default InputNIK;

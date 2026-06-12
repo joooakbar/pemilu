@@ -1,45 +1,30 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 
-import LogSearch from './LogSearch'
-import LogRow from './LogRow'
+import LogSearch from "./LogSearch";
+import LogRow from "./LogRow";
 
-import type { LogRow as LogType } from '../types'
+import type { LogRow as LogType } from "../types";
 
 interface Props {
-  data: LogType[]
+  data: LogType[];
 }
 
-export default function LogTable({
-  data,
-}: Props) {
+export default function LogTable({ data }: Props) {
+  const [search, setSearch] = useState("");
 
-  const [search, setSearch] =
-    useState('')
+  const keyword = search.toLowerCase();
 
-  const keyword =
-    search.toLowerCase()
-
-  const filtered = data.filter(log =>
-    log.action
-      .toLowerCase()
-      .includes(keyword)
-
-    ||
-
-    log.username
-      .toLowerCase()
-      .includes(keyword)
-  )
+  const filtered = data.filter(
+    (log) =>
+      log.action.toLowerCase().includes(keyword) ||
+      log.username.toLowerCase().includes(keyword),
+  );
 
   return (
     <div className="space-y-3">
-
-      <LogSearch
-        search={search}
-        onChange={setSearch}
-      />
+      <LogSearch search={search} onChange={setSearch} />
 
       <div
         className="
@@ -48,22 +33,18 @@ export default function LogTable({
           border
         "
       >
-
         <table
           className="
             w-full
             text-sm
           "
         >
-
           <thead
             className="
               bg-secondary/50
             "
           >
-
             <tr>
-
               <th
                 className="
                   px-4
@@ -135,28 +116,17 @@ export default function LogTable({
               >
                 IP
               </th>
-
             </tr>
-
           </thead>
 
           <tbody className="divide-y">
-
-            {filtered.map(log => (
-
-              <LogRow
-                key={log.id}
-                log={log}
-              />
-
+            {filtered.map((log) => (
+              <LogRow key={log.id} log={log} />
             ))}
-
           </tbody>
-
         </table>
 
         {filtered.length === 0 && (
-
           <div
             className="
               py-10
@@ -166,11 +136,8 @@ export default function LogTable({
           >
             Tidak ada log
           </div>
-
         )}
-
       </div>
-
     </div>
-  )
+  );
 }

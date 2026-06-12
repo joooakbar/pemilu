@@ -1,23 +1,16 @@
-'use client'
-import { BeritaAcaraPreviewProps } from '../types'
-import { usePartisipasi } from '../hooks/usePartisipasi'
-import DownloadButton from './DownloadButton'
+"use client";
+import { BeritaAcaraPreviewProps } from "../types";
+import { usePartisipasi } from "../hooks/usePartisipasi";
+import DownloadButton from "./DownloadButton";
 
-function PreviewHeader({ nama,
-}: {
-  nama: string
-}) {
+function PreviewHeader({ nama }: { nama: string }) {
   return (
     <div className="text-center space-y-1 border-b pb-4">
-      <h2 className="text-xl font-bold">
-        BERITA ACARA PEMILIHAN
-      </h2>
+      <h2 className="text-xl font-bold">BERITA ACARA PEMILIHAN</h2>
 
-      <p className="text-muted-foreground">
-        {nama}
-      </p>
+      <p className="text-muted-foreground">{nama}</p>
     </div>
-  )
+  );
 }
 
 function PreviewInfo({
@@ -27,34 +20,29 @@ function PreviewInfo({
   totalSuara,
   partisipasi,
 }: {
-  startTime: string
-  endTime: string
-  totalDPT: number
-  totalSuara: number
-  partisipasi: string
+  startTime: string;
+  endTime: string;
+  totalDPT: number;
+  totalSuara: number;
+  partisipasi: string;
 }) {
-  return (
-    <div>
-      {/* isi info */}
-    </div>
-  )
+  return <div>{/* isi info */}</div>;
 }
 
-function PreviewRekapitulasi({  data,
-}: {  data: BeritaAcaraPreviewProps['rekapitulasi']}) {
-  return (
-    <div>
-      {/* isi rekap */}
-    </div>
-  )
+function PreviewRekapitulasi({
+  data,
+}: {
+  data: BeritaAcaraPreviewProps["rekapitulasi"];
+}) {
+  return <div>{/* isi rekap */}</div>;
 }
 
-function PreviewWinner({  pemenang,}: {  pemenang: BeritaAcaraPreviewProps['rekapitulasi'][0]}) {
-  return (
-    <div>
-      {/* isi winner */}
-    </div>
-  )
+function PreviewWinner({
+  pemenang,
+}: {
+  pemenang: BeritaAcaraPreviewProps["rekapitulasi"][0];
+}) {
+  return <div>{/* isi winner */}</div>;
 }
 
 export default function BeritaAcaraPreview({
@@ -63,29 +51,22 @@ export default function BeritaAcaraPreview({
   totalSuara,
   rekapitulasi,
 }: BeritaAcaraPreviewProps) {
-
-  const partisipasi = usePartisipasi(
-    totalDPT,
-    totalSuara
-  )
+  const partisipasi = usePartisipasi(totalDPT, totalSuara);
 
   const pemenang = rekapitulasi.reduce(
-    (a, b) =>
-      b.jumlah > a.jumlah ? b : a,
-    rekapitulasi[0]
-  )
+    (a, b) => (b.jumlah > a.jumlah ? b : a),
+    rekapitulasi[0],
+  );
 
   return (
     <div className="space-y-6">
-
-      <div className="
+      <div
+        className="
         rounded-xl border bg-card
         p-8 max-w-2xl space-y-6
-      ">
-
-        <PreviewHeader
-          nama={election.nama}
-        />
+      "
+      >
+        <PreviewHeader nama={election.nama} />
 
         <PreviewInfo
           startTime={election.startTime}
@@ -95,22 +76,12 @@ export default function BeritaAcaraPreview({
           partisipasi={partisipasi}
         />
 
-        <PreviewRekapitulasi
-          data={rekapitulasi}
-        />
+        <PreviewRekapitulasi data={rekapitulasi} />
 
-        {pemenang && (
-          <PreviewWinner
-            pemenang={pemenang}
-          />
-        )}
-
+        {pemenang && <PreviewWinner pemenang={pemenang} />}
       </div>
 
-      <DownloadButton
-        electionId={election.id}
-      />
-
+      <DownloadButton electionId={election.id} />
     </div>
-  )
+  );
 }

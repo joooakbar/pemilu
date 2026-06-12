@@ -1,15 +1,15 @@
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import UploadButton from './UploadButton'
-import ImportResult from './ImportResult'
-import type { ImportResultData } from '../types'
+import React from "react";
+import { Button } from "@/components/ui/button";
+import UploadButton from "./UploadButton";
+import ImportResult from "./ImportResult";
+import type { ImportResultData } from "../types";
 
 interface Props {
-  open: boolean
-  loading: boolean
-  result: ImportResultData | null
-  onClose: () => void
-  onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void
+  open: boolean;
+  loading: boolean;
+  result: ImportResultData | null;
+  onClose: () => void;
+  onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function ImportDialog({
@@ -19,7 +19,7 @@ export default function ImportDialog({
   onClose,
   onUpload,
 }: Props) {
-  if (!open) return null
+  if (!open) return null;
 
   return (
     <div
@@ -60,5 +60,5 @@ export default function ImportDialog({
         </Button>
       </div>
     </div>
-  )
+  );
 }

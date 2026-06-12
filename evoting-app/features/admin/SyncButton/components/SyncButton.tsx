@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   RefreshCw,
   Loader2,
@@ -13,81 +13,60 @@ import {
   ChevronUp,
   Vote,
   Calendar,
-} from 'lucide-react'
-import type { SyncResult } from '../types/sync.types.ts'
+} from "lucide-react";
+import type { SyncResult } from "../types/sync.types.ts";
 
 export default function SyncButton() {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const [result, setResult] =
-    useState<SyncResult | null>(null)
+  const [result, setResult] = useState<SyncResult | null>(null);
 
-  const [expanded, setExpanded] =
-    useState(false)
+  const [expanded, setExpanded] = useState(false);
 
   const sync = async () => {
-    setLoading(true)
-    setResult(null)
+    setLoading(true);
+    setResult(null);
 
     try {
-      const res = await fetch(
-        '/api/admin/sync',
-        {
-          method: 'POST',
-        },
-      )
+      const res = await fetch("/api/admin/sync", {
+        method: "POST",
+      });
 
-      const json = await res.json()
+      const json = await res.json();
 
       if (!res.ok) {
-        toast.error(
-          json.error ??
-          'Sinkronisasi gagal',
-        )
-        return
+        toast.error(json.error ?? "Sinkronisasi gagal");
+        return;
       }
 
-      setResult(json.data)
+      setResult(json.data);
 
-      setExpanded(true)
+      setExpanded(true);
 
-      const {
-        election,
-        kandidat,
-      } = json.data
+      const { election, kandidat } = json.data;
 
-      const totalErrors =
-        election.errors.length +
-        kandidat.errors.length
+      const totalErrors = election.errors.length + kandidat.errors.length;
 
       if (totalErrors === 0) {
         toast.success(
-          'Sinkronisasi berhasil — election & kandidat sudah diperbarui',
-        )
+          "Sinkronisasi berhasil — election & kandidat sudah diperbarui",
+        );
 
-        router.refresh()
+        router.refresh();
       } else {
-        toast.warning(
-          `Sinkronisasi selesai dengan ${totalErrors} peringatan`,
-        )
+        toast.warning(`Sinkronisasi selesai dengan ${totalErrors} peringatan`);
       }
     } catch {
-      toast.error(
-        'Gagal terhubung ke server',
-      )
+      toast.error("Gagal terhubung ke server");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const hasError =
-    result &&
-    (
-      result.election.errors.length +
-      result.kandidat.errors.length
-    ) > 0
+    result && result.election.errors.length + result.kandidat.errors.length > 0;
 
   return (
     <div className="rounded-xl border bg-card overflow-hidden">
@@ -104,16 +83,13 @@ export default function SyncButton() {
             </p>
 
             <p className="text-xs text-muted-foreground">
-              Sync data Info Pemilihan &amp; Kandidat dari Sanity CMS ke MySQL sekaligus
+              Sync data Info Pemilihan &amp; Kandidat dari Sanity CMS ke MySQL
+              sekaligus
             </p>
           </div>
         </div>
 
-        <Button
-          onClick={sync}
-          disabled={loading}
-          className="gap-2 shrink-0"
-        >
+        <Button onClick={sync} disabled={loading} className="gap-2 shrink-0">
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -133,9 +109,7 @@ export default function SyncButton() {
         <div className="border-t">
           {/* Toggle */}
           <button
-            onClick={() =>
-              setExpanded(v => !v)
-            }
+            onClick={() => setExpanded((v) => !v)}
             className="w-full flex items-center justify-between px-5 py-3 hover:bg-secondary/30 transition-colors"
           >
             <div className="flex items-center gap-2">
@@ -147,14 +121,12 @@ export default function SyncButton() {
 
               <span className="text-sm font-medium">
                 {hasError
-                  ? 'Selesai dengan peringatan'
-                  : 'Sinkronisasi berhasil'}
+                  ? "Selesai dengan peringatan"
+                  : "Sinkronisasi berhasil"}
               </span>
 
               <span className="text-xs text-muted-foreground">
-                {new Date(
-                  result.timestamp,
-                ).toLocaleTimeString('id-ID')}
+                {new Date(result.timestamp).toLocaleTimeString("id-ID")}
               </span>
             </div>
 
@@ -169,16 +141,20 @@ export default function SyncButton() {
           {expanded && (
             <div className="px-5 pb-5 space-y-3">
               {/* Election */}
-              <div className={`rounded-lg border p-4 space-y-2 ${
-                result.election.errors.length > 0
-                  ? 'border-amber-200 bg-amber-50'
-                  : 'border-green-200 bg-green-50'
-              }`}>
-                <div className={`flex items-center gap-2 font-medium text-sm ${
+              <div
+                className={`rounded-lg border p-4 space-y-2 ${
                   result.election.errors.length > 0
-                    ? 'text-amber-800'
-                    : 'text-green-800'
-                }`}>
+                    ? "border-amber-200 bg-amber-50"
+                    : "border-green-200 bg-green-50"
+                }`}
+              >
+                <div
+                  className={`flex items-center gap-2 font-medium text-sm ${
+                    result.election.errors.length > 0
+                      ? "text-amber-800"
+                      : "text-green-800"
+                  }`}
+                >
                   <Calendar className="w-4 h-4" />
                   Info Pemilihan (Election)
                 </div>
@@ -199,34 +175,34 @@ export default function SyncButton() {
 
                 {result.election.electionId && (
                   <p className="text-xs text-green-700 font-mono">
-                    Election ID:
-                    {' '}
-                    {result.election.electionId}
+                    Election ID: {result.election.electionId}
                   </p>
                 )}
 
                 {result.election.errors.length > 0 && (
                   <ul className="text-xs text-amber-700 list-disc pl-4 space-y-0.5">
                     {result.election.errors.map((e, i) => (
-                      <li key={i}>
-                        {e}
-                      </li>
+                      <li key={i}>{e}</li>
                     ))}
                   </ul>
                 )}
               </div>
 
               {/* Kandidat */}
-              <div className={`rounded-lg border p-4 space-y-2 ${
-                result.kandidat.errors.length > 0
-                  ? 'border-amber-200 bg-amber-50'
-                  : 'border-green-200 bg-green-50'
-              }`}>
-                <div className={`flex items-center gap-2 font-medium text-sm ${
+              <div
+                className={`rounded-lg border p-4 space-y-2 ${
                   result.kandidat.errors.length > 0
-                    ? 'text-amber-800'
-                    : 'text-green-800'
-                }`}>
+                    ? "border-amber-200 bg-amber-50"
+                    : "border-green-200 bg-green-50"
+                }`}
+              >
+                <div
+                  className={`flex items-center gap-2 font-medium text-sm ${
+                    result.kandidat.errors.length > 0
+                      ? "text-amber-800"
+                      : "text-green-800"
+                  }`}
+                >
                   <Vote className="w-4 h-4" />
                   Kandidat
                 </div>
@@ -248,9 +224,7 @@ export default function SyncButton() {
                 {result.kandidat.errors.length > 0 && (
                   <ul className="text-xs text-amber-700 list-disc pl-4 space-y-0.5">
                     {result.kandidat.errors.map((e, i) => (
-                      <li key={i}>
-                        {e}
-                      </li>
+                      <li key={i}>{e}</li>
                     ))}
                   </ul>
                 )}
@@ -262,36 +236,22 @@ export default function SyncButton() {
 
       {/* Footer */}
       <div className="border-t px-5 py-3 bg-secondary/20 text-xs text-muted-foreground space-y-1">
-        <p className="font-medium text-foreground">
-          Cara kerja:
-        </p>
+        <p className="font-medium text-foreground">Cara kerja:</p>
 
         <p>
-          ① Isi data di
-          {' '}
-          <strong>Sanity Studio</strong>
-          {' '}
-          (/studio) → klik
-          {' '}
+          ① Isi data di <strong>Sanity Studio</strong> (/studio) → klik{" "}
           <strong>Publish</strong>
         </p>
 
         <p>
-          ② Klik
-          {' '}
-          <strong>Sinkronisasi Sekarang</strong>
-          {' '}
-          — data langsung masuk ke MySQL
+          ② Klik <strong>Sinkronisasi Sekarang</strong> — data langsung masuk ke
+          MySQL
         </p>
 
         <p>
-          ③ Status election
-          {' '}
-          <strong>TIDAK</strong>
-          {' '}
-          berubah saat sync
+          ③ Status election <strong>TIDAK</strong> berubah saat sync
         </p>
       </div>
     </div>
-  )
+  );
 }

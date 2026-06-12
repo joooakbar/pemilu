@@ -1,6 +1,6 @@
-import { NextRequest } from 'next/server'
-import { handleVerifyOtp } from './handler'
+import { NextRequest } from "next/server";
+import { handleVerifyOtp } from "./handler";
 
 export async function POST(req: NextRequest) {
-  return handleVerifyOtp(req)
+  return handleVerifyOtp(req);
 }

@@ -8,6 +8,8 @@ export function useElectionStats(idPemilihan?: string) {
   const [error, setError] = useState<string | null>(null);
 
   const sourceRef = useRef<EventSource | null>(null);
+  const lastUpdateRef = useRef<number>(0);
+  const lastDataRef = useRef<string>("");
 
   useEffect(() => {
     if (!idPemilihan) return;
@@ -29,8 +31,20 @@ export function useElectionStats(idPemilihan?: string) {
 
     es.onmessage = (e) => {
       try {
-        const data = JSON.parse(e.data) as ElectionStats;
-        console.log("SSE DATA:", data);
+        const now = Date.now();
+        const data: ElectionStats = JSON.parse(e.data);
+
+        // 🔥 throttle (anti rerender spam)
+        if (now - lastUpdateRef.current < 2500) return;
+
+        const serialized = JSON.stringify(data);
+
+        // 🔥 skip kalau data tidak berubah
+        if (serialized === lastDataRef.current) return;
+
+        lastUpdateRef.current = now;
+        lastDataRef.current = serialized;
+
         setStats(data);
       } catch (err) {
         console.error("PARSE ERROR:", err);

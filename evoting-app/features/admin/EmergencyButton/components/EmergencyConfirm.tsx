@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { Loader2 } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 interface Props {
-  action: string
-  loading: boolean
-  onConfirm: () => void
-  onCancel: () => void
+  action: string;
+  loading: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
 export default function EmergencyConfirm({
@@ -30,7 +30,7 @@ export default function EmergencyConfirm({
           {loading ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
-            'Ya, Lanjutkan'
+            "Ya, Lanjutkan"
           )}
         </Button>
 
@@ -39,5 +39,5 @@ export default function EmergencyConfirm({
         </Button>
       </div>
     </div>
-  )
+  );
 }

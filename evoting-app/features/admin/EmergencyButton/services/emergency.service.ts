@@ -1,22 +1,14 @@
-export async function emergencyRequest(
-  electionId: string,
-  action: string,
-) {
+export async function emergencyRequest(electionId: string, action: string) {
+  return fetch("/api/admin/election/emergency", {
+    method: "POST",
 
-  return fetch(
-    '/api/admin/election/emergency',
-    {
-      method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
 
-      headers: {
-        'Content-Type':
-          'application/json',
-      },
-
-      body: JSON.stringify({
-        electionId,
-        action,
-      }),
-    }
-  )
+    body: JSON.stringify({
+      electionId,
+      action,
+    }),
+  });
 }

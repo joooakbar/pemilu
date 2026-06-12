@@ -1,22 +1,15 @@
-'use client'
-import { Doughnut } from 'react-chartjs-2'
-import {  Chart,  ArcElement,  Tooltip,  Legend,} from 'chart.js'
-import { CHART_COLORS } from '../constants/voteChart.constants'
-Chart.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-)
+"use client";
+import { Doughnut } from "react-chartjs-2";
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+import { CHART_COLORS } from "../constants/voteChart.constants";
+Chart.register(ArcElement, Tooltip, Legend);
 
 interface Props {
-  labels: string[]
-  data: number[]
+  labels: string[];
+  data: number[];
 }
 
-export default function VoteChartContent({
-  labels,
-  data,
-}: Props) {
+export default function VoteChartContent({ labels, data }: Props) {
   return (
     <Doughnut
       data={{
@@ -32,12 +25,12 @@ export default function VoteChartContent({
       options={{
         plugins: {
           legend: {
-            position: 'bottom',
+            position: "bottom",
           },
         },
         maintainAspectRatio: false,
       }}
-      style={{ maxHeight: '220px' }}
+      style={{ maxHeight: "220px" }}
     />
-  )
+  );
 }

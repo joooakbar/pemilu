@@ -1,21 +1,17 @@
 const headers = [
-  'NIK',
-  'Nama',
-  'Kode Wilayah',
-  'Phone',
-  'Status',
-  'Waktu Pilih',
-]
+  "NIK",
+  "Nama",
+  "Kode Wilayah",
+  "Phone",
+  "Status",
+  "Waktu Pilih",
+];
 
 export default function DPTTableHeader() {
-
   return (
     <thead className="bg-secondary/50">
-
       <tr>
-
         {headers.map((h) => (
-
           <th
             key={h}
             className="
@@ -27,11 +23,8 @@ export default function DPTTableHeader() {
           >
             {h}
           </th>
-
         ))}
-
       </tr>
-
     </thead>
-  )
+  );
 }

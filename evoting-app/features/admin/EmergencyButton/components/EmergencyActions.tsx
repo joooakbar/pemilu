@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button'
-import { Square, Play, AlertTriangle } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { Square, Play, AlertTriangle } from "lucide-react";
 
 interface Props {
-  isActive: boolean
-  isSuspended: boolean
-  onSuspend: () => void
-  onResume: () => void
-  onEnd: () => void
+  isActive: boolean;
+  isSuspended: boolean;
+  onSuspend: () => void;
+  onResume: () => void;
+  onEnd: () => void;
 }
 
 export default function EmergencyActions({
@@ -26,7 +26,10 @@ export default function EmergencyActions({
       )}
 
       {isSuspended && (
-        <Button onClick={onResume} className="gap-2 bg-green-600 hover:bg-green-700">
+        <Button
+          onClick={onResume}
+          className="gap-2 bg-green-600 hover:bg-green-700"
+        >
           <Play className="w-4 h-4" />
           Lanjutkan
         </Button>
@@ -43,5 +46,5 @@ export default function EmergencyActions({
         </Button>
       )}
     </div>
-  )
+  );
 }

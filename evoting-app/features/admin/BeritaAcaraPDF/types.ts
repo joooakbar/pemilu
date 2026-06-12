@@ -1,19 +1,19 @@
 export interface Election {
-  nama: string
-  startTime: Date
-  endTime: Date
+  nama: string;
+  startTime: Date;
+  endTime: Date;
 }
 
 export interface Rekapitulasi {
-  nomor: number
-  nama: string
-  jumlah: number
+  nomor: number;
+  nama: string;
+  jumlah: number;
 }
 
 export interface BeritaAcaraData {
-  election: Election
-  totalDPT: number
-  totalSuara: number
-  rekapitulasi: Rekapitulasi[]
-  generatedAt: Date
+  election: Election;
+  totalDPT: number;
+  totalSuara: number;
+  rekapitulasi: Rekapitulasi[];
+  generatedAt: Date;
 }
