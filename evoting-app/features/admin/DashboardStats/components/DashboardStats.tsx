@@ -1,8 +1,15 @@
 import { Users, CheckCircle } from "lucide-react";
-import { DashboardStats, StatsCardItem } from "../types";
+import {
+  DashboardStats as DashboardStatsType,
+  StatsCardItem,
+} from "../types";
+
+export default function DashboardStats() {
+  return <div>Dashboard Stats</div>;
+}
 
 export function useDashboardCards(
-  stats?: DashboardStats | null,
+  stats?: DashboardStatsType | null,
 ): StatsCardItem[] {
   return [
     {
