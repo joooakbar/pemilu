@@ -1,10 +1,10 @@
 import { getAuthPayload }  from '@/lib/auth'
 import prisma              from '@/lib/db'
-import DashboardStats      from '@/features/admin/DashboardStats/components/DashboardStats'
-import VoteChart           from '@/features/admin/VoteChart/components/VoteChart'
-import RegionMap           from '@/features/admin/RegionMap/components/RegionMap'
-import SendTokenButton     from '@/features/admin/SendTokenButton/components/SendTokenButton'
-import SyncButton          from '@/features/admin/SyncButton/components/SyncButton'
+import DashboardStats      from '@/components/admin/DashboardStats'
+import VoteChart           from '@/components/admin/VoteChart'
+import RegionMap           from '@/components/admin/RegionMap'
+import SendTokenButton     from '@/components/admin/SendTokenButton'
+import SyncButton          from '@/components/admin/SyncButton'
 
 export const metadata = { title: 'Dashboard' }
 

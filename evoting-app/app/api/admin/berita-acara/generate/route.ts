@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 import { err, withAuth, logActivity, getIP } from '@/lib/api'
 import { renderToBuffer } from '@react-pdf/renderer'
 import { createElement } from 'react'
-import { BeritaAcaraPDF } from '@/features/admin/BeritaAcaraPDF/components/BeritaAcaraPDF'
+import { BeritaAcaraPDF } from '@/components/admin/BeritaAcaraPDF'
 import prisma from '@/lib/db'
 
 export async function GET(req: NextRequest) {

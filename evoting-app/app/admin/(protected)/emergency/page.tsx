@@ -1,7 +1,7 @@
 import { getAuthPayload } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db";
-import EmergencyButton from "@/features/admin/EmergencyButton/components/EmergencyButton";
+import EmergencyButton from "@/components/admin/EmergencyButton";
 
 export const metadata = { title: "Emergency Stop" };
 
