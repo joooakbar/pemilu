@@ -76,16 +76,23 @@ model Pemilihan {
 
 model Kandidat {
   id String @id @default(uuid()) @db.VarChar(36)
+
   idPemilihan String @db.VarChar(36)
   pemilihan Pemilihan @relation(fields: [idPemilihan], references: [id])
-  noUrut Int @unique
+
+  noUrut Int
   nama String @db.VarChar(255)
+
   sanityId String @unique @db.VarChar(191)
   isActive Boolean @default(true)
+
   createdAt DateTime @default(now())
+
   votes Votes[]
 
-  @@unique([ idPemilihan ])
+  @@unique([idPemilihan, noUrut])
+  @@index([idPemilihan])
+
   @@map("kandidat")
 }
 
