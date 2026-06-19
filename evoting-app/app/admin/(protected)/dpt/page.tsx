@@ -1,6 +1,6 @@
 import prisma from "@/lib/db";
-import DPTTable from "@/features/admin/DPTTable/components/DPTTable";
-import ImportModal from "@/features/admin/ImportModal/components/ImportModal";
+import DPTTable from "@/components/admin/DPTTable";
+import ImportModal from "@/components/admin/ImportModal";
 
 export const metadata = { title: "Manajemen DPT" };
 

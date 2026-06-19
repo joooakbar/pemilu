@@ -2,7 +2,7 @@ import { getAuthPayload } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db";
 import { getElectionInfo } from "@/sanity/lib/fetchers";
-import ElectionManager from "@/features/admin/ElectionManager/components/ElectionManager";
+import ElectionManager from "@/components/admin/ElectionManager";
 import type { ElectionDB } from "@/types";
 
 export const metadata = { title: "Manajemen Election" };
