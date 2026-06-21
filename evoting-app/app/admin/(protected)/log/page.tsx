@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import LogTable from "@/features/admin/LogTable/components/LogTable";
+import LogTable from "@/components/admin/LogTable";
 
 export const metadata = { title: "Log Aktivitas" };
 
