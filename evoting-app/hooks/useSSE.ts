@@ -32,28 +32,48 @@ export function useElectionStats(idPemilihan?: string) {
     es.onmessage = (e) => {
       try {
         const now = Date.now();
-        const data: ElectionStats = JSON.parse(e.data);
 
-        // 🔥 throttle (anti rerender spam)
-        if (now - lastUpdateRef.current < 2500) return;
+        console.log("========== SSE MESSAGE ==========");
+        console.log("RAW DATA:", e.data);
+        console.log("TYPE:", typeof e.data);
+
+        if (!e.data?.trim()) {
+          console.warn("SSE EMPTY DATA");
+          return;
+        }
+
+        const data = JSON.parse(e.data) as ElectionStats;
 
         const serialized = JSON.stringify(data);
 
-        // 🔥 skip kalau data tidak berubah
-        if (serialized === lastDataRef.current) return;
+        // Skip jika data sama
+        if (serialized === lastDataRef.current) {
+          return;
+        }
+
+        // Throttle update
+        if (now - lastUpdateRef.current < 2500) {
+          return;
+        }
 
         lastUpdateRef.current = now;
         lastDataRef.current = serialized;
 
         setStats(data);
+        setError(null);
+
+        console.log("PARSED DATA:", data);
       } catch (err) {
-        console.error("PARSE ERROR:", err);
+        console.error("========== SSE PARSE ERROR ==========");
+        console.error("RAW:", e.data);
+        console.error(err);
+
         setError("Gagal parse data SSE");
       }
     };
 
-    es.onerror = () => {
-      console.log("SSE ERROR - reconnecting...");
+    es.onerror = (err) => {
+      console.error("SSE ERROR:", err);
       setError("Koneksi SSE terputus");
     };
 
@@ -64,5 +84,8 @@ export function useElectionStats(idPemilihan?: string) {
     };
   }, [idPemilihan]);
 
-  return { stats, error };
+  return {
+    stats,
+    error,
+  };
 }

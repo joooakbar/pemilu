@@ -1,24 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const otp = String(body.otp || "").trim();
+    const otp = String(body.otp || "")
+      .trim()
+      .toUpperCase();
+
+    const nik = String(body.nik || "").trim();
     const idPemilihan = String(body.idPemilihan || "").trim();
 
     if (!otp || otp.length !== 6) {
       return NextResponse.json(
-        { success: false, error: "OTP harus 6 digit" },
+        { success: false, error: "Token harus 6 karakter" },
         { status: 400 },
       );
     }
 
-    if (!idPemilihan) {
+    if (!nik || !idPemilihan) {
       return NextResponse.json(
-        { success: false, error: "ID pemilihan tidak ditemukan" },
+        { success: false, error: "Data tidak lengkap" },
         { status: 400 },
+      );
+    }
+
+    const dpt = await prisma.dPT.findUnique({
+      where: { nik },
+    });
+
+    if (!dpt) {
+      return NextResponse.json(
+        { success: false, error: "DPT tidak ditemukan" },
+        { status: 404 },
       );
     }
 
@@ -38,19 +54,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // =========================
-    // 🔥 DEMO OTP LOGIC
-    // =========================
+    const tokenHash = crypto.createHash("sha256").update(otp).digest("hex");
 
-    const DEMO_OTP = "123456";
+    const voteToken = await prisma.voteToken.findFirst({
+      where: {
+        dptId: dpt.id,
+        idPemilihan,
+        tokenHash,
+        isUsed: false,
+        expiredAt: {
+          gt: new Date(),
+        },
+      },
+    });
 
-    const validOtp = DEMO_OTP;
-
-    if (otp.toUpperCase() !== validOtp) {
+    if (!voteToken) {
       return NextResponse.json(
         {
           success: false,
-          error: "OTP tidak valid",
+          error: "Token tidak valid atau sudah kadaluarsa",
         },
         { status: 400 },
       );
@@ -60,16 +82,21 @@ export async function POST(req: NextRequest) {
       success: true,
       data: {
         verified: true,
+        tokenId: voteToken.id,
+        dptId: dpt.id,
+        nama: dpt.nama,
         idPemilihan: pemilihan.id,
         namaPemilihan: pemilihan.nama,
-        status: pemilihan.status,
       },
     });
   } catch (error) {
     console.error("verifyOTP error:", error);
 
     return NextResponse.json(
-      { success: false, error: "Internal server error" },
+      {
+        success: false,
+        error: "Internal server error",
+      },
       { status: 500 },
     );
   }

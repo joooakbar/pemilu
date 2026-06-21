@@ -100,6 +100,12 @@ async function main() {
       noHP: "081234567894",
       email: "eko@example.com",
     },
+    {
+      nik: "3506014910040004",
+      nama: "Ratih Sulistia Ningsih",
+      noHP: "081234567894",
+      email: "ratihsulistianingsih5@gmail.com",
+    },
   ];
 
   for (const d of dptSamples) {
@@ -120,8 +126,8 @@ async function main() {
       nama: "Pemilihan Ketua BEM 2026",
       sanityId: "bem-2026",
       status: StatusPemilihan.ACTIVE,
-      startTime: new Date("2026-06-12T13:50:00Z"),
-      endTime: new Date("2026-06-12T17:00:00Z"),
+      startTime: new Date("2026-06-19T10:45:00Z"),
+      endTime: new Date("2026-06-19T17:00:00Z"),
       tempatVoting: "Universitas Nusantara PGRI Kediri",
       deskripsi: "Pemilihan Ketua BEM periode 2026",
     },

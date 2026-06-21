@@ -8,7 +8,12 @@ export interface VerifyOTPPayload {
 export interface VerifyOTPResponse {
   success: boolean;
   data: {
+    verified: boolean;
     tokenId: string;
+    dptId: string;
+    nama: string;
+    idPemilihan: string;
+    namaPemilihan: string;
   };
   error?: string;
 }

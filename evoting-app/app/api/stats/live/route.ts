@@ -14,14 +14,11 @@ export async function GET(req: NextRequest) {
   const encoder = new TextEncoder();
 
   const totalDPT = await prisma.dPT.count();
-
   const kandidat = await getKandidatList();
-
   const kandidatCount = kandidat?.length ?? 0;
 
   const stream = new ReadableStream({
     async start(controller) {
-      let interval: NodeJS.Timeout;
       let closed = false;
 
       const send = async () => {
@@ -31,6 +28,8 @@ export async function GET(req: NextRequest) {
           const sudahMemilih = await prisma.votes.count({
             where: { idPemilihan },
           });
+
+          if (closed) return;
 
           const belumMemilih = totalDPT - sudahMemilih;
 
@@ -47,26 +46,31 @@ export async function GET(req: NextRequest) {
             kandidat: kandidatCount,
           };
 
+          if (closed) return;
+
           controller.enqueue(
             encoder.encode(`data: ${JSON.stringify(data)}\n\n`),
           );
         } catch (error) {
-          console.error("SSE Error:", error);
+          if (!closed) {
+            console.error("SSE Error:", error);
+          }
         }
       };
 
       await send();
 
-      interval = setInterval(send, 10000);
+      const interval = setInterval(send, 10000);
 
       req.signal.addEventListener("abort", () => {
         closed = true;
-
         clearInterval(interval);
 
         try {
           controller.close();
-        } catch {}
+        } catch {
+          // stream sudah ditutup
+        }
       });
     },
   });

@@ -2,7 +2,6 @@ import {
   getKandidatList,
   getPengumumanList,
   getTataCara,
-  getElectionInfo,
 } from "@/sanity/lib/fetchers";
 import { prisma } from "@/lib/db";
 import TataCaraSection from "@/features/voter/TataCaraSection/components/TataCaraSection";
@@ -18,14 +17,12 @@ import Footer from "@/features/voter/Footer/components/Footer";
 export const metadata = { title: "Beranda Pemilihan" };
 
 export default async function VoterHomePage() {
-  const [kandidat, pengumuman, tataCara, infoSanity, pemilihan] =
-    await Promise.all([
-      getKandidatList(),
-      getPengumumanList(),
-      getTataCara(),
-      getElectionInfo(),
-      prisma.pemilihan.findFirst({ orderBy: { createdAt: "desc" } }),
-    ]);
+  const [kandidat, pengumuman, tataCara, pemilihan] = await Promise.all([
+    getKandidatList(),
+    getPengumumanList(),
+    getTataCara(),
+    prisma.pemilihan.findFirst({ orderBy: { createdAt: "desc" } }),
+  ]);
 
   console.log("PEMILIHAN:", pemilihan);
 
