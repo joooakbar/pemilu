@@ -7,7 +7,7 @@ const AuthHeader = () => {
   const router = useRouter();
 
   const handleBack = () => {
-    router.push("/"); // ganti kalau halaman voter kamu beda, misal "/vote"
+    router.push("/");
   };
 
   return (

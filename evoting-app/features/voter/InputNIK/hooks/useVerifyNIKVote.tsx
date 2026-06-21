@@ -44,14 +44,31 @@ export const useVerifyNIKVote = () => {
 
       console.log("NIK valid:", json.data);
 
-      sessionStorage.setItem("nik", nik);
-      sessionStorage.setItem("idPemilihan", json.data.idPemilihan);
+      const tokenReq = await fetch("/api/voter/request-token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nik,
+          idPemilihan: json.data.idPemilihan,
+        }),
+      });
+
+      const tokenJson = await tokenReq.json();
+
+      if (!tokenReq.ok || !tokenJson.success) {
+        setError(tokenJson.error || "Gagal mengirim token");
+        return;
+      }
+
       sessionStorage.setItem("voter_nama", json.data.nama);
-      sessionStorage.setItem("dptId", json.data.dptId);
+      sessionStorage.setItem("idPemilihan", json.data.idPemilihan);
+      sessionStorage.setItem("nik", nik);
 
       router.push(`/vote/${json.data.idPemilihan}/token`);
-    } catch (err) {
-      setError("Terjadi kesalahan server");
+    } catch (error) {
+      setError("Terjadi kesalahan server:");
     } finally {
       setLoading(false);
     }

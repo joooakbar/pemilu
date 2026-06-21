@@ -2,136 +2,150 @@
 
 import { useState } from "react";
 import "@/app/globals.css";
+import { VotingPageProps } from "../types/surat.types";
+import Image from "next/image";
+import { mapKandidatToCandidate } from "../../CandidateSection/utils/mapKandidat";
 
-export default function VotingPage() {
-  const [selectedCandidate, setSelectedCandidate] = useState<number | null>(
+export default function VotingPage({ pemilihan, kandidat }: VotingPageProps) {
+  const [selectedCandidate, setSelectedCandidate] = useState<string | null>(
     null,
   );
+  const [loading, setLoading] = useState(false);
 
-  const pilihKandidat = (id: number) => {
-    setSelectedCandidate(id);
+  const candidate = kandidat.map(mapKandidatToCandidate);
+  console.log(candidate);
+
+  const auth = {
+    nama:
+      typeof window !== "undefined"
+        ? (sessionStorage.getItem("voter_nama") ?? "")
+        : "",
+    dptId:
+      typeof window !== "undefined"
+        ? (sessionStorage.getItem("dptId") ?? "")
+        : "",
+    tokenId:
+      typeof window !== "undefined"
+        ? (sessionStorage.getItem("voter_tokenId") ?? "")
+        : "",
   };
 
-  const openConfirmModal = () => {
+  const openConfirmModal = async () => {
     if (!selectedCandidate) return;
 
-    console.log("Pilihan:", selectedCandidate);
+    try {
+      setLoading(true);
+
+      const res = await fetch("/api/voter/submit-vote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          dptId: auth.dptId,
+          tokenId: auth.tokenId,
+          idPemilihan: pemilihan.id,
+          kandidatId: selectedCandidate,
+        }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok || !json.success) {
+        alert(json.error || "Gagal mengirim suara");
+        return;
+      }
+
+      alert("Vote berhasil dikirim!");
+      window.location.href = "/";
+    } catch (error) {
+      console.error(error);
+      alert("Terjadi kesalahan server!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div id="screen-vote" className="screen">
+    <div id="screen-vote">
       <div className="vote-header">
         <div className="vote-header-brand">🗳️ E-VOTIS</div>
 
         <div className="vote-header-info">
-          <h3>Surat Suara Pemilihan Gubernur</h3>
-          <p>Provinsi X · 9 Maret 2025</p>
+          <h3>{pemilihan.nama}</h3>
         </div>
 
         <div className="vote-header-voter">
           Pemilih:
           <br />
-          <strong>Mohammad Aditya</strong>
+          <strong>{auth.nama ?? ""}</strong>
         </div>
       </div>
 
       <div className="vote-body">
         <div className="vote-instruction">
           <div className="icon">📋</div>
+
           <p>
-            <strong>Petunjuk:</strong> Pilih <strong>satu</strong> pasangan
-            calon dengan mengklik kartu kandidat. Pilihan Anda bersifat
-            <strong> RAHASIA</strong>.
+            <strong>Petunjuk:</strong> Pilih satu pasangan calon. Pilihan Anda
+            bersifat <strong>RAHASIA</strong>.
           </p>
         </div>
 
         <div className="surat-suara">
           <div className="ss-header">
             <div>
-              <div className="ss-title">
-                Pemilihan Gubernur dan Wakil Gubernur
-              </div>
-
-              <div className="ss-subtitle">
-                Provinsi X · Periode 2025–2030 · Centang satu pilihan
-              </div>
+              <div className="ss-title">{pemilihan.nama}</div>
+              <div className="ss-subtitle">Centang satu pilihan</div>
             </div>
 
             <div className="ss-seal">🏛️</div>
           </div>
 
           <div className="ss-kandidat-grid">
-            <div
-              className={`ss-kandidat ${
-                selectedCandidate === 1 ? "selected" : ""
-              }`}
-              onClick={() => pilihKandidat(1)}
-            >
-              <div className="ss-num">1</div>
-              <div className="ss-photo">👨‍💼</div>
+            {candidate.map((item) => (
+              <div
+                key={item.id}
+                className={`ss-kandidat ${
+                  selectedCandidate === item.id ? "selected" : ""
+                }`}
+                onClick={() => setSelectedCandidate(item.id)}
+              >
+                <div className="ss-num">{item.number}</div>
 
-              <div className="ss-nama">
-                H. Ahmad Fauzi, S.H., M.M.
-                <br />— Ir. Budi Santoso
+                <div className="ss-photo">
+                  {item.photo ? (
+                    <Image
+                      src={item.photo}
+                      alt={item.nama}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="ss-photo-img"
+                    />
+                  ) : (
+                    "👤"
+                  )}
+                </div>
+
+                <div className="ss-nama">{item.nama}</div>
+                <div className="ss-visi">{item.vision}</div>
               </div>
-
-              <div className="ss-visi">
-                Mewujudkan Provinsi X yang maju, mandiri, dan berkeadilan.
-              </div>
-            </div>
-
-            <div
-              className={`ss-kandidat ${
-                selectedCandidate === 2 ? "selected" : ""
-              }`}
-              onClick={() => pilihKandidat(2)}
-            >
-              <div className="ss-num">2</div>
-              <div className="ss-photo">👩‍💼</div>
-
-              <div className="ss-nama">
-                Dr. Siti Rahayu, M.Pd.
-                <br />— H. Kusuma Wijaya
-              </div>
-
-              <div className="ss-visi">
-                Menjadikan Provinsi X sebagai provinsi hijau dan inovatif.
-              </div>
-            </div>
-
-            <div
-              className={`ss-kandidat ${
-                selectedCandidate === 3 ? "selected" : ""
-              }`}
-              onClick={() => pilihKandidat(3)}
-            >
-              <div className="ss-num">3</div>
-              <div className="ss-photo">👨‍⚖️</div>
-
-              <div className="ss-nama">
-                Drs. Rudi Prasetyo
-                <br />— Hj. Aminah Kartika, S.Sos
-              </div>
-
-              <div className="ss-visi">
-                Membangun Provinsi X bermartabat dengan tata kelola yang bersih.
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="ss-footer">
             <div className="ss-footer-info">
               {selectedCandidate
-                ? `Paslon ${selectedCandidate} dipilih`
+                ? "Paslon dipilih"
                 : "Belum ada pilihan. Klik kandidat untuk memilih."}
             </div>
 
             <button
               className="btn-kirim"
-              disabled={!selectedCandidate}
+              disabled={!selectedCandidate || loading}
               onClick={openConfirmModal}
             >
-              🗳️ Kirim Suara
+              {loading ? "Mengirim..." : "🗳️ Kirim Suara"}
             </button>
           </div>
         </div>

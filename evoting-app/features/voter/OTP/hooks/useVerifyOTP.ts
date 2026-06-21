@@ -22,16 +22,67 @@ export function useOtp() {
       ? (sessionStorage.getItem("idPemilihan") ?? "")
       : "";
 
+  const submit = useCallback(async () => {
+    const finalOTP = otp.join("").toUpperCase();
+
+    console.log("DEBUG OTP REQUEST:", {
+      nik,
+      idPemilihan,
+      otp: finalOTP,
+    });
+
+    if (finalOTP.length !== 6) {
+      setError("Token harus 6 karakter");
+      return;
+    }
+
+    if (!nik || !idPemilihan) {
+      setError("Session tidak lengkap");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError("");
+
+      const { res, json } = await verifyOTPRequest({
+        nik,
+        otp: finalOTP,
+        idPemilihan,
+      });
+
+      console.log("VERIFY OTP RESPONSE:", json);
+
+      if (!res.ok || !json.success) {
+        const message = json.error ?? "Token tidak valid";
+
+        setError(message);
+        toast.error(message);
+        return;
+      }
+
+      sessionStorage.setItem("voter_tokenId", json.data.tokenId);
+      sessionStorage.setItem("dptId", json.data.dptId);
+      sessionStorage.setItem("voter_nama", json.data.nama);
+
+      router.push(`/vote/${json.data.idPemilihan}/surat-suara`);
+    } catch (error) {
+      console.error("VERIFY OTP ERROR:", error);
+      setError("Terjadi kesalahan server");
+      toast.error("Terjadi kesalahan server");
+    } finally {
+      setLoading(false);
+    }
+  }, [otp, nik, idPemilihan, router]);
+
   useEffect(() => {
     const handleEnter = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        submit();
-      }
+      if (e.key === "Enter") submit();
     };
 
     window.addEventListener("keydown", handleEnter);
     return () => window.removeEventListener("keydown", handleEnter);
-  }, [otp]);
+  }, [submit]);
 
   const handleChange = (value: string, index: number) => {
     const clean = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
@@ -41,7 +92,6 @@ export function useOtp() {
     newOtp[index] = clean.slice(-1);
     setOtp(newOtp);
 
-    // auto next
     if (index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -67,52 +117,6 @@ export function useOtp() {
       inputRefs.current[index - 1]?.focus();
     }
   };
-
-  const submit = useCallback(async () => {
-    const finalOtp = otp.join("");
-
-    console.log("DEBUG OTP REQUEST:", {
-      nik,
-      idPemilihan,
-      otp: finalOtp,
-    });
-
-    if (finalOtp.length !== 6) {
-      setError("Token harus 6 karakter");
-      return;
-    }
-
-    if (!nik || !idPemilihan) {
-      setError("Session tidak lengkap (nik / pemilihan kosong)");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      const { res, json } = await verifyOTPRequest({
-        nik,
-        otp: finalOtp,
-        idPemilihan,
-      });
-
-      if (!res.ok) {
-        setError(json.error ?? "Token salah");
-        toast.error(json.error ?? "Token salah");
-        return;
-      }
-
-      sessionStorage.setItem("voter_tokenId", json.data.tokenId);
-
-      router.push(`/vote/${idPemilihan}/surat-suara `);
-    } catch (err) {
-      console.error(err);
-      setError("Terjadi kesalahan server");
-      toast.error("Terjadi kesalahan server");
-    } finally {
-      setLoading(false);
-    }
-  }, [otp, nik, idPemilihan, router]);
 
   return {
     otp,
