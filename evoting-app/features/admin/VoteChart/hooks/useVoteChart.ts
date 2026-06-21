@@ -3,7 +3,7 @@ import { StatsLocal } from "@/types";
 
 export const useVoteChart = (electionId: string) => {
   const { stats } = useElectionStats(electionId);
-  const kandidat = (stats as unknown as StatsLocal).suaraPerKandidat ?? [];
+  const kandidat = (stats as StatsLocal | null)?.suaraPerKandidat ?? [];
 
   const labels = kandidat.map((s) => s.nama) ?? [];
 
