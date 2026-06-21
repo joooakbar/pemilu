@@ -1,7 +1,7 @@
 import { getAuthPayload } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db";
-import BeritaAcaraPreview from "@/components/admin/BeritaAcaraPreview";
+import BeritaAcaraPreview from "@/features/admin/BeritaAcaraPreview/components/BeritaAcaraPreview";
 
 export const metadata = { title: "Berita Acara" };
 

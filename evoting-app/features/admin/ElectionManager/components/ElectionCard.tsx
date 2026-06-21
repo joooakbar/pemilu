@@ -87,17 +87,7 @@ export default function ElectionCard({ election, onEdit }: Props) {
 
         {/* BUTTON */}
         {(election.status === "DRAFT" ||
-          election.status === "ACTIVE") && (
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={onEdit}
-            className="shrink-0 gap-1.5"
-          >
-            <Pencil className="h-3.5 w-3.5" />
-            Edit
-          </Button>
-        )}
+          election.status === "ACTIVE")}
       </div>
     </div>
   );
