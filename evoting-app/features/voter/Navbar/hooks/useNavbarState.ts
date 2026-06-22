@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export type ElectionStatus = "DRAFT" | "ACTIVE" | "ENDED";
 
@@ -13,54 +13,41 @@ export const useNavbarState = (
   startTime?: string,
   endTime?: string,
 ): NavbarElectionState => {
-  const [state, setState] = useState<NavbarElectionState>({
-    status: "DRAFT",
-    isActive: false,
-  });
+  const [now, setNow] = useState<number>(0);
 
   useEffect(() => {
+    const tick = () => setNow(Date.now());
+
+    tick(); // initial
+    const interval = setInterval(tick, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return useMemo(() => {
     if (!startTime || !endTime) {
-      setState({
-        status: "DRAFT",
-        isActive: false,
-      });
-      return;
+      return { status: "DRAFT", isActive: false };
     }
 
     const start = new Date(startTime).getTime();
     const end = new Date(endTime).getTime();
 
     if (isNaN(start) || isNaN(end)) {
-      setState({
-        status: "DRAFT",
-        isActive: false,
-      });
+      return { status: "DRAFT", isActive: false };
     }
 
-    const tick = () => {
-      const now = Date.now();
+    if (now === 0) {
+      return { status: "DRAFT", isActive: false };
+    }
 
-      let status: ElectionStatus = "DRAFT";
+    if (now < start) {
+      return { status: "DRAFT", isActive: false };
+    }
 
-      if (now < start) {
-        status = "DRAFT";
-      } else if (now >= start && now <= end) {
-        status = "ACTIVE";
-      } else {
-        status = "ENDED";
-      }
+    if (now <= end) {
+      return { status: "ACTIVE", isActive: true };
+    }
 
-      setState({
-        status,
-        isActive: status === "ACTIVE",
-      });
-    };
-
-    tick();
-    const interval = setInterval(tick, 1000);
-
-    return () => clearInterval(interval);
-  }, [startTime, endTime]);
-
-  return state;
+    return { status: "ENDED", isActive: false };
+  }, [now, startTime, endTime]);
 };
