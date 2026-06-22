@@ -24,20 +24,17 @@ export default function ElectionManager({
         },
       });
 
-      if (!res.ok) {
-        throw new Error("Gagal melakukan sinkronisasi");
-      }
+      if (!res.ok) throw new Error("Gagal sinkronisasi");
 
       const data = await res.json();
 
-      // update UI langsung tanpa reload
       if (data?.elections) {
         setElections(data.elections);
       }
 
-      toast.success("Sinkronisasi berhasil");
+      toast.success(data.message || "Sinkronisasi berhasil");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Terjadi kesalahan");
+      toast.error(error instanceof Error ? error.message : "Error");
     } finally {
       setSyncing(false);
     }

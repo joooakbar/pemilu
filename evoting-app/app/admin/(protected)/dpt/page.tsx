@@ -1,6 +1,6 @@
 import prisma from "@/lib/db";
-import DPTTable from "@/components/admin/DPTTable";
-import ImportModal from "@/components/admin/ImportModal";
+import DPTTable from "@/features/admin/DPTTable/components/DPTTable";
+import ImportModal from "@/features/admin/ImportModal/components/ImportModal";
 
 export const metadata = { title: "Manajemen DPT" };
 
@@ -28,10 +28,10 @@ export default async function DPTPage() {
           >
             ⬇ Export Excel
           </a>
-          <ImportModal electionId={election?.id} />
+          <ImportModal idPemilihan={election?.id} />
         </div>
       </div>
-      <DPTTable electionId={election?.id} />
+      <DPTTable />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import UploadButton from "./UploadButton";
 import ImportResult from "./ImportResult";
@@ -19,6 +19,8 @@ export default function ImportDialog({
   onClose,
   onUpload,
 }: Props) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   if (!open) return null;
 
   return (
@@ -39,9 +41,9 @@ export default function ImportDialog({
           </code>
         </div>
 
-        {/* FILE INPUT */}
+        {/* FILE INPUT (hidden) */}
         <input
-          id="file-upload"
+          ref={inputRef}
           type="file"
           accept=".csv,.xlsx,.xls"
           className="hidden"
@@ -49,9 +51,12 @@ export default function ImportDialog({
         />
 
         {/* TRIGGER BUTTON */}
-        <label htmlFor="file-upload" className="block w-full">
-          <UploadButton loading={loading} onClick={() => {}} />
-        </label>
+        <div className="w-full">
+          <UploadButton
+            loading={loading}
+            onClick={() => inputRef.current?.click()}
+          />
+        </div>
 
         {result && <ImportResult result={result} />}
 

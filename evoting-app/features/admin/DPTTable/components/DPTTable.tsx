@@ -1,8 +1,7 @@
 "use client";
-import { useState } from "react";
-import { DPTTableProps } from "../types";
+
+import { useState, useTransition } from "react";
 import { useDPTData } from "../hooks/useDPTData";
-import { useFilteredDPT } from "../hooks/useFilteredDPT";
 import DPTSearch from "./DPTSearch";
 import DPTTableBody from "./DPTTableBody";
 import DPTLoading from "./DPTLoading";
@@ -16,53 +15,55 @@ const headers = [
   "Waktu Pilih",
 ];
 
-export default function DPTTable({ electionId }: DPTTableProps) {
-  const [search, setSearch] = useState("");
+export default function DPTTable() {
+  const [input, setInput] = useState("");
+  const [query, setQuery] = useState("");
 
-  const { data, loading } = useDPTData(search);
+  const [, startTransition] = useTransition();
 
-  const filtered = useFilteredDPT(data, search);
+  const { data, loading } = useDPTData(query);
 
-  if (loading) {
-    return <DPTLoading />;
-  }
+  const handleChange = (value: string) => {
+    setInput(value); // UI tetap stabil (INI YANG PENTING)
+
+    startTransition(() => {
+      setQuery(value); // fetch async tanpa ganggu UI
+    });
+  };
 
   return (
     <div className="space-y-3">
-      <DPTSearch search={search} setSearch={setSearch} />
+      {/* INPUT SELALU DI LUAR LOGIC FETCH */}
+      <DPTSearch value={input} onChange={handleChange} />
 
-      <div className="overflow-hidden rounded-lg border">
-        <table className="w-full text-sm">
-          <thead className="bg-secondary/50">
-            <tr>
-              {headers.map((header) => (
-                <th
-                  key={header}
-                  className="
-                    px-4 py-3 text-left
-                    font-medium text-muted-foreground
-                  "
-                >
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
+      {loading ? (
+        <DPTLoading />
+      ) : (
+        <div className="overflow-hidden rounded-lg border">
+          <table className="w-full text-sm">
+            <thead className="bg-secondary/50">
+              <tr>
+                {headers.map((h) => (
+                  <th
+                    key={h}
+                    className="px-4 py-3 text-left font-medium text-muted-foreground"
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
 
-          <DPTTableBody data={filtered} />
-        </table>
+            <DPTTableBody data={data} />
+          </table>
 
-        {filtered.length === 0 && (
-          <div className="py-12 text-center text-muted-foreground">
-            Tidak ada data
-          </div>
-        )}
-      </div>
-
-      <p className="text-xs text-muted-foreground">
-        Menampilkan {Math.min(filtered.length, 100)} dari {filtered.length}{" "}
-        pemilih
-      </p>
+          {data.length === 0 && (
+            <div className="py-12 text-center text-muted-foreground">
+              Tidak ada data
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

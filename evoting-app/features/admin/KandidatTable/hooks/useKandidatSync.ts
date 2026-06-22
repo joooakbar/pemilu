@@ -7,9 +7,7 @@ import type { KandidatDB, SyncResult } from "../types";
 
 export function useKandidatSync(initialDB: KandidatDB[]) {
   const [dbList, setDbList] = useState(initialDB);
-
   const [syncing, setSyncing] = useState(false);
-
   const [result, setResult] = useState<SyncResult | null>(null);
 
   const sync = async () => {
@@ -17,21 +15,20 @@ export function useKandidatSync(initialDB: KandidatDB[]) {
       setSyncing(true);
       setResult(null);
 
-      const response = await syncKandidat();
+      const response = await syncKandidat(dbList);
 
       const json = await response.json();
 
       if (!response.ok) {
-        toast.error(json.error);
+        toast.error(json.error || "Sync gagal");
         return;
       }
 
       setResult(json.data);
+      toast.success(json.data.message || "Sync berhasil");
 
-      toast.success(json.data.message);
-
+      // refresh DB setelah sync
       const dbResponse = await fetchKandidatDB();
-
       const dbJson = await dbResponse.json();
 
       if (dbJson.success) {
@@ -39,7 +36,6 @@ export function useKandidatSync(initialDB: KandidatDB[]) {
       }
     } catch (error) {
       toast.error("Gagal sinkronisasi kandidat");
-
       console.error(error);
     } finally {
       setSyncing(false);

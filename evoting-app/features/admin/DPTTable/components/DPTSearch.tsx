@@ -1,17 +1,17 @@
 import { Input } from "@/components/ui/input";
 
 interface Props {
-  search: string;
-  setSearch: (value: string) => void;
+  value: string;
+  onChange: (value: string) => void;
 }
 
-export default function DPTSearch({ search, setSearch }: Props) {
+export default function DPTSearch({ value, onChange }: Props) {
   return (
     <Input
-      value={search}
+      value={value}
       className="max-w-xs"
       placeholder="Cari NIK atau nama..."
-      onChange={(e) => setSearch(e.target.value)}
+      onChange={(e) => onChange(e.target.value)}
     />
   );
 }
