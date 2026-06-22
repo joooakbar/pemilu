@@ -8,5 +8,5 @@ export interface ImportResultData {
 }
 
 export interface ImportModalProps {
-  electionId?: string;
+  idPemilihan?: string;
 }

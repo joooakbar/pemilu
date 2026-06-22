@@ -21,11 +21,11 @@ export function mapKandidatToCandidate(
 ): Candidate {
   return {
     id: item.prismaId ?? item._id,
-    number: item.nomorUrut,
+    number: item.noUrut,
     bannerClass:
-      item.nomorUrut === 1
+      item.noUrut === 1
         ? "k-banner-1"
-        : item.nomorUrut === 2
+        : item.noUrut === 2
           ? "k-banner-2"
           : "k-banner-3",
     photo: item.foto?.asset?.url,

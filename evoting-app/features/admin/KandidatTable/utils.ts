@@ -7,14 +7,13 @@ export function getKandidatSyncStatus(
 ) {
   const db = dbList.find((d) => d.sanityId === kandidat._id);
 
-  const synced = !!db;
+  const synced = Boolean(db);
 
   const hasChanges =
-  !!db &&
-  (
-    db.nama.trim() !== kandidat.namaPaslon.trim() ||
-    Number(db.noUrut) !== Number(kandidat.noUrut)
-  );
+    Boolean(db) &&
+    ((db?.nama ?? "").trim() !== (kandidat.namaPaslon ?? "").trim() ||
+      Number(db?.noUrut ?? 0) !== Number(kandidat.noUrut ?? 0));
+
   return {
     synced,
     hasChanges,
