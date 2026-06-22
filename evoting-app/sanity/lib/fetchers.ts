@@ -5,9 +5,9 @@ const OPT = { next: { revalidate: 30 } }
 
 export async function getKandidatList(): Promise<KandidatSanity[]> {
   return client.fetch(
-    `*[_type == "kandidat"] | order(nomorUrut asc) {
+    `*[_type == "kandidat"] | order(noUrut asc) {
       _id,
-      nomorUrut,
+      noUrut,
       namaPaslon,
       foto { asset->{ url }, alt },
       visi, 

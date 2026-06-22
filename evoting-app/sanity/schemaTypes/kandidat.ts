@@ -47,7 +47,7 @@ export const kandidat = defineType({
   preview: {
     select: { 
       title: 'namaPaslon', 
-      subtitle: 'nomorUrut', 
+      subtitle: 'noUrut', 
       media: 'foto' },
     prepare: ({ 
       title, 
@@ -59,6 +59,6 @@ export const kandidat = defineType({
   },
   orderings: [{ 
     title: 'Nomor Urut', 
-    name: 'nomorUrut', 
-    by: [{ field: 'nomorUrut', direction: 'asc' }] }],
+    name: 'noUrut', 
+    by: [{ field: 'noUrut', direction: 'asc' }] }],
 })

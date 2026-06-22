@@ -44,34 +44,39 @@ export default function UserTable({ currentUserId }: UserTableProps) {
   };
 
   const toggleActive = async (user: UserRow) => {
-    await fetch(`/api/admin/users/${user.id}`, {
+    const res = await fetch(`/api/admin/users/${user.id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        isActive: !user.isActive,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isActive: !user.isActive }),
     });
-
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === user.id
-          ? {
-              ...u,
-              isActive: !u.isActive,
-            }
-          : u,
-      ),
+    if (!res.ok) {
+      toast.error("Gagal update");
+      return;
+    }
+    setUsers((p) =>
+      p.map((u) => (u.id === user.id ? { ...u, isActive: !u.isActive } : u)),
+    );
+    toast.success(
+      `Akun ${user.username} ${!user.isActive ? "diaktifkan" : "dinonaktifkan"}`,
     );
   };
 
   const deleteUser = async (user: UserRow) => {
-    await fetch(`/api/admin/users/${user.id}`, {
+    if (
+      !confirm(
+        `Hapus akun "${user.username}" (${user.role})? Tindakan ini tidak bisa dibatalkan.`,
+      )
+    )
+      return;
+    const res = await fetch(`/api/admin/users/${user.id}`, {
       method: "DELETE",
     });
-
+    if (!res.ok) {
+      toast.error("Gagal hapus");
+      return;
+    }
     setUsers((prev) => prev.filter((u) => u.id !== user.id));
+    toast.success("Akun berhasil dihapus");
   };
 
   return (

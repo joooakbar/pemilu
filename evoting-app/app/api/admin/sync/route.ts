@@ -90,29 +90,29 @@ export async function POST(req: NextRequest) {
       kandidatResult.errors.push('Belum ada kandidat di Sanity. Tambahkan dan Publish terlebih dahulu.')
     } else {
       for (const k of sanityKandidat) {
-        if (!k._id || !k.nomorUrut || !k.namaPaslon) {
-          kandidatResult.errors.push(`Lewati "${k.namaPaslon || k._id}" — nomorUrut atau namaPaslon kosong`)
+        if (!k._id || !k.noUrut || !k.namaPaslon) {
+          kandidatResult.errors.push(`Lewati "${k.namaPaslon || k._id}" — noUrut atau namaPaslon kosong`)
           continue
         }
         try {
           const bySanityId = await prisma.kandidat.findUnique({ where: { sanityId: k._id } })
 
           if (bySanityId) {
-            if (bySanityId.nama !== k.namaPaslon || bySanityId.noUrut !== k.nomorUrut) {
+            if (bySanityId.nama !== k.namaPaslon || bySanityId.noUrut !== k.noUrut) {
               const conflict = await prisma.kandidat.findFirst({
                 where: { 
-                  noUrut: k.nomorUrut, 
+                  noUrut: k.noUrut, 
                   idPemilihan: electionId,
                   NOT: { sanityId: k._id } 
                 },
               })
               if (conflict) {
-                kandidatResult.errors.push(`"${k.namaPaslon}": nomorUrut ${k.nomorUrut} sudah dipakai "${conflict.nama}"`)
+                kandidatResult.errors.push(`"${k.namaPaslon}": noUrut ${k.noUrut} sudah dipakai "${conflict.nama}"`)
                 continue
               }
               await prisma.kandidat.update({
                 where: { sanityId: k._id },
-                data:  { nama: k.namaPaslon, noUrut: k.nomorUrut },
+                data:  { nama: k.namaPaslon, noUrut: k.noUrut },
               })
               kandidatResult.updated++
             } else {
@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
           } else {
             const byNomor = await prisma.kandidat.findFirst({ 
               where: { 
-                noUrut: k.nomorUrut,
+                noUrut: k.noUrut,
                 idPemilihan: electionId
               } 
             })
@@ -139,7 +139,7 @@ export async function POST(req: NextRequest) {
               }
               await prisma.kandidat.create({
                 data: {
-                  noUrut: k.nomorUrut,
+                  noUrut: k.noUrut,
                   nama: k.namaPaslon,
                   sanityId: k._id,
                   isActive: true,
