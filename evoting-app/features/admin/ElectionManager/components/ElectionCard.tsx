@@ -1,10 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Pencil, Calendar, MapPin, Hash } from "lucide-react";
+import { Calendar, MapPin, Hash } from "lucide-react";
 import { ElectionDB } from "../types";
 
 interface Props {
   election: ElectionDB;
-  onEdit: () => void;
 }
 
 function formatDate(iso: string) {
@@ -17,24 +15,24 @@ function formatDate(iso: string) {
   });
 }
 
-export default function ElectionCard({ election, onEdit }: Props) {
+export default function ElectionCard({ election }: Props) {
   const statusIcon =
     election.status === "ACTIVE"
       ? "🟢"
       : election.status === "DRAFT"
-      ? "📝"
-      : election.status === "SUSPENDED"
-      ? "⏸️"
-      : "⚪";
+        ? "📝"
+        : election.status === "SUSPENDED"
+          ? "⏸️"
+          : "⚪";
 
   const statusColor =
     election.status === "ACTIVE"
       ? "bg-green-100 text-green-700 border-green-200"
       : election.status === "DRAFT"
-      ? "bg-amber-100 text-amber-700 border-amber-200"
-      : election.status === "SUSPENDED"
-      ? "bg-amber-50 text-amber-600 border-amber-200"
-      : "bg-secondary text-muted-foreground border-border";
+        ? "bg-amber-100 text-amber-700 border-amber-200"
+        : election.status === "SUSPENDED"
+          ? "bg-amber-50 text-amber-600 border-amber-200"
+          : "bg-secondary text-muted-foreground border-border";
 
   return (
     <div className="overflow-hidden rounded-xl border bg-card">
@@ -86,8 +84,7 @@ export default function ElectionCard({ election, onEdit }: Props) {
         </div>
 
         {/* BUTTON */}
-        {(election.status === "DRAFT" ||
-          election.status === "ACTIVE")}
+        {election.status === "DRAFT" || election.status === "ACTIVE"}
       </div>
     </div>
   );

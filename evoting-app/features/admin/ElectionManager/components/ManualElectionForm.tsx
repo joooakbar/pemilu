@@ -3,12 +3,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 interface Props {
-  form: any;
-  setForm: any;
+  form: ManualElectionFormState;
+  setForm: React.Dispatch<React.SetStateAction<ManualElectionFormState>>;
   saving: boolean;
   onSubmit: () => void;
   onCancel: () => void;
 }
+
+type ManualElectionFormState = {
+  nama: string;
+};
 
 export default function ManualElectionForm({
   form,
@@ -18,7 +22,7 @@ export default function ManualElectionForm({
   onCancel,
 }: Props) {
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev: any) => ({
+    setForm((prev) => ({
       ...prev,
       nama: e.target.value,
     }));

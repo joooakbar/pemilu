@@ -1,4 +1,4 @@
-import { PrismaClient, Role, StatusPemilihan } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
 
@@ -120,28 +120,28 @@ async function main() {
     });
   }
 
-  // ── Pemilihan Sample ─────────────────────────────────────
-  const pemilihanSamples = [
-    {
-      nama: "Pemilihan Ketua BEM 2026",
-      sanityId: "bem-2026",
-      status: StatusPemilihan.ACTIVE,
-      startTime: new Date("2026-06-19T10:45:00Z"),
-      endTime: new Date("2026-06-19T17:00:00Z"),
-      tempatVoting: "Universitas Nusantara PGRI Kediri",
-      deskripsi: "Pemilihan Ketua BEM periode 2026",
-    },
-  ];
+  // // ── Pemilihan Sample ─────────────────────────────────────
+  // const pemilihanSamples = [
+  //   {
+  //     nama: "Pemilihan Ketua BEM 2026",
+  //     sanityId: "bem-2026",
+  //     status: StatusPemilihan.ACTIVE,
+  //     startTime: new Date("2026-06-19T10:45:00Z"),
+  //     endTime: new Date("2026-06-19T17:00:00Z"),
+  //     tempatVoting: "Universitas Nusantara PGRI Kediri",
+  //     deskripsi: "Pemilihan Ketua BEM periode 2026",
+  //   },
+  // ];
 
-  for (const p of pemilihanSamples) {
-    await prisma.pemilihan.upsert({
-      where: {
-        sanityId: p.sanityId,
-      },
-      update: {},
-      create: p,
-    });
-  }
+  // for (const p of pemilihanSamples) {
+  //   await prisma.pemilihan.upsert({
+  //     where: {
+  //       sanityId: p.sanityId,
+  //     },
+  //     update: {},
+  //     create: p,
+  //   });
+  // }
 
   console.log("✅ Seed selesai!");
   console.log("\n🔑 Demo credentials:");
