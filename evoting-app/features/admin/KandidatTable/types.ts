@@ -2,7 +2,7 @@ import type { KandidatSanity } from "@/types";
 
 export interface KandidatDB {
   id: string;
-  nomorUrut: number;
+  noUrut: number;
   nama: string;
   sanityId: string;
   isActive: boolean;

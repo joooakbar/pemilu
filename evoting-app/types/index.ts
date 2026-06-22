@@ -37,7 +37,7 @@ export interface TokenStatus {
 
 export interface KandidatSanity {
   _id: string;
-  nomorUrut: number;
+  noUrut: number;
   namaPaslon: string;
   foto?: { asset: { url: string }; alt?: string };
   visi?: unknown[];

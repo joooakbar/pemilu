@@ -1,6 +1,6 @@
 import { getAuthPayload } from '@/lib/auth'
 import { redirect }       from 'next/navigation'
-import UserTable          from '@/components/admin/UserTable'
+import UserTable          from '@/features/admin/UserTable/components/UserTable'
 
 export const metadata = { title: 'Manajemen Pengguna' }
 
