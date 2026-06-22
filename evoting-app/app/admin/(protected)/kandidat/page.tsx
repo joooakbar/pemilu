@@ -2,8 +2,8 @@ import { getAuthPayload } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db";
 import { getKandidatList } from "@/sanity/lib/fetchers";
-import KandidatTable from "@/components/admin/KandidatTable";
-import SyncButton from "@/components/admin/SyncButton";
+import KandidatTable from "@/features/admin/KandidatTable/components/KandidatTable";
+import SyncButton from "@/features/admin/SyncButton/components/SyncButton";
 
 export const metadata = { title: "Manajemen Kandidat" };
 

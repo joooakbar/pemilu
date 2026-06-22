@@ -120,7 +120,6 @@ export default function KandidatTableContent({ sanityData, dbList }: Props) {
                 text-muted-foreground
               "
             >
-              Aksi
             </th>
           </tr>
         </thead>

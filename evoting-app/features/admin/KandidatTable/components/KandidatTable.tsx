@@ -1,6 +1,7 @@
 "use client";
 import KandidatToolbar from "../components/KandidatToolbar";
 import SyncResultAlert from "../components/SyncResultAlert";
+import KandidatTableContent from "../components/KandidatTableContent";
 import { useKandidatSync } from "../hooks/useKandidatSync";
 
 import type { KandidatTableProps } from "../types";
@@ -19,7 +20,10 @@ export default function KandidatTable({
         totalDB={dbList.length}
         onSync={sync}
       />
-
+      <KandidatTableContent
+        sanityData={sanityData}
+        dbList={dbList}
+      />
       {result && <SyncResultAlert result={result} />}
     </div>
   );

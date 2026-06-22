@@ -29,7 +29,7 @@ export default function KandidatRow({ kandidat, dbList }: Props) {
           text-primary
         "
       >
-        {kandidat.nomorUrut}
+        {kandidat.noUrut}
       </td>
 
       <td className="px-4 py-3">
@@ -132,7 +132,6 @@ export default function KandidatRow({ kandidat, dbList }: Props) {
             hover:underline
           "
         >
-          Edit ↗
         </a>
       </td>
     </tr>

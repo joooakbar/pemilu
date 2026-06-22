@@ -10,9 +10,11 @@ export function getKandidatSyncStatus(
   const synced = !!db;
 
   const hasChanges =
-    !!db &&
-    (db.nama !== kandidat.namaPaslon || db.nomorUrut !== kandidat.nomorUrut);
-
+  !!db &&
+  (
+    db.nama.trim() !== kandidat.namaPaslon.trim() ||
+    Number(db.noUrut) !== Number(kandidat.noUrut)
+  );
   return {
     synced,
     hasChanges,
