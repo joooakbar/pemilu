@@ -1,30 +1,64 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { StatusPemilihan } from "@prisma/client";
 
 export const useHero = (
   idPemilihan?: string,
-  startTime?: Date | string,
-  endTime?: Date | string,
+  startTime?: string,
+  endTime?: string,
+  dbStatus?: StatusPemilihan,
+  isManuallyEnded?: boolean, // 🔥 NEW
 ) => {
   const router = useRouter();
 
-  const [now, setNow] = useState<Date>(new Date());
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setNow(new Date());
+      setNow(Date.now());
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const start = startTime ? new Date(startTime) : null;
-  const end = endTime ? new Date(endTime) : null;
+  const { canVote, isStarted, isEnded, finalStatus } = useMemo(() => {
+    const start = startTime ? new Date(startTime).getTime() : null;
+    const end = endTime ? new Date(endTime).getTime() : null;
 
-  const isStarted = start ? now >= start : false;
-  const isEnded = end ? now > end : false;
+    // -------------------------
+    // 1. MANUAL OVERRIDE (HIGHEST PRIORITY)
+    // -------------------------
+    if (isManuallyEnded) {
+      return {
+        canVote: false,
+        isStarted: true,
+        isEnded: true,
+        finalStatus: "ENDED",
+      };
+    }
 
-  const canVote = !!idPemilihan && isStarted && !isEnded;
+    // -------------------------
+    // 2. TIME BASED LOGIC
+    // -------------------------
+    const isStarted = start ? now >= start : false;
+    const isEnded = end ? now > end : false;
+
+    const canVote = !!idPemilihan && isStarted && !isEnded;
+
+    let finalStatus: "DRAFT" | "ACTIVE" | "ENDED" = "DRAFT";
+
+    if (isEnded) finalStatus = "ENDED";
+    else if (isStarted) finalStatus = "ACTIVE";
+
+    return {
+      canVote,
+      isStarted,
+      isEnded,
+      finalStatus,
+    };
+  }, [idPemilihan, startTime, endTime, isManuallyEnded, now]);
 
   const handleVote = () => {
     if (!canVote) return;
@@ -32,10 +66,9 @@ export const useHero = (
   };
 
   const handleScroll = (selector: string) => {
-    const el = document.querySelector(selector);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    document.querySelector(selector)?.scrollIntoView({
+      behavior: "smooth",
+    });
   };
 
   return {
@@ -44,5 +77,6 @@ export const useHero = (
     canVote,
     isStarted,
     isEnded,
+    status: finalStatus,
   };
 };

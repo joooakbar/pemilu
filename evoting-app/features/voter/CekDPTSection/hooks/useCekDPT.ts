@@ -39,34 +39,28 @@ export const useCekDPT = (idPemilihan?: string) => {
     setResult(null);
 
     try {
-      const data = await verifyNIK({
+      const res = await verifyNIK({
         nik,
         idPemilihan,
       });
-      if (!data) {
+
+      if (!res.found) {
         setStatus("not-found");
-        setResult({ found: false });
+        setResult(res);
         return;
       }
 
-      setResult({
-        found: true,
-        nama: data.nama,
-        kodeWilayah: data.kodeWilayah,
-        hasVoted: data.hasVoted,
-      });
-
       setStatus("found");
+      setResult(res);
     } catch (error) {
       console.error("Cek DPT error:", error);
 
-      setStatus("not-found");
-      setResult({ found: false });
+      setStatus("error");
+      setResult(null);
     } finally {
       setLoading(false);
     }
   };
-
   return {
     nik,
     loading,

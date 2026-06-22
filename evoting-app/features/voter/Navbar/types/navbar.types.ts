@@ -1,5 +1,8 @@
+import { StatusPemilihan } from "@prisma/client";
+
 export interface NavbarProps {
-  startTime: string;
-  endTime: string;
   idPemilihan?: string;
+  status?: StatusPemilihan;
+  startTime?: string;
+  endTime?: string;
 }

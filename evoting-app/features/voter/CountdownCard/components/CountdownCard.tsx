@@ -1,68 +1,73 @@
 "use client";
 
 import PartisipasiProgress from "@/features/voter/LiveStats/components/LiveStats";
-import { CountdownCardProps } from "@/features/voter/Hero/types/pemilihan.types";
-import { useCountdown } from "@/features/voter/CountdownCard/hooks/useCountdown";
+import { useElectionEngine } from "@/hooks/useElectionEngine";
+import { StatusPemilihan } from "@prisma/client";
 import {
   formatDate,
   formatTimeRange,
 } from "../../BeritaSection/utils/dateFormat";
-import { useCountdownTime } from "../hooks/useCoundownTime";
+
+interface CountdownCardProps {
+  startTime?: string;
+  endTime?: string;
+  namaPemilihan?: string;
+  idPemilihan?: string;
+  status?: StatusPemilihan;
+}
 
 const CountdownCard = ({
   startTime,
   endTime,
   namaPemilihan,
-  status,
   idPemilihan,
+  status,
 }: CountdownCardProps) => {
-  const { timeLeft } = useCountdown(startTime, endTime);
+  const isManuallyEnded = status === "ENDED";
 
-  const { isBeforeStart, isActive, isEnded } = useCountdownTime(
+  const { timeLeft, isStarted, isEnded } = useElectionEngine(
+    idPemilihan,
     startTime,
     endTime,
+    isManuallyEnded,
   );
 
-  const getLabel = () => {
-    if (isBeforeStart) {
-      return "🕐 Pemilihan Akan Dimulai Dalam";
-    }
-    if (isActive) {
-      return "⏱ Pemilihan Berakhir Dalam";
-    }
-    if (isEnded) {
-      return "⛔ Pemilihan Telah Berakhir";
-    }
+  const isBeforeStart = !isStarted && !isEnded;
+  const isActive = isStarted && !isEnded;
 
+  const displayTime = isEnded ? { h: "00", m: "00", s: "00" } : timeLeft;
+
+  const getLabel = () => {
+    if (isBeforeStart) return "🕐 Pemilihan Belum Dimulai";
+    if (isActive) return "⏱ Pemilihan Sedang Berlangsung";
+    if (isEnded) return "⛔ Pemilihan Telah Berakhir";
     return "Tidak Ada Pemilihan";
   };
 
   return (
-    <div className="countdown-card reveal" style={{ animationDelay: "0.15s" }}>
+    <div className="countdown-card reveal">
       <div className="cd-label">{getLabel()}</div>
 
-      {!isEnded && (
-        <div className="cd-grid">
-          <div className="cd-unit">
-            <span className="cd-num">{timeLeft.h}</span>
-            <div className="cd-unit-label">Jam</div>
-          </div>
-
-          <div className="cd-sep">:</div>
-
-          <div className="cd-unit">
-            <span className="cd-num">{timeLeft.m}</span>
-            <div className="cd-unit-label">Menit</div>
-          </div>
-
-          <div className="cd-sep">:</div>
-
-          <div className="cd-unit">
-            <span className="cd-num">{timeLeft.s}</span>
-            <div className="cd-unit-label">Detik</div>
-          </div>
+      <div className="cd-grid">
+        <div className="cd-unit">
+          <span className="cd-num">{displayTime.h}</span>
+          <div className="cd-unit-label">Jam</div>
         </div>
-      )}
+
+        <div className="cd-sep">:</div>
+
+        <div className="cd-unit">
+          <span className="cd-num">{displayTime.m}</span>
+          <div className="cd-unit-label">Menit</div>
+        </div>
+
+        <div className="cd-sep">:</div>
+
+        <div className="cd-unit">
+          <span className="cd-num">{displayTime.s}</span>
+          <div className="cd-unit-label">Detik</div>
+        </div>
+      </div>
 
       <div className="cd-info">
         <strong>{formatDate(startTime)}</strong>
@@ -70,7 +75,9 @@ const CountdownCard = ({
         {formatTimeRange(startTime, endTime)} WIB . {namaPemilihan}
       </div>
 
-      {idPemilihan && <PartisipasiProgress idPemilihan={idPemilihan} />}
+      {idPemilihan && isActive && (
+        <PartisipasiProgress idPemilihan={idPemilihan} />
+      )}
     </div>
   );
 };

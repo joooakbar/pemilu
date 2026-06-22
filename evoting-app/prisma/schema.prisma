@@ -57,19 +57,27 @@ model LoginOTP {
 }
 
 model Pemilihan {
-  id           String          @id @default(uuid()) @db.VarChar(36)
-  sanityId     String?         @unique @db.VarChar(191)
-  nama         String          @db.VarChar(255)
-  status       StatusPemilihan @default(DRAFT)
-  startTime    DateTime
-  endTime      DateTime
-  tempatVoting String?         @db.VarChar(255)
-  deskripsi    String?         @db.Text
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-  kandidat     Kandidat[]
-  votes        Votes[]
-  voteTokens   VoteToken[]
+  id              String          @id @default(uuid()) @db.VarChar(36)
+  sanityId        String?         @unique @db.VarChar(191)
+
+  nama            String          @db.VarChar(255)
+
+  status          StatusPemilihan @default(DRAFT)
+
+  isManuallyEnded Boolean         @default(false)
+
+  startTime       DateTime
+  endTime         DateTime
+
+  tempatVoting    String?         @db.VarChar(255)
+  deskripsi       String?         @db.Text
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  kandidat        Kandidat[]
+  votes           Votes[]
+  voteTokens      VoteToken[]
 
   @@map("pemilihan")
 }
