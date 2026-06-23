@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       const election = await prisma.pemilihan.update({
         where: { id: electionId },
         data: {
-          status: statusMap[action] as "SUSPENDED" | "ACTIVE" | "ENDED",
+          status: statusMap[action] as "DRAFT" | "ACTIVE" | "ENDED",
 
           ...(action === "END" ? { isManuallyEnded: true } : {}),
 
