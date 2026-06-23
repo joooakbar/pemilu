@@ -3,7 +3,10 @@ import {
   getPengumumanList,
   getTataCara,
 } from "@/sanity/lib/fetchers";
+
 import { prisma } from "@/lib/db";
+import { StatusPemilihan } from "@prisma/client";
+
 import TataCaraSection from "@/features/voter/TataCaraSection/components/TataCaraSection";
 import BeritaSection from "@/features/voter/BeritaSection/components/BeritaSection";
 import Hero from "@/features/voter/Hero/components/Hero";
@@ -13,6 +16,7 @@ import CandidateSection from "@/features/voter/CandidateSection/components/Candi
 import StatsBar from "@/features/voter/StatsBar/components/StatsBar";
 import CekDPTSection from "@/features/voter/CekDPTSection/components/CekDPTSection";
 import Footer from "@/features/voter/Footer/components/Footer";
+import VoterPageRefresher from "@/lib/services/refresh";
 
 export const metadata = { title: "Beranda Pemilihan" };
 
@@ -23,29 +27,29 @@ export default async function VoterHomePage() {
     getTataCara(),
     prisma.pemilihan.findFirst({ orderBy: { createdAt: "desc" } }),
   ]);
-
-  console.log("PEMILIHAN:", pemilihan);
-
+  console.log("STATUS PEMILIHAN HALAMAN VOTE:", pemilihan?.status);
   return (
     <div className="space-y-0">
+      <VoterPageRefresher />
       {/* Hero + Countdown */}
       <header className="site-header">
         <Navbar
-          startTime={pemilihan?.startTime?.toISOString() ?? ""}
-          endTime={pemilihan?.endTime?.toISOString() ?? ""}
           idPemilihan={pemilihan?.id}
+          status={(pemilihan?.status as StatusPemilihan) ?? "DRAFT"}
+          startTime={pemilihan?.startTime?.toISOString()}
+          endTime={pemilihan?.endTime?.toISOString()}
         />
+
         <LiveTicker idPemilihan={pemilihan?.id} />
       </header>
 
       <Hero
         namaPemilihan={pemilihan?.nama ?? "E-VOTIS"}
+        status={(pemilihan?.status as StatusPemilihan) ?? "DRAFT"}
         startTime={pemilihan?.startTime?.toISOString() ?? ""}
         endTime={pemilihan?.endTime?.toISOString() ?? ""}
-        status={(pemilihan?.status as "DRAFT" | "ACTIVE" | "ENDED") ?? "DRAFT"}
         idPemilihan={pemilihan?.id}
       />
-
       {pemilihan?.id && <StatsBar idPemilihan={pemilihan.id} />}
 
       {/* Kandidat */}

@@ -2,7 +2,7 @@ export type LogAction = "CREATE" | "UPDATE" | "DELETE" | "LOGIN";
 
 export interface LogRow {
   id: string;
-  action: LogAction;
+  action: string;
   role: string;
   username: string;
   entity: string;

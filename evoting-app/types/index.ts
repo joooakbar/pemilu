@@ -1,5 +1,5 @@
 export type Role = "ADMIN" | "PANITIA" | "SAKSI";
-export type ElectionStatus = "DRAFT" | "ACTIVE" | "SUSPENDED" | "ENDED";
+export type ElectionStatus = "DRAFT" | "ACTIVE" | "ENDED";
 
 export interface UserSession {
   sub: string;

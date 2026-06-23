@@ -1,4 +1,5 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { EmergencyButtonProps } from "../types";
 import { useEmergencyAction } from "../hooks/useEmergencyAction";
@@ -12,10 +13,10 @@ export default function EmergencyButton({ election }: EmergencyButtonProps) {
   const { loading, confirm, action, setConfirm, setAction, request } =
     useEmergencyAction(election, router);
 
-  const isSuspended = election.status === "SUSPENDED";
+  const isEnded = election.status === "ENDED";
   const isActive = election.status === "ACTIVE";
 
-  const handleAction = (type: "SUSPEND" | "RESUME" | "END") => {
+  const handleAction = (type: "END") => {
     setAction(type);
     setConfirm(true);
   };
@@ -31,9 +32,7 @@ export default function EmergencyButton({ election }: EmergencyButtonProps) {
 
       <EmergencyActions
         isActive={isActive}
-        isSuspended={isSuspended}
-        onSuspend={() => handleAction("SUSPEND")}
-        onResume={() => handleAction("RESUME")}
+        isEnded={isEnded}
         onEnd={() => handleAction("END")}
       />
 

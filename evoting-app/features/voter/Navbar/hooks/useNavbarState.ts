@@ -7,47 +7,53 @@ export type ElectionStatus = "DRAFT" | "ACTIVE" | "ENDED";
 interface NavbarElectionState {
   status: ElectionStatus;
   isActive: boolean;
+  timeToStart: number;
+  timeToEnd: number;
 }
 
 export const useNavbarState = (
+  dbStatus?: ElectionStatus,
   startTime?: string,
   endTime?: string,
 ): NavbarElectionState => {
-  const [now, setNow] = useState<number>(0);
+  // ⏱️ SOURCE OF TIME (aman, tidak di render)
+  const [now, setNow] = useState<number>(() => Date.now());
 
   useEffect(() => {
-    const tick = () => setNow(Date.now());
-
-    tick(); // initial
-    const interval = setInterval(tick, 1000);
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
 
     return () => clearInterval(interval);
   }, []);
 
   return useMemo(() => {
-    if (!startTime || !endTime) {
-      return { status: "DRAFT", isActive: false };
+    const start = startTime ? new Date(startTime).getTime() : null;
+    const end = endTime ? new Date(endTime).getTime() : null;
+
+    let status: ElectionStatus = dbStatus ?? "DRAFT";
+
+    let timeToStart = 0;
+    let timeToEnd = 0;
+
+    if (start && end) {
+      timeToStart = Math.max(start - now, 0);
+      timeToEnd = Math.max(end - now, 0);
+
+      if (now < start) {
+        status = "DRAFT";
+      } else if (now >= start && now <= end) {
+        status = "ACTIVE";
+      } else {
+        status = "ENDED";
+      }
     }
 
-    const start = new Date(startTime).getTime();
-    const end = new Date(endTime).getTime();
-
-    if (isNaN(start) || isNaN(end)) {
-      return { status: "DRAFT", isActive: false };
-    }
-
-    if (now === 0) {
-      return { status: "DRAFT", isActive: false };
-    }
-
-    if (now < start) {
-      return { status: "DRAFT", isActive: false };
-    }
-
-    if (now <= end) {
-      return { status: "ACTIVE", isActive: true };
-    }
-
-    return { status: "ENDED", isActive: false };
-  }, [now, startTime, endTime]);
+    return {
+      status,
+      isActive: status === "ACTIVE",
+      timeToStart,
+      timeToEnd,
+    };
+  }, [dbStatus, startTime, endTime, now]);
 };

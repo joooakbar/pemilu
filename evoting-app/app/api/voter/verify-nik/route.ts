@@ -9,16 +9,16 @@ export async function POST(req: NextRequest) {
     const rawNik = String(body.nik || "").trim();
     const nik = rawNik.replace(/\D/g, "");
 
-    if (!rawNik) {
+    if (!nik) {
       return NextResponse.json(
-        { success: false, error: "NIK wajib diisi" },
+        { success: false, message: "NIK wajib diisi" },
         { status: 400 },
       );
     }
 
     if (!isValidNIK(nik)) {
       return NextResponse.json(
-        { success: false, error: "NIK harus 16 digit angka" },
+        { success: false, message: "NIK harus 16 digit angka" },
         { status: 400 },
       );
     }
@@ -41,20 +41,21 @@ export async function POST(req: NextRequest) {
 
     if (!pemilihan) {
       return NextResponse.json(
-        { success: false, error: "Belum ada pemilihan di sistem" },
+        { success: false, message: "Belum ada pemilihan aktif" },
         { status: 404 },
       );
     }
 
-    const dpt = await prisma.dPT.findUnique({
+    const dpt = await prisma.dPT.findFirst({
       where: { nik },
     });
 
     if (!dpt) {
-      return NextResponse.json(
-        { success: false, error: "DPT tidak ditemukan" },
-        { status: 404 },
-      );
+      return NextResponse.json({
+        success: true,
+        found: false,
+        message: "DPT tidak ditemukan",
+      });
     }
 
     const vote = await prisma.votes.findFirst({
@@ -66,6 +67,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
+      found: true,
       data: {
         nama: dpt.nama,
         dptId: dpt.id,
@@ -79,7 +81,7 @@ export async function POST(req: NextRequest) {
     console.error("verifyNIK error:", error);
 
     return NextResponse.json(
-      { success: false, error: "Internal server error" },
+      { success: false, message: "Internal server error" },
       { status: 500 },
     );
   }

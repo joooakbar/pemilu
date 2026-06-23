@@ -1,21 +1,35 @@
 "use client";
 
 import CountdownCard from "../../CountdownCard/components/CountdownCard";
-import { useHero } from "@/features/voter/Hero/hooks/useHero";
+import { useElectionEngine } from "@/hooks/useElectionEngine";
 import { HeroProps } from "@/features/voter/Hero/types/pemilihan.types";
 
 const Hero = ({
   namaPemilihan,
-  startTime,
-  endTime,
   status,
   idPemilihan,
+  startTime,
+  endTime,
 }: HeroProps) => {
-  const { handleVote, handleScroll, canVote, isStarted, isEnded } = useHero(
+  const isManuallyEnded = status === "ENDED";
+
+  const { canVote, isStarted, isEnded } = useElectionEngine(
     idPemilihan,
     startTime,
     endTime,
+    isManuallyEnded,
   );
+
+  const handleVote = () => {
+    if (!canVote) return;
+    window.location.href = `/vote/${idPemilihan}`;
+  };
+
+  const handleScroll = (selector: string) => {
+    document.querySelector(selector)?.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
 
   return (
     <section className="hero">
@@ -34,7 +48,7 @@ const Hero = ({
 
         <p>
           Gunakan hak pilih Anda secara aman, mudah, dan transparan melalui
-          sistem e-voting terenkripsi. Pilih pemimpin terbaik untuk Negara Anda.
+          sistem e-voting terenkripsi.
         </p>
 
         <div className="hero-actions">
@@ -44,6 +58,7 @@ const Hero = ({
             disabled={!canVote}
           >
             <span>🗳️</span>
+
             {!isStarted
               ? "Pemilihan Belum Dimulai"
               : isEnded
@@ -60,8 +75,8 @@ const Hero = ({
       <CountdownCard
         startTime={startTime}
         endTime={endTime}
-        namaPemilihan={namaPemilihan}
         status={status}
+        namaPemilihan={namaPemilihan}
         idPemilihan={idPemilihan}
       />
     </section>

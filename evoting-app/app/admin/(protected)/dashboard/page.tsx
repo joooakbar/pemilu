@@ -3,45 +3,35 @@ import prisma from "@/lib/db";
 import DashboardStats from "@/features/admin/DashboardStats/components/DashboardStats";
 import VoteChart from "@/features/admin/VoteChart/components/VoteChart";
 import RegionMap from "@/features/admin/RegionMap/components/RegionMap";
-import SendTokenButton from "@/features/admin/SendTokenButton/components/SendTokenButton";
+// import SendTokenButton from "@/features/admin/SendTokenButton/components/SendTokenButton";
 import SyncButton from "@/features/admin/SyncButton/components/SyncButton";
 
 export const metadata = { title: "Dashboard" };
-
-type ElectionStatus = "DRAFT" | "ACTIVE" | "ENDED";
-
-function getElectionStatus(
-  start?: Date | null,
-  end?: Date | null,
-): ElectionStatus {
-  if (!start || !end) return "DRAFT";
-
-  const now = new Date();
-
-  if (now < start) return "DRAFT";
-  if (now <= end) return "ACTIVE";
-  return "ENDED";
-}
 
 export default async function DashboardPage() {
   const payload = await getAuthPayload();
 
   const election = await prisma.pemilihan.findFirst({
-    orderBy: { createdAt: "desc" },
+    where: {
+      status: "ACTIVE",
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   const isAdmin = payload?.role === "ADMIN";
-  const isPanitia = payload?.role === "PANITIA";
 
-  const computedStatus = election
-    ? getElectionStatus(election.startTime, election.endTime)
-    : "DRAFT";
+  const electionStatus = election?.status ?? "DRAFT";
+
+  console.log("Election ID:", election?.id);
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold">Dashboard</h1>
+
         <p className="text-muted-foreground text-sm mt-1">
           Selamat datang, <span className="font-semibold">{payload?.name}</span>{" "}
           ·{" "}
@@ -59,15 +49,15 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      {/* Sync Sanity → DB — hanya Admin */}
+      {/* Sync Sanity → DB */}
       {isAdmin && (
         <div className="space-y-2">
           <h2 className="text-base font-semibold">Sinkronisasi Konten</h2>
+
           <SyncButton />
         </div>
       )}
 
-      {/* Status election */}
       {election ? (
         <>
           <div className="rounded-xl border bg-card px-5 py-3 flex items-center justify-between gap-4 flex-wrap">
@@ -75,6 +65,7 @@ export default async function DashboardPage() {
               <p className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">
                 Pemilihan Aktif
               </p>
+
               <p className="font-semibold">{election.nama}</p>
 
               {election.tempatVoting && (
@@ -86,27 +77,28 @@ export default async function DashboardPage() {
 
             <span
               className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
-                computedStatus === "ACTIVE"
+                electionStatus === "ACTIVE"
                   ? "bg-green-100 text-green-700"
-                  : computedStatus === "ENDED"
+                  : electionStatus === "ENDED"
                     ? "bg-gray-100 text-gray-600"
                     : "bg-blue-100 text-blue-700"
               }`}
             >
               <span
                 className={`w-1.5 h-1.5 rounded-full ${
-                  computedStatus === "ACTIVE"
+                  electionStatus === "ACTIVE"
                     ? "bg-green-500 animate-pulse"
                     : "bg-current opacity-60"
                 }`}
               />
-              {computedStatus}
+
+              {electionStatus}
             </span>
           </div>
 
           <DashboardStats
             electionId={election.id}
-            electionStatus={computedStatus}
+            electionStatus={electionStatus}
           />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -114,25 +106,28 @@ export default async function DashboardPage() {
             <RegionMap electionId={election.id} />
           </div>
 
-          {(isAdmin || isPanitia) && (
-            <div className="space-y-2">
-              <h2 className="text-base font-semibold">
-                Distribusi Token Pemilih
-              </h2>
-              <SendTokenButton
-                electionId={election.id}
-                electionStatus={computedStatus}
-              />
-            </div>
-          )}
+          {/*
+          <div className="space-y-2">
+            <h2 className="text-base font-semibold">
+              Distribusi Token Pemilih
+            </h2>
+
+            <SendTokenButton
+              electionId={election.id}
+              electionStatus={electionStatus}
+            />
+          </div>
+          */}
         </>
       ) : (
         <div className="rounded-xl border border-dashed p-16 text-center space-y-3">
           <p className="text-4xl">🗳️</p>
-          <p className="font-semibold">Belum ada data pemilihan</p>
+
+          <p className="font-semibold">Tidak ada pemilihan yang sedang aktif</p>
+
           <p className="text-sm text-muted-foreground">
-            Isi Info Pemilihan di Sanity Studio, klik Publish, lalu klik
-            Sinkronisasi di atas.
+            Aktifkan pemilihan terlebih dahulu agar dashboard dapat menampilkan
+            statistik dan hasil voting.
           </p>
         </div>
       )}

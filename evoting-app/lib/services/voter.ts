@@ -3,14 +3,9 @@ import {
   VerifyNIKResponse,
 } from "@/features/voter/InputNIK/types/voter.types";
 
-type ApiResponse<T> = {
-  data?: T;
-  error?: string;
-};
-
 export async function verifyNIK(
   payload: VerifyNIKPayload,
-): Promise<VerifyNIKResponse | null> {
+): Promise<VerifyNIKResponse> {
   const res = await fetch("/api/voter/verify-nik", {
     method: "POST",
     headers: {
@@ -19,15 +14,24 @@ export async function verifyNIK(
     body: JSON.stringify(payload),
   });
 
-  const json: ApiResponse<VerifyNIKResponse> = await res.json();
+  const json = await res.json();
 
   if (!res.ok) {
     throw new Error(json.error || "Gagal verifikasi NIK");
   }
 
+  // ❌ jangan throw null
   if (!json.data) {
-    throw null;
+    return {
+      found: false,
+      message: "DPT tidak ditemukan",
+    } as VerifyNIKResponse;
   }
 
-  return json.data;
+  return {
+    found: true,
+    nama: json.data.nama,
+    kodeWilayah: json.data.kodeWilayah,
+    hasVoted: json.data.hasVoted,
+  } as VerifyNIKResponse;
 }

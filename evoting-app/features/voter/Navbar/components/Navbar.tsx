@@ -3,18 +3,24 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { NavbarProps } from "../types/navbar.types";
-import { useNavbarState } from "../hooks/useNavbarState";
+import { useElectionEngine } from "@/hooks/useElectionEngine";
 
-const Navbar1 = ({ startTime, endTime, idPemilihan }: NavbarProps) => {
-  const { status, isActive } = useNavbarState(startTime, endTime);
-  console.log("startTime:", startTime);
-  console.log("endTime:", endTime);
-  console.log("now:", new Date().toISOString());
+const Navbar1 = ({ idPemilihan, status, startTime, endTime }: NavbarProps) => {
+  const isManuallyEnded = status === "ENDED";
+
+  const { isStarted, isEnded, canVote } = useElectionEngine(
+    idPemilihan,
+    startTime,
+    endTime,
+    isManuallyEnded,
+  );
+
+  const electionStatus = isEnded ? "ENDED" : isStarted ? "ACTIVE" : "DRAFT";
+
   const scrollToSection = (selector: string) => {
-    const el = document.querySelector(selector);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    document.querySelector(selector)?.scrollIntoView({
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -28,49 +34,32 @@ const Navbar1 = ({ startTime, endTime, idPemilihan }: NavbarProps) => {
       </Link>
 
       <div className="nav-links">
-        <button
-          className="nav-link"
-          onClick={() => scrollToSection("#kandidat")}
-        >
-          Kandidat
-        </button>
+        <button onClick={() => scrollToSection("#kandidat")}>Kandidat</button>
 
-        <button
-          className="nav-link"
-          onClick={() => scrollToSection("#cek-dpt")}
-        >
-          Cek DPT
-        </button>
+        <button onClick={() => scrollToSection("#cek-dpt")}>Cek DPT</button>
 
-        <button
-          className="nav-link"
-          onClick={() => scrollToSection("#tatacara")}
-        >
+        <button onClick={() => scrollToSection("#tatacara")}>
           Cara Memilih
         </button>
 
-        <button className="nav-link" onClick={() => scrollToSection("#berita")}>
-          Berita
-        </button>
+        <button onClick={() => scrollToSection("#berita")}>Berita</button>
       </div>
 
       <div className="nav-right">
-        <div className={cn("nav-status", status)}>
-          <div className={cn("dot", status)}></div>
-          {status}
+        <div className={cn("nav-status", electionStatus)}>
+          <div className={cn("dot", electionStatus)} />
+          {electionStatus}
         </div>
 
-        {isActive ? (
+        {canVote ? (
           <Link href={`/vote/${idPemilihan}`} className="btn-vote-nav">
             Gunakan Hak Pilih →
           </Link>
         ) : (
           <button className="btn-vote-nav disabled" disabled>
-            {status === "DRAFT"
-              ? "Pemilihan Belum Dimulai"
-              : status === "ENDED"
-                ? "Pemilihan Telah Berakhir"
-                : "Terima Kasih"}
+            {electionStatus === "DRAFT" && "Pemilihan Belum Dimulai"}
+            {electionStatus === "ENDED" && "Pemilihan Telah Berakhir"}
+            {electionStatus === "ACTIVE" && "Sedang Berlangsung"}
           </button>
         )}
       </div>
